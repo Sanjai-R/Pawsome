@@ -57,21 +57,22 @@ namespace pawsome_server.Controllers
 
             if (existingUser == null)
             {
-                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(userModel.Password);
+                string hashedPassword = HashPassword(userModel.Password);
                 userModel.Password = hashedPassword;
                 _context.Users.Add(userModel);
                 await _context.SaveChangesAsync();
 
             }
             else
-                userModel = existingUser;
-            return Ok(new {
+                return Conflict("User already exists");
+            return Ok(new
+            {
                 userId = userModel.UserId,
-                    username = userModel.Username,
-                    email = userModel.Email,
-                    location = userModel.Location,
-                    mobile = userModel.Mobile,
-                });
+                username = userModel.Username,
+                email = userModel.Email,
+                location = userModel.Location,
+                mobile = userModel.Mobile,
+            });
         }
 
 
