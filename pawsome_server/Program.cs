@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using pawsome_server.Data;
+
 namespace pawsome_server
 {
     public class Program
@@ -9,10 +12,10 @@ namespace pawsome_server
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Db")));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -22,10 +25,12 @@ namespace pawsome_server
                 app.UseSwaggerUI();
             }
 
-                       app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
+            app.UseAuthorization();
+            app.UseCors(options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader());
 
             app.MapControllers();
 
