@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class Error404Screen extends StatelessWidget {
   @override
@@ -7,8 +8,8 @@ class Error404Screen extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.network(
-            "https://github.com/abuanwar072/20-Error-States-Flutter/blob/master/assets/images/2_404%20Error.png?raw=true",
+          Image.asset(
+            "assets/images/error_404.png",
             fit: BoxFit.cover,
           ),
           Positioned(
@@ -16,12 +17,13 @@ class Error404Screen extends StatelessWidget {
             left: MediaQuery.of(context).size.width * 0.3,
             right: MediaQuery.of(context).size.width * 0.3,
             child: FilledButton(
-
-              // color: Color(0xFF6B92F2),
-              //
-              // shape: RoundedRectangleBorder(
-              //     borderRadius: BorderRadius.circular(50)),
-              onPressed: () {},
+              style: FilledButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50))),
+              onPressed: () {
+                context.go("/home");
+              },
               child: Text(
                 "Go Home".toUpperCase(),
                 style: TextStyle(color: Colors.white),

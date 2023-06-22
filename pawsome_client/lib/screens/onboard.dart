@@ -7,6 +7,8 @@ import 'package:pawsome_client/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnBoard extends StatefulWidget {
+  const OnBoard({super.key});
+
   @override
   _OnBoardState createState() => _OnBoardState();
 }
@@ -51,7 +53,7 @@ class _OnBoardState extends State<OnBoard> {
 
   _storeOnboardInfo() async {
     print("Shared pref called");
-    int isViewed = 0;
+    int isViewed = 1;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt('onBoard', isViewed);
     print(prefs.getInt('onBoard'));
