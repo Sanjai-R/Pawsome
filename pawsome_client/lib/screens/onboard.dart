@@ -17,26 +17,23 @@ class _OnBoardState extends State<OnBoard> {
   List<OnboardModel> screens = <OnboardModel>[
     OnboardModel(
       img:
-          'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=394&q=80',
+          'https://freedesignfile.com/upload/2022/04/Dog-sticking-out-tongue-cartoon-vector.jpg',
       text: "Find your best companion today",
       desc:
           "Having an pet is a great way to relieve stress levels and increase happiness",
-      bg: Colors.white,
     ),
     OnboardModel(
       img:
-          'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=394&q=80',
+          'https://img.freepik.com/free-vector/dog-high-five-concept-illustration_114360-11145.jpg?w=740&t=st=1687416083~exp=1687416683~hmac=e1578955fa9e7f4c7414747336df8e86dc7903c32321e22cdc9aa25275400973',
       text: "Match your compatibility ",
       desc: "Find best companion based on specific criteria and compatibility",
-      bg: Color(0xFF4756DF),
     ),
     OnboardModel(
       img:
-          'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=394&q=80',
+          'https://img.freepik.com/premium-vector/adopt-pet-concept_23-2148517279.jpg?w=740',
       text: "Foster or Adopt",
       desc:
           "Shorter Commitment or Longer Commitment- there is more than one way to help an animal in need",
-      bg: Colors.white,
     ),
   ];
 
@@ -67,17 +64,16 @@ class _OnBoardState extends State<OnBoard> {
       appBar: AppBar(
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.black26,
-          // <-- SEE HERE
           statusBarIconBrightness: Brightness.dark,
-          //<-- For Android SEE HERE (dark icons)
           statusBarBrightness:
-              Brightness.light, //<-- For iOS SEE HERE (dark icons)
+              Brightness.light,
         ),
         elevation: 0.0,
         actions: [
           TextButton(
             onPressed: () {
               print("Skip");
+              context.go("/home");
             },
             child: Text(
               "Skip",
@@ -145,7 +141,7 @@ class _OnBoardState extends State<OnBoard> {
             ),
             Expanded(
               flex: 1,
-              child: Container(
+              child: SizedBox(
                 height: 10.0,
                 child: ListView.builder(
                   itemCount: screens.length,
@@ -156,7 +152,7 @@ class _OnBoardState extends State<OnBoard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          margin: EdgeInsets.symmetric(horizontal: 3.0),
+                          margin: const EdgeInsets.symmetric(horizontal: 3.0),
                           width: currentIndex == index ? 25 : 12,
                           height: 10,
                           decoration: BoxDecoration(
@@ -173,7 +169,7 @@ class _OnBoardState extends State<OnBoard> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(bottom: 20.0),
+              margin: const EdgeInsets.only(bottom: 20.0),
               width: MediaQuery.of(context).size.width * 0.7,
               height: 50,
               child: FilledButton.tonal(
