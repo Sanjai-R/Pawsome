@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pawsome_client/core/constant/colors.dart';
 import 'package:pawsome_client/model/onboard_model.dart';
-import 'package:pawsome_client/screens/homeScreen.dart';
+import 'package:pawsome_client/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnBoard extends StatefulWidget {
@@ -73,6 +73,7 @@ class _OnBoardState extends State<OnBoard> {
           TextButton(
             onPressed: () {
               print("Skip");
+              _storeOnboardInfo();
               context.go("/home");
             },
             child: Text(
