@@ -53,9 +53,8 @@ class _OnBoardState extends State<OnBoard> {
 
   _storeOnboardInfo() async {
     print("Shared pref called");
-    int isViewed = 1;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('onBoard', isViewed);
+    await prefs.setBool('onBoard', true);
     print(prefs.getInt('onBoard'));
   }
 

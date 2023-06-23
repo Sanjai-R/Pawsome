@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pawsome_client/screens/error_screen.dart';
+import 'package:pawsome_client/screens/auth/login.dart';
+import 'package:pawsome_client/screens/auth/sign_up_screen.dart';
 import 'package:pawsome_client/screens/home_screen.dart';
 import 'package:pawsome_client/screens/onboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,39 +13,50 @@ final GoRouter router = GoRouter(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
         return FutureBuilder<bool>(
-          future: checkViewedStatus(), // Check the SharedPreferences value
+          future: _checkViewedStatus(),
           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              // If the future is still loading, show a loading screen
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasData) {
-              // If the future completed successfully, check the value
-              final bool isViewed = snapshot.data!;
-              if (isViewed) {
-                // If isViewed is true, navigate to the HomeScreen
-                return  const HomeScreen();
+            if (snapshot.hasData) {
+              print("snapshot data ${snapshot.data}");
+              if (snapshot.data!) {
+                return LoginScreen();
               } else {
-                // If isViewed is false, navigate to the OnBoard screen
                 return const OnBoard();
               }
             } else {
-              // If the future encountered an error, show an error screen
-              return Error404Screen();
+              return const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }
           },
         );
       },
+    ), 
+    GoRoute(
+      path: '/login',
+      builder: (BuildContext context, GoRouterState state) {
+        return LoginScreen();
+      },
+    ),
+    GoRoute(
+      path: '/signup',
+      builder: (BuildContext context, GoRouterState state) {
+        return SignUpScreen();
+      },
     ),
     GoRoute(
       path: '/home',
-      builder: (context, state) => const HomeScreen(),
-    )
+      builder: (BuildContext context, GoRouterState state) {
+        return const HomeScreen();
+      },
+    ),
   ],
 );
 
-Future<bool> checkViewedStatus() async {
+Future<bool> _checkViewedStatus() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  int? isViewed = prefs.getInt('onBoard');
+  bool? isViewed = prefs.getBool("onBoard");
   print(isViewed);
-  return isViewed == 1;
+  return isViewed ?? false;
 }

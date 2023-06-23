@@ -14,6 +14,7 @@ namespace pawsome_server
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+          
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Db")));
             var app = builder.Build();
@@ -28,13 +29,11 @@ namespace pawsome_server
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
-            app.UseAuthorization();
             app.UseCors(options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader());
 
             app.MapControllers();
 
             app.Run();
-        }
+            }
     }
 }
