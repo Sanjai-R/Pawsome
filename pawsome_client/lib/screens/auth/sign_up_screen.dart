@@ -1,14 +1,18 @@
-
-
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
+import 'package:pawsome_client/provider/auth_provider.dart';
 import 'package:pawsome_client/screens/auth/components/sign_up_form.dart';
+import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatelessWidget {
   // It's time to validate the text field
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _username = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _mobile = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +39,32 @@ class SignUpScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: defaultPadding),
-                    SignUpForm(
-                      formKey: _formKey,
-                    ),
+                    SignUpForm(formKey: _formKey, inputs: [
+                      {
+                        'label': 'Email',
+                        'hintText': 'test@gmail.com',
+                        'type': 'email',
+                        'controller': _email
+                      },
+                      {
+                        'label': 'Username',
+                        'hintText': 'test_user',
+                        'type': 'text',
+                        'controller': _username
+                      },
+                      {
+                        'label': 'Password',
+                        'hintText': "*****",
+                        'type': 'password',
+                        'controller': _password
+                      },
+                      {
+                        'label': 'Mobile',
+                        'hintText': "1234567890",
+                        'type': 'number',
+                        'controller': _mobile
+                      },
+                    ]),
                     const SizedBox(height: defaultPadding * 1.5),
                     Text(
                       "By creating an account, you agree to our Terms of Service and Privacy Policy",
@@ -60,6 +87,15 @@ class SignUpScreen extends StatelessWidget {
                         ),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
+                            // Go to home screen
+                            Provider.of<AuthProvider>(context, listen: false)
+                                .signUp(
+                              userName: _username.text,
+                              email: _email.text,
+                              password: _password.text,
+                              phoneNumber: _mobile.text,
+                            );
+
                             _formKey.currentState!.save();
                           }
                         },
@@ -85,30 +121,30 @@ class SignUpScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "OR",
-                      ),
-                    ),
-                    const SizedBox(height: defaultPadding ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: FilledButton.tonal(
-                        style: FilledButton.styleFrom(
-                          backgroundColor: secondary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: const EdgeInsets.all(15),
-                        ),
-                        onPressed: () {},
-                        child: const Text(
-                          "Continue with Google",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ),
+                    // const Align(
+                    //   alignment: Alignment.center,
+                    //   child: Text(
+                    //     "OR",
+                    //   ),
+                    // ),
+                    // const SizedBox(height: defaultPadding ),
+                    // SizedBox(
+                    //   width: double.infinity,
+                    //   child: FilledButton.tonal(
+                    //     style: FilledButton.styleFrom(
+                    //       backgroundColor: secondary,
+                    //       shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(10),
+                    //       ),
+                    //       padding: const EdgeInsets.all(15),
+                    //     ),
+                    //     onPressed: () {},
+                    //     child: const Text(
+                    //       "Continue with Google",
+                    //       style: TextStyle(fontSize: 16),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

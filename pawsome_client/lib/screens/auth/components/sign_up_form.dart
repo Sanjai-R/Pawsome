@@ -6,9 +6,10 @@ import 'package:pawsome_client/widgets/custom_form_field.dart';
 import '../../../core/constant/constant.dart';
 
 class SignUpForm extends StatefulWidget {
-  const SignUpForm({super.key, required this.formKey});
+  const SignUpForm({super.key, required this.formKey, required this.inputs});
 
   final GlobalKey formKey;
+  final List inputs;
 
   @override
   State<SignUpForm> createState() => _SignUpFormState();
@@ -17,40 +18,18 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   late String _userName, _email, _password, _phoneNumber;
 
-  List inputs = [
-    {
-      'label': 'Email',
-      'hintText': 'test@gmail.com',
-      'type': 'email',
-    },
-    {
-      'label': 'Username',
-      'hintText': 'test_user',
-      'type': 'text',
-    },
-    {
-      'label': 'Password',
-      'hintText': "*****",
-      'type': 'password',
-    },
-    {
-      'label': 'Mobile',
-      'hintText': "1234567890",
-      'type': 'number',
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Form(
       key: widget.formKey,
       child: Column(
         children: [
-          for (var input in inputs)
+          for (var input in widget.inputs)
             MyCustomInput(
               label: input['label'],
               hintText: input['hintText'],
               type: input['type'],
+              controller: input['controller'],
               onSaved: (value) {
                 switch (input['label']) {
                   case 'Email':

@@ -10,7 +10,7 @@ String? Function(String?)? getValidator(type,label) {
     case 'password':
       return MultiValidator([
         RequiredValidator(errorText: 'Password is required'),
-        MinLengthValidator(6,
+        MinLengthValidator(3,
             errorText: 'Password must be at least 6 digits long'),
       ]);
     case 'number':
