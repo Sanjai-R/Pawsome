@@ -1,8 +1,7 @@
-// ignore_for_file: prefer_const_constructors
+
 
 import 'package:flutter/material.dart';
 
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
 import 'package:pawsome_client/screens/auth/components/sign_up_form.dart';
@@ -64,7 +63,7 @@ class SignUpScreen extends StatelessWidget {
                             _formKey.currentState!.save();
                           }
                         },
-                        child: Text(
+                        child: const Text(
                           "Sign Up",
                           style: TextStyle(fontSize: 16),
                         ),
@@ -86,12 +85,13 @@ class SignUpScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Align(
+                    const Align(
                       alignment: Alignment.center,
                       child: Text(
                         "OR",
                       ),
                     ),
+                    const SizedBox(height: defaultPadding ),
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton.tonal(
@@ -100,10 +100,10 @@ class SignUpScreen extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          padding: EdgeInsets.all(15),
+                          padding: const EdgeInsets.all(15),
                         ),
                         onPressed: () {},
-                        child: Text(
+                        child: const Text(
                           "Continue with Google",
                           style: TextStyle(fontSize: 16),
                         ),

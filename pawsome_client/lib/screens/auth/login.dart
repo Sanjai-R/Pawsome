@@ -65,6 +65,7 @@ class LoginScreen extends StatelessWidget {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
                           }
+
                         },
                         child: Text(
                           "Login",
@@ -91,12 +92,14 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+
                     Align(
                       alignment: Alignment.center,
                       child: Text(
                         "OR",
                       ),
                     ),
+                    SizedBox(height: defaultPadding ),
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton.tonal(

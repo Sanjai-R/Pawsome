@@ -1,21 +1,35 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
+import 'package:pawsome_client/core/utils/validator.dart';
 
 class MyCustomInput extends StatelessWidget {
   final String label;
   final String hintText;
   final String type;
+  final void Function(String?)? onSaved;
 
-  const MyCustomInput(
-      {super.key,
-      required this.label,
-      required this.hintText,
-      required this.type});
+  const MyCustomInput({
+    Key? key,
+    required this.label,
+    required this.hintText,
+    required this.type,
+    required this.onSaved,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    TextInputType getKeyboardType() {
+      switch (type) {
+        case 'email':
+          return TextInputType.emailAddress;
+        case 'number':
+          return TextInputType.number;
+        default:
+          return TextInputType.text;
+      }
+    }
+
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
@@ -23,24 +37,19 @@ class MyCustomInput extends StatelessWidget {
         children: [
           TextFieldName(text: label),
           TextFormField(
-            // obscureText: true,
-            keyboardType: type == 'email'
-                ? TextInputType.emailAddress
-                : type == 'number'
-                    ? TextInputType.number
-                    : TextInputType.text,
-            obscureText: type == 'password' ? true : false,
+            onSaved: onSaved,
+            keyboardType: getKeyboardType(),
+            obscureText: type == 'password',
             obscuringCharacter: '*',
             decoration: InputDecoration(
-                contentPadding: defaultInputPadding,
-                border: InputBorder.none,
-                fillColor: Colors.grey[200],
-                hintStyle: TextStyle(color: Colors.grey[600]),
-                filled: true,
-                hintText: hintText),
-            validator: (pass) =>
-                MatchValidator(errorText: "Password do not  match")
-                    .validateMatch(pass!, ""),
+              contentPadding: defaultInputPadding,
+              border: InputBorder.none,
+              fillColor: Colors.grey[200],
+              hintStyle: TextStyle(color: Colors.grey[600]),
+              filled: true,
+              hintText: hintText,
+            ),
+            validator: getValidator(type,label),
           ),
         ],
       ),
@@ -62,8 +71,11 @@ class TextFieldName extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: defaultPadding / 3),
       child: Text(
         text,
-        style: TextStyle(
-            fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black87),
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: Colors.black87,
+        ),
       ),
     );
   }
