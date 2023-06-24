@@ -1,33 +1,19 @@
 import 'package:flutter/cupertino.dart';
+import 'package:pawsome_client/services/auth.service.dart';
 
-class UserProvider extends ChangeNotifier {
-  String _userName = '';
-  String _email = '';
-  String _password = '';
-  String _phoneNumber = '';
-
-  String get userName => _userName;
-  String get email => _email;
-  String get password => _password;
-  String get phoneNumber => _phoneNumber;
-
-  void setUserName(String userName) {
-    _userName = userName;
-    notifyListeners();
+class AuthProvider extends ChangeNotifier {
+  void signUp({
+    required String userName,
+    required String email,
+    required String password,
+    required String phoneNumber,
+  }) {
+    print('sign up');
   }
-
-  void setEmail(String email) {
-    _email = email;
-    notifyListeners();
+  Future<void> login ({
+    required String email,
+    required String password,
+  }) async {
+    AuthService.login(email, password);
   }
-  void setPassword(String password) {
-    _password = password;
-    notifyListeners();
-  }
-  void setPhoneNumber(String phoneNumber) {
-    _phoneNumber = phoneNumber;
-    notifyListeners();
-  }
-
 }
-

@@ -80,6 +80,7 @@ namespace pawsome_server.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<UserModel>> LoginUser(LoginDTO data)
         {
+            Console.WriteLine("ehevb");
             try
             {
                 var userModel = await _context.Users.FirstOrDefaultAsync(u => u.Email == data.Email);
