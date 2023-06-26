@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using pawsome_server.Data;
+using pawsome_server.Service;
 
 namespace pawsome_server
 {
@@ -8,24 +9,24 @@ namespace pawsome_server
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
             // Add services to the container.
-
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-          
+
+            builder.Services.AddScoped<ICacheService, CacheService>(); //redis
+
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Db")));
-            var app = builder.Build();
 
+
+            var app = builder.Build();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
             //        app.UseHttpsRedirection();
 
             app.UseAuthorization();
@@ -34,6 +35,6 @@ namespace pawsome_server
             app.MapControllers();
 
             app.Run();
-            }
+        }
     }
 }
