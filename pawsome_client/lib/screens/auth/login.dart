@@ -6,6 +6,7 @@ import 'package:pawsome_client/core/constant/constant.dart';
 import 'package:pawsome_client/provider/auth_provider.dart';
 import 'package:pawsome_client/screens/auth/components/sign_in_form.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,6 +22,51 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _email = TextEditingController();
 
   final TextEditingController _password = TextEditingController();
+  var _isLoading = false;
+
+  void checkAuth() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    if (token != null) {
+      context.go('/home');
+    }
+  }
+
+  @override
+  void initState() {
+    checkAuth();
+
+    super.initState();
+  }
+
+  void _onSubmit() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
+      _formKey.currentState!.save();
+      final res = await Provider.of<AuthProvider>(context, listen: false).login(
+        email: _email.text,
+        password: _password.text,
+      );
+      if(res != null) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+
+
+      if (res['status']) {
+        setState(() => _isLoading = false);
+        context.go('/home');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(res['message']),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: defaultPadding * 1.5),
                     SizedBox(
                       width: double.infinity,
-                      child: FilledButton(
+                      child: FilledButton.icon(
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
                               vertical: defaultPadding * 0.75),
@@ -87,17 +133,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
-                            Provider.of<AuthProvider>(context, listen: false)
-                                .login(
-                              email: _email.text,
-                              password: _password.text,
-                            );
-                          }
-                        },
-                        child: Text(
+                        onPressed: _isLoading ? null : _onSubmit,
+                        icon: _isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
+                            : const SizedBox(),
+                        label: Text(
                           "Login",
                           style: TextStyle(fontSize: 16),
                         ),
@@ -123,31 +169,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-
-                    // Align(
-                    //   alignment: Alignment.center,
-                    //   child: Text(
-                    //     "OR",
-                    //   ),
-                    // ),
-                    // SizedBox(height: defaultPadding ),
-                    // SizedBox(
-                    //   width: double.infinity,
-                    //   child: FilledButton.tonal(
-                    //     style: FilledButton.styleFrom(
-                    //       backgroundColor: secondary,
-                    //       shape: RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.circular(10),
-                    //       ),
-                    //       padding: EdgeInsets.all(15),
-                    //     ),
-                    //     onPressed: () {},
-                    //     child: Text(
-                    //       "Continue with Google",
-                    //       style: TextStyle(fontSize: 16),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),

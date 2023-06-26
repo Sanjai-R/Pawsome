@@ -4,10 +4,9 @@ import 'package:pawsome_client/provider/auth_provider.dart';
 import 'package:pawsome_client/router/router.dart';
 import 'package:provider/provider.dart';
 
-
-
 void main() async {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(

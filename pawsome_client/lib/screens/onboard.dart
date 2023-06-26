@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pawsome_client/core/constant/colors.dart';
 import 'package:pawsome_client/model/onboard_model.dart';
-import 'package:pawsome_client/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnBoard extends StatefulWidget {
@@ -52,10 +50,8 @@ class _OnBoardState extends State<OnBoard> {
   }
 
   _storeOnboardInfo() async {
-    print("Shared pref called");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onBoard', true);
-    print(prefs.getInt('onBoard'));
   }
 
   @override
@@ -123,7 +119,7 @@ class _OnBoardState extends State<OnBoard> {
                         style: TextStyle(
                           fontSize: 24.0,
                           fontWeight: FontWeight.bold,
-                          color: kblack,
+                          color: Colors.black,
                         ),
                       ),
                       Text(
@@ -132,7 +128,7 @@ class _OnBoardState extends State<OnBoard> {
                         style: TextStyle(
                           fontSize: 16.0,
                           fontFamily: 'Montserrat',
-                          color: kblack,
+                          color: Colors.black,
                         ),
                       ),
                       // ... remaining content
@@ -198,7 +194,7 @@ class _OnBoardState extends State<OnBoard> {
                   style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
-                    color: kwhite,
+                    color: Colors.white
                   ),
                 ),
               ),

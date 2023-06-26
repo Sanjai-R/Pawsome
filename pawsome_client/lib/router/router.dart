@@ -12,27 +12,9 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return FutureBuilder<bool>(
-          future: _checkViewedStatus(),
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            if (snapshot.hasData) {
-              print("snapshot data ${snapshot.data}");
-              if (snapshot.data!) {
-                return LoginScreen();
-              } else {
-                return const OnBoard();
-              }
-            } else {
-              return const Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-          },
-        );
+        return OnBoard();
       },
-    ), 
+    ),
     GoRoute(
       path: '/login',
       builder: (BuildContext context, GoRouterState state) {
@@ -47,16 +29,34 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/home',
-      builder: (BuildContext context, GoRouterState state) {
-        return const HomeScreen();
-      },
+      builder: (BuildContext context, GoRouterState state) =>
+          const HomeScreen(),
     ),
   ],
+  redirect: (context, state) async {
+    final isViewed = await _checkViewedStatus();
+    final isLoggedIn = await _checkAuth();
+
+    if (!isViewed && !isLoggedIn) {
+      return '/';
+    } else if (isViewed && !isLoggedIn) {
+      return '/login';
+    } else {
+      return '/home';
+    }
+  },
 );
 
 Future<bool> _checkViewedStatus() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool? isViewed = prefs.getBool("onBoard");
-  print(isViewed);
+
   return isViewed ?? false;
+}
+
+Future<bool> _checkAuth() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final authData = prefs.getString('authData');
+
+  return authData != null;
 }

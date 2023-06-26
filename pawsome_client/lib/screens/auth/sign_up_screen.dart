@@ -5,15 +5,66 @@ import 'package:pawsome_client/core/constant/constant.dart';
 import 'package:pawsome_client/provider/auth_provider.dart';
 import 'package:pawsome_client/screens/auth/components/sign_up_form.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   // It's time to validate the text field
   final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _email = TextEditingController();
+
   final TextEditingController _username = TextEditingController();
+
   final TextEditingController _password = TextEditingController();
+
   final TextEditingController _mobile = TextEditingController();
 
+  var _isLoading = false;
+
+  void _onSubmit() async {
+
+    if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
+      _formKey.currentState!.save();
+      final res = await Provider.of<AuthProvider>(context, listen: false).login(
+        email: _email.text,
+        password: _password.text,
+      );
+
+      if (!context.mounted) return;
+      if (res['status']) {
+        setState(() => _isLoading = false);
+        context.go('/home');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(res['message']),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+  void checkAuth() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    if (token != null) {
+      context.go('/home');
+    }
+  }
+  @override
+  void initState() {
+    checkAuth();
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     // But still same problem, let's fixed it
@@ -77,7 +128,7 @@ class SignUpScreen extends StatelessWidget {
                     const SizedBox(height: defaultPadding * 1.5),
                     SizedBox(
                       width: double.infinity,
-                      child: FilledButton(
+                      child: FilledButton.icon(
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
                               vertical: defaultPadding * 0.75),
@@ -85,21 +136,18 @@ class SignUpScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            // Go to home screen
-                            Provider.of<AuthProvider>(context, listen: false)
-                                .signUp(
-                              userName: _username.text,
-                              email: _email.text,
-                              password: _password.text,
-                              phoneNumber: _mobile.text,
-                            );
 
-                            _formKey.currentState!.save();
-                          }
-                        },
-                        child: const Text(
+                        onPressed: _isLoading ? null : _onSubmit,
+                        icon: _isLoading
+                            ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        )
+                            : const SizedBox(),
+                        label:const Text(
                           "Sign Up",
                           style: TextStyle(fontSize: 16),
                         ),
@@ -121,30 +169,7 @@ class SignUpScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // const Align(
-                    //   alignment: Alignment.center,
-                    //   child: Text(
-                    //     "OR",
-                    //   ),
-                    // ),
-                    // const SizedBox(height: defaultPadding ),
-                    // SizedBox(
-                    //   width: double.infinity,
-                    //   child: FilledButton.tonal(
-                    //     style: FilledButton.styleFrom(
-                    //       backgroundColor: secondary,
-                    //       shape: RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.circular(10),
-                    //       ),
-                    //       padding: const EdgeInsets.all(15),
-                    //     ),
-                    //     onPressed: () {},
-                    //     child: const Text(
-                    //       "Continue with Google",
-                    //       style: TextStyle(fontSize: 16),
-                    //     ),
-                    //   ),
-                    // ),
+
                   ],
                 ),
               ),
