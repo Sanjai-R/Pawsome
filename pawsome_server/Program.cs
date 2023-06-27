@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Connections;
 using Microsoft.EntityFrameworkCore;
 using pawsome_server.Data;
 using pawsome_server.Service;
+using StackExchange.Redis;
 
 namespace pawsome_server
 {
@@ -14,7 +16,7 @@ namespace pawsome_server
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddScoped<ICacheService, CacheService>(); //redis
+            builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost:6379")); //redis
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Db")));
