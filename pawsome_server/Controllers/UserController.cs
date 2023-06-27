@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using pawsome_server.Data;
 using pawsome_server.Dto;
+using pawsome_server.Handler;
 using pawsome_server.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+using pawsome_server.Service;
+using StackExchange.Redis;
 
 namespace pawsome_server.Controllers
 {
@@ -17,10 +16,11 @@ namespace pawsome_server.Controllers
     public class UserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
-        public UserController(ApplicationDbContext context)
+        private readonly IDatabase _cacheDb;
+        public UserController(ApplicationDbContext context, IConnectionMultiplexer connectionMultiplexer)
         {
             _context = context;
+            _cacheDb = connectionMultiplexer.GetDatabase();
         }
 
         // PUT: api/User/5
@@ -80,7 +80,6 @@ namespace pawsome_server.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<UserModel>> LoginUser(LoginDTO data)
         {
-            Console.WriteLine("ehevb");
             try
             {
                 var userModel = await _context.Users.FirstOrDefaultAsync(u => u.Email == data.Email);
@@ -136,6 +135,91 @@ namespace pawsome_server.Controllers
             }
         }
 
+
+        [HttpGet("SendOtp/email={email}")]
+        public async Task<IActionResult> SendOtp(string email)
+        {
+
+            try
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+                if (user == null)
+                {
+                    // User not found, handle error
+                    return BadRequest("Invalid Email");
+                }
+                // Generate OTP
+                string otp = GenerateOTP();
+                await _cacheDb.StringSetAsync(email, otp);
+                var message = $"YOUR OTP {otp}";
+                Email.SendEmail(message, "RESET PASSWORD OTP", email);
+                return Ok(new { status = true, message = "OTP has been sent to your email for password reset." });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return BadRequest(new { status = false, message = "OTP has been sent to your email for password reset." });
+            }
+
+        }
+
+        [HttpGet("VerifyOtp/otp={otp}/email={email}")]
+        public async Task<IActionResult> VerifyOtp(string otp, string email)
+        {
+            Console.WriteLine($"CLIENt {otp}");
+            string dbOtp = await _cacheDb.StringGetAsync(email);
+
+            Console.WriteLine($"DB {dbOtp}");
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (user == null)
+            {
+
+                // User not found, handle error
+                return BadRequest("Invalid Email");
+            }
+            if (dbOtp == otp)
+            {
+                await _cacheDb.KeyDeleteAsync(email);
+                return Ok(new { status = true, message = "OTP has been verified." });
+
+            }
+            else
+                return BadRequest("Invalid OTP");
+
+
+        }
+
+        [HttpPut("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(LoginDTO user)
+        {
+            Console.WriteLine(user.Email);
+            // Retrieve user by email
+            var users = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+            if (users == null)
+            {
+                // User not found, handle error
+                return BadRequest("Invalid Email");
+            }
+
+            // Update user's password
+            users.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            _context.SaveChanges();
+
+            // Return success response
+            return Ok(new { status = true, message = "Password has been reset successfully." });
+
+
+
+        }
+        private string GenerateOTP()
+        {
+            // Generate a 6-digit OTP
+            Random random = new Random();
+            int otp = random.Next(100000, 999999);
+            return otp.ToString();
+        }
         private static string HashPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
