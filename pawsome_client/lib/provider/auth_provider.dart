@@ -3,12 +3,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:pawsome_client/services/auth.service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class AuthProvider extends ChangeNotifier {
   late Map<String, dynamic> _user = <String, dynamic>{};
 
   dynamic get user => _user;
 
+  String _email = '';
+
+  String get email => _email;
+
+  void setEmail(String value) {
+    _email = value;
+    notifyListeners();
+  }
   Future<dynamic> signUp({
     required String userName,
     required String email,
@@ -62,5 +69,43 @@ class AuthProvider extends ChangeNotifier {
       _user = authData;
     }
     notifyListeners();
+  }
+
+  void logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('authData');
+    _user = {};
+    notifyListeners();
+  }
+
+  Future<dynamic> SendOtp(String email) async {
+    final res = await AuthService.sendOtp(email);
+    notifyListeners();
+    if (res != null) {
+      return {'status': true, 'message': 'Otp Sent Successfully'};
+    } else {
+      return {'status': false, 'message': 'Otp Sent Failed'};
+    }
+  }
+
+  Future<dynamic> verifyOtp(String email,String otp) async {
+    final res = await AuthService.verifyOtp(email,"${otp}5");
+    notifyListeners();
+    if (res != null) {
+      return {'status': true, 'message': 'Otp verified Successfully'};
+    } else {
+      return {'status': false, 'message': 'Otp verified Failed,check your otp'};
+    }
+  }
+
+  Future<dynamic> resetPassword(String email,String password) async {
+    final res = await AuthService.resetPassword(email,password);
+    notifyListeners();
+    print("res $res email $email password $password");
+    if (res != null) {
+      return {'status': true, 'message': 'Password reset Successfully'};
+    } else {
+      return {'status': false, 'message': 'Password reset Failed'};
+    }
   }
 }

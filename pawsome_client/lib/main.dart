@@ -3,9 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pawsome_client/provider/auth_provider.dart';
 import 'package:pawsome_client/router/router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // prefs.clear();
 
   runApp(MultiProvider(
     providers: [
@@ -15,7 +18,6 @@ void main() async {
     ],
     child: const MyApp(),
   ));
-
 }
 
 class MyApp extends StatelessWidget {
