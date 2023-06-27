@@ -217,7 +217,7 @@ namespace pawsome_server.Controllers
         {
             // Generate a 6-digit OTP
             Random random = new Random();
-            int otp = random.Next(100000, 999999);
+            int otp = random.Next(10000, 99999);
             return otp.ToString();
         }
         private static string HashPassword(string password)
