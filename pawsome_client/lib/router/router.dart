@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pawsome_client/screens/auth/login.dart';
 import 'package:pawsome_client/screens/auth/sign_up_screen.dart';
+import 'package:pawsome_client/screens/forgot_password/forgot_password.dart';
+import 'package:pawsome_client/screens/forgot_password/otp_verification.dart';
+import 'package:pawsome_client/screens/forgot_password/reset_password.dart';
 import 'package:pawsome_client/screens/home_screen.dart';
 import 'package:pawsome_client/screens/onboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,38 +14,55 @@ final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
       path: '/',
-      builder: (BuildContext context, GoRouterState state) {
-        return OnBoard();
-      },
+      builder: (BuildContext context, GoRouterState state) => const OnBoard(),
     ),
     GoRoute(
       path: '/login',
-      builder: (BuildContext context, GoRouterState state) {
-        return LoginScreen();
-      },
+      builder: (BuildContext context, GoRouterState state) => const LoginScreen(),
     ),
     GoRoute(
       path: '/signup',
-      builder: (BuildContext context, GoRouterState state) {
-        return SignUpScreen();
-      },
+      builder: (BuildContext context, GoRouterState state) => const SignUpScreen(),
     ),
     GoRoute(
       path: '/home',
-      builder: (BuildContext context, GoRouterState state) =>
-          const HomeScreen(),
+      builder: (BuildContext context, GoRouterState state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/forgot-password',
+      builder: (BuildContext context, GoRouterState state) => const ForgotPassword(),
+      routes: [
+        GoRoute(
+          path: 'verify-otp',
+          builder: (BuildContext context, GoRouterState state) => const OtpPage(),
+        ),
+        GoRoute(
+          path: 'reset-password',
+          builder: (BuildContext context, GoRouterState state) => const ResetPassword(),
+        ),
+      ],
     ),
   ],
   redirect: (context, state) async {
     final isViewed = await _checkViewedStatus();
     final isLoggedIn = await _checkAuth();
+    final currentPath = state.location.toString();
 
-    if (!isViewed && !isLoggedIn) {
+    if (!isViewed) {
       return '/';
-    } else if (isViewed && !isLoggedIn) {
-      return '/login';
+    } else if (!isLoggedIn) {
+      if (currentPath == '/signup') {
+        return '/signup';
+      } else if (currentPath == '/forgot-password' ||
+          currentPath == '/forgot-password/verify-otp' ||
+          currentPath == '/forgot-password/reset-password') {
+        // Allow navigating to nested routes in the "forgot-password" route
+        return currentPath;
+      } else {
+        return '/login';
+      }
     } else {
-      return '/home';
+      return currentPath;
     }
   },
 );
@@ -50,7 +70,6 @@ final GoRouter router = GoRouter(
 Future<bool> _checkViewedStatus() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool? isViewed = prefs.getBool("onBoard");
-
   return isViewed ?? false;
 }
 

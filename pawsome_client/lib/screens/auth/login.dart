@@ -47,12 +47,11 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _email.text,
         password: _password.text,
       );
-      if(res != null) {
+      if (res != null) {
         setState(() {
           _isLoading = false;
         });
       }
-
 
       if (res['status']) {
         setState(() => _isLoading = false);
@@ -71,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).colorScheme;
-    // But still same problem, let's fixed it
+
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -112,14 +111,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       ],
                     ),
-                    Align(
-                      alignment: Alignment.centerRight,
+                    TextButton(
+                      onPressed: () {
+                        GoRouter.of(context).go('/forgot-password');
+                      },
                       child: Text(
                         "Forgot Password?",
                         style: TextStyle(
-                            color: theme.error,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14),
+                          color: theme.error,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                     const SizedBox(height: defaultPadding * 1.5),
@@ -158,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         TextButton(
                           onPressed: () {
-                            context.go('/signup');
+                            GoRouter.of(context).go('/signup');
                             // Go to sign in screen
                           },
                           child: const Text(

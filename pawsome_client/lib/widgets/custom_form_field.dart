@@ -7,7 +7,8 @@ class MyCustomInput extends StatelessWidget {
   final String hintText;
   final String type;
   final void Function(String?)? onSaved;
-final TextEditingController controller;
+  final TextEditingController controller;
+
   const MyCustomInput({
     Key? key,
     required this.label,
@@ -30,7 +31,6 @@ final TextEditingController controller;
       }
     }
 
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
@@ -51,7 +51,7 @@ final TextEditingController controller;
               filled: true,
               hintText: hintText,
             ),
-            validator: getValidator(type,label),
+            validator: getValidator(type, label),
           ),
         ],
       ),
