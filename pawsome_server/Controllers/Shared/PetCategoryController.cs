@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using pawsome_server.Data;
 using pawsome_server.Models;
 
-namespace pawsome_server.Controllers
+namespace pawsome_server.Controllers.Shared
 {
     [Route("api/[controller]")]
     [ApiController]

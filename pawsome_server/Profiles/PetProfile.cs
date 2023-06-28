@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using pawsome_server.Dto;
-using pawsome_server.Models;
+using pawsome_server.Dto.Request;
+using pawsome_server.Models.Shared;
 
 namespace pawsome_server.Profiles
-    {
+{
     public class PetProfile:Profile
         {
         public PetProfile()

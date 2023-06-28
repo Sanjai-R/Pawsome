@@ -1,13 +1,10 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace pawsome_server.Models
+namespace pawsome_server.Dto.Request
 {
-    public class Pet
+    public class PetDto
     {
-        [Key]
-        public int PetId { get; set; }
         [Required]
         public string Name { get; set; }
 
@@ -25,14 +22,9 @@ namespace pawsome_server.Models
         [Required]
         public string Image { get; set; }
 
-        [ForeignKey("Users")]
         [Required]
         public int OwnerId { get; set; }
-
-        [ForeignKey("PetCategoryModel")]
         [Required]
         public int CategoryId { get; set; }
-        public PetCategory Category { get; set; }
-        public UserModel User { get; set; }
     }
 }

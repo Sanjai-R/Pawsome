@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using pawsome_server.Models;
+using pawsome_server.Models.PetTracker;
+using pawsome_server.Models.Shared;
 
 namespace pawsome_server.Data
 {

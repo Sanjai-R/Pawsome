@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace pawsome_server.Models
-    {
+namespace pawsome_server.Models.PetTracker
+{
     public class NutrientTrackerModel
-        {
+    {
         [Key]
         public int NutrientTrackerId { get; set; }
 
@@ -24,5 +24,5 @@ namespace pawsome_server.Models
 
         [Required]
         public int CarbsConsumed { get; set; }
-        }
     }
+}

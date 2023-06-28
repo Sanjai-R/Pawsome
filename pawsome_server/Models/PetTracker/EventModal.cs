@@ -2,9 +2,10 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using pawsome_server.Models.Shared;
 
 namespace pawsome_server.Models
-    {
+{
     public class EventModal
         {
         [Key]

@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using pawsome_server.Models.PetTracker;
 
 namespace pawsome_server.Models
-    {
+{
     public class MealTrackerModel
         {
         [Key]
