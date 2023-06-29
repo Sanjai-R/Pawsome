@@ -7,7 +7,7 @@ using pawsome_server.Models.Shared;
 namespace pawsome_server.Models
 {
     public class EventModal
-        {
+    {
         [Key]
         public int EventId { get; set; }
         [Required]
@@ -25,5 +25,5 @@ namespace pawsome_server.Models
 
         // Navigation property for the related Pet entity
         public virtual Pet Pet { get; set; }
-        }
     }
+}

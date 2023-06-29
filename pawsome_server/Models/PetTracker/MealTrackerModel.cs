@@ -5,7 +5,7 @@ using pawsome_server.Models.PetTracker;
 namespace pawsome_server.Models
 {
     public class MealTrackerModel
-        {
+    {
         [Key]
         public int MealTrackerId { get; set; }
 
@@ -19,5 +19,5 @@ namespace pawsome_server.Models
         public int NutrientTrackerId { get; set; }
 
         public virtual NutrientTrackerModel NutrientTracker { get; set; }
-        }
     }
+}

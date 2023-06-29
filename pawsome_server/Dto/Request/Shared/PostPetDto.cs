@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace pawsome_server.Dto.Request
+namespace pawsome_server.Dto.Request.Shared
 {
     public class PetDto
     {

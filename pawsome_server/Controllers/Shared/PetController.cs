@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using pawsome_server.Data;
-using pawsome_server.Dto.Request;
+using pawsome_server.Dto.Request.Shared;
 using pawsome_server.Models.Shared;
 
 namespace pawsome_server.Controllers

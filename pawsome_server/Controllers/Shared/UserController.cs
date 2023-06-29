@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using pawsome_server.Data;
-using pawsome_server.Dto.Request;
+using pawsome_server.Dto.Request.Shared;
 using pawsome_server.Handler;
 using pawsome_server.Models;
 using pawsome_server.Service;

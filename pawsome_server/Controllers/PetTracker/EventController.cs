@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using pawsome_server.Data;
+using pawsome_server.Dto.Request.PetTracker;
 using pawsome_server.Models;
+using pawsome_server.Models.Shared;
 
 namespace pawsome_server.Controllers
 {
@@ -10,57 +13,61 @@ namespace pawsome_server.Controllers
     public class EventController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
-        public EventController(ApplicationDbContext context)
-        {
+        private readonly IMapper _mapper;
+        public EventController(ApplicationDbContext context, IMapper mapper) {
+            _mapper = mapper;
             _context = context;
         }
 
         // GET: api/Event
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EventModal>>> GetEvents()
-        {
-            return await _context.Events.ToListAsync();
+        public async Task<ActionResult<IEnumerable<EventModal>>> GetEvents() {
+            return await _context.Events.Include(c => c.Pet).ThenInclude(c => c.User).ToListAsync();
         }
 
         // GET: api/Event/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<EventModal>> GetEventModal(int id)
-        {
+        public async Task<ActionResult<EventModal>> GetEventModal(int id) {
             var eventModal = await _context.Events.FindAsync(id);
 
-            if (eventModal == null)
-            {
+            if(eventModal == null) {
                 return NotFound();
             }
 
             return eventModal;
         }
+        // POST: api/Event
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<EventModal>> PostEventModal(AddEventDto eventModal) {
+            EventModal temp = _mapper.Map<EventModal>(eventModal);
+            try {
+                _context.Events.Add(temp);
+                await _context.SaveChangesAsync();
+            } catch(Exception ex) {
+                Console.WriteLine(ex);
+                return BadRequest(ex.Message);
+            }
+            return Ok(temp);
+        }
+
 
         // PUT: api/Event/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEventModal(int id, EventModal eventModal)
-        {
-            if (id != eventModal.EventId)
-            {
+        public async Task<IActionResult> PutEventModal(int id, EventModal req) {
+            EventModal eventModal = _mapper.Map<EventModal>(req);
+            if(id != eventModal.EventId) {
                 return BadRequest();
             }
-
             _context.Entry(eventModal).State = EntityState.Modified;
-
-            try
-            {
+            try {
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EventModalExists(id))
-                {
+            } catch(DbUpdateConcurrencyException) {
+                if(!EventModalExists(id)) {
                     return NotFound();
                 }
-                else
-                {
+                else {
                     throw;
                 }
             }
@@ -68,24 +75,12 @@ namespace pawsome_server.Controllers
             return NoContent();
         }
 
-        // POST: api/Event
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<EventModal>> PostEventModal(EventModal eventModal)
-        {
-            _context.Events.Add(eventModal);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetEventModal", new { id = eventModal.EventId }, eventModal);
-        }
 
         // DELETE: api/Event/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEventModal(int id)
-        {
+        public async Task<IActionResult> DeleteEventModal(int id) {
             var eventModal = await _context.Events.FindAsync(id);
-            if (eventModal == null)
-            {
+            if(eventModal == null) {
                 return NotFound();
             }
 
@@ -95,8 +90,7 @@ namespace pawsome_server.Controllers
             return NoContent();
         }
 
-        private bool EventModalExists(int id)
-        {
+        private bool EventModalExists(int id) {
             return _context.Events.Any(e => e.EventId == id);
         }
     }
