@@ -1,4 +1,4 @@
-﻿namespace pawsome_server.Dto
+namespace pawsome_server.Dto.Request.Shared
 {
     public class LoginDTO
     {
