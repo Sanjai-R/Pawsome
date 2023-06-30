@@ -31,7 +31,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) =>
-          const HomeScreen(),
+          MyHomePage(),
     ),
     GoRoute(
       path: '/event',
@@ -97,6 +97,5 @@ Future<bool> _checkViewedStatus() async {
 Future<bool> _checkAuth() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   final authData = prefs.getString('authData');
-
   return authData != null;
 }

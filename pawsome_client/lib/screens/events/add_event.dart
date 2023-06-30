@@ -2,8 +2,11 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
+import 'package:pawsome_client/provider/event_provider.dart';
 import 'package:pawsome_client/widgets/custom_form_field.dart';
+import 'package:provider/provider.dart';
 
 class AddEvent extends StatefulWidget {
   const AddEvent({Key? key}) : super(key: key);
@@ -13,39 +16,61 @@ class AddEvent extends StatefulWidget {
 }
 
 class _AddEventState extends State<AddEvent> {
-  TextEditingController _title = TextEditingController();
-  TextEditingController _description = TextEditingController();
-  late DateTime selectedDate;
-
-  Map<String, dynamic> data = {
-    "petId": 4,
-    "eventDateTime": "2023-05-29T05:33:11.237Z",
-    "eventTitle": "",
-    "eventDesc": "Lorem",
-    "hasReminder": false
-  };
-  TextEditingController _hasReminder = TextEditingController();
-  bool _isLoading = false;
-  bool hasReminder = false;
-
-  void _onSubmit() {
-    setState(() {
-      _isLoading = true;
-    });
-    print(selectedDate);
-    if (_title.text.isNotEmpty && _description.text.isNotEmpty) {
-      data['eventTitle'] = _title.text;
-      data['eventDesc'] = _description.text;
-      data["eventDateTime"] = selectedDate;
-      data['hasReminder'] = hasReminder;
-
-      print(data);
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (Provider.of<EventProvider>(context, listen: false).data['eventTitle'] !=
+        null) {
+      _title.text =
+          Provider.of<EventProvider>(context, listen: false).data['eventTitle'];
+    } else {
+      selectedDate = DateTime.now();
     }
   }
 
+  TextEditingController _title = TextEditingController();
+  TextEditingController _description = TextEditingController();
+  late DateTime selectedDate;
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+  bool hasReminder = false;
+
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> data =
+        Provider.of<EventProvider>(context, listen: false).data;
     final theme = Theme.of(context).colorScheme;
+    void _onSubmit() async {
+      if (_formKey.currentState!.validate()) {
+        setState(() => _isLoading = true);
+        _formKey.currentState!.save();
+        data['eventTitle'] = _title.text;
+        data['eventDesc'] = _description.text;
+        data["eventDateTime"] = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+            .format(selectedDate.toUtc());
+        data['hasReminder'] = hasReminder;
+        final res = await Provider.of<EventProvider>(context, listen: false)
+            .postEvent(data);
+        if (res != null) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+
+        if (res['status']) {
+          setState(() => _isLoading = false);
+          context.go('/events');
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(res['message']),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -83,19 +108,26 @@ class _AddEventState extends State<AddEvent> {
                     ),
                   ),
                   const SizedBox(height: defaultPadding * 1.5),
-                  MyCustomInput(
-                    label: "Enter Title",
-                    hintText: "Grooming",
-                    type: "text",
-                    onSaved: (va) {},
-                    controller: _title,
-                  ),
-                  MyCustomInput(
-                    label: "Enter Description",
-                    hintText: "Grooming",
-                    type: "text",
-                    onSaved: (va) {},
-                    controller: _description,
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        MyCustomInput(
+                          label: "Enter Title",
+                          hintText: "Grooming",
+                          type: "text",
+                          onSaved: (va) {},
+                          controller: _title,
+                        ),
+                        MyCustomInput(
+                          label: "Enter Description",
+                          hintText: "Grooming",
+                          type: "text",
+                          onSaved: (va) {},
+                          controller: _description,
+                        ),
+                      ],
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
+import 'package:pawsome_client/provider/event_provider.dart';
 import 'package:pawsome_client/screens/events/components/event_category_list.dart';
 import 'package:pawsome_client/screens/events/components/event_container.dart';
+import 'package:provider/provider.dart';
 
 class EventScreen extends StatefulWidget {
   const EventScreen({super.key});
@@ -27,15 +29,7 @@ class _EventScreenState extends State<EventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // resizeToAvoidBottomInset: false,
-      backgroundColor: Color(0xffF9FAFB),
-      appBar: AppBar(
-        title: Text("Event Calander"),
-        centerTitle: true,
-        backgroundColor: Color(0xffF9FAFB),
-      ),
-      body: Container(
+    return  Container(
         padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
         // height: MediaQuery.of(context).size.height,
         child: Column(
@@ -58,7 +52,7 @@ class _EventScreenState extends State<EventScreen> {
                 ],
               ),
             ),
-            // EventList(),
+            EventList(),
             Expanded(child: EventCategoryList(categories: _list)),
             Padding(
               padding: const EdgeInsets.only(bottom: 50),
@@ -72,6 +66,8 @@ class _EventScreenState extends State<EventScreen> {
                       elevation: 1,
                       padding: EdgeInsets.symmetric(vertical: 12)),
                   onPressed: () {
+                    Provider.of<EventProvider>(context, listen: false)
+                        .data['eventTitle'] = '';
                     context.go('/event/add');
                   },
                   icon: Icon(
@@ -92,8 +88,8 @@ class _EventScreenState extends State<EventScreen> {
             // EventCategoryList(events: _list)
           ],
         ),
-      ),
-    );
+      );
+
   }
 
   TextStyle get subheadingStyle {

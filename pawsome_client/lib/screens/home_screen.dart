@@ -1,56 +1,101 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:pawsome_client/provider/auth_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:pawsome_client/screens/events/event_screen.dart';
 
-
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
+class MyHomePage extends StatefulWidget {
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    // checkAuth();
-    Provider.of<AuthProvider>(context, listen: false).getAuthData();
-    super.initState();
-  }
+class _MyHomePageState extends State<MyHomePage> {
+  int _currentIndex = 0;
+
+  final List<Widget> _tabs = [
+    EventScreen(),
+    WalkTrackerTab(),
+    MealTrackerTab(),
+    DashboardTab(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment:
-          MainAxisAlignment.center,
-          children: [
-            Consumer<AuthProvider>(
-              builder: (context, auth, child) {
-                return auth.user['email'] != null
-                    ? Text('Welcome ${auth.user['email']}')
-                    : const CircularProgressIndicator()
-                ;
-              },
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Provider.of<AuthProvider>(context, listen: false).logout();
-                context.go('/login');
-              },
-              child: const Text('Logout'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                context.go('/event');
-              },
-              child: const Text('Event'),
-            ),
-          ],
+      appBar: AppBar(),
+      body: _tabs[_currentIndex],
+      bottomNavigationBar: NavigationBar(
+        // backgroundColor: Colors.white,
+        indicatorShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(100),
         ),
+        elevation: 2,
+
+        selectedIndex: _currentIndex,
+        indicatorColor: Colors.transparent,
+        onDestinationSelected: (int index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        labelBehavior: NavigationDestinationLabelBehavior.values[1],
+        animationDuration: const Duration(seconds: 3),
+        destinations: [
+          NavigationDestination(
+            icon: Icon(CupertinoIcons.home,),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(CupertinoIcons.arrow_up_doc),
+
+            label: 'Diary',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.event_busy_rounded),
+
+            label: 'Meal Tracker',
+          ),
+          NavigationDestination(
+            icon: Icon(CupertinoIcons.profile_circled),
+            selectedIcon: Icon(Icons.account_circle),
+            label: 'Account',
+          ),
+        ],
       ),
+    );
+  }
+}
+
+class EventTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Event Tab'),
+    );
+  }
+}
+
+class WalkTrackerTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Walk Tracker Tab'),
+    );
+  }
+}
+
+class MealTrackerTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Meal Tracker Tab'),
+    );
+  }
+}
+
+class DashboardTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Dashboard Tab'),
     );
   }
 }

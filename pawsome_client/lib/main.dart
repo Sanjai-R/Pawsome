@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pawsome_client/provider/auth_provider.dart';
+import 'package:pawsome_client/provider/event_provider.dart';
 import 'package:pawsome_client/router/router.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,9 @@ void main() async {
     providers: [
       ChangeNotifierProvider(
         create: (_) => AuthProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => EventProvider(),
       ),
     ],
     child: const MyApp(),
@@ -35,7 +39,6 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.poppins().fontFamily,
       ),
       routerConfig: router,
-
     );
   }
 }

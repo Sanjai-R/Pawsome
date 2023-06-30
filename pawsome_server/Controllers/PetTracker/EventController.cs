@@ -22,7 +22,7 @@ namespace pawsome_server.Controllers
         // GET: api/Event
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EventModal>>> GetEvents() {
-            return await _context.Events.Include(c => c.Pet).ThenInclude(c => c.User).ToListAsync();
+            return await _context.Events.ToListAsync();
         }
 
         // GET: api/Event/5
