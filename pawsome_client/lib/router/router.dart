@@ -31,7 +31,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) =>
-          const HomeScreen(),
+          const EventScreen(),
     ),
     GoRoute(
       path: '/event',

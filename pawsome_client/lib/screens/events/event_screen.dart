@@ -58,7 +58,7 @@ class _EventScreenState extends State<EventScreen> {
                 ],
               ),
             ),
-            // EventList(),
+            EventList(),
             Expanded(child: EventCategoryList(categories: _list)),
             Padding(
               padding: const EdgeInsets.only(bottom: 50),
