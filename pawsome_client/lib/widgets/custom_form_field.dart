@@ -8,7 +8,6 @@ class MyCustomInput extends StatelessWidget {
   final String type;
   final void Function(String?)? onSaved;
   final TextEditingController controller;
-
   const MyCustomInput({
     Key? key,
     required this.label,
@@ -16,6 +15,7 @@ class MyCustomInput extends StatelessWidget {
     required this.type,
     required this.onSaved,
     required this.controller,
+
   }) : super(key: key);
 
   @override
@@ -43,9 +43,14 @@ class MyCustomInput extends StatelessWidget {
             keyboardType: getKeyboardType(),
             obscureText: type == 'password',
             obscuringCharacter: '*',
+
             decoration: InputDecoration(
               contentPadding: defaultInputPadding,
-              border: InputBorder.none,
+              
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide.none,
+              ),
               fillColor: Colors.grey[200],
               hintStyle: TextStyle(color: Colors.grey[600]),
               filled: true,

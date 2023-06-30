@@ -41,6 +41,8 @@ dependencies:
   shared_preferences: ^2.0.5
   form_field_validator: ^1.1.0
   dio: ^5.2.1+1
+  date_picker_timeline: ^1.2.5
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pawsome_client/screens/auth/login.dart';
 import 'package:pawsome_client/screens/auth/sign_up_screen.dart';
+import 'package:pawsome_client/screens/events/add_event.dart';
+import 'package:pawsome_client/screens/events/event_screen.dart';
 import 'package:pawsome_client/screens/forgot_password/forgot_password.dart';
 import 'package:pawsome_client/screens/forgot_password/otp_verification.dart';
 import 'package:pawsome_client/screens/forgot_password/reset_password.dart';
@@ -13,32 +15,51 @@ import 'package:shared_preferences/shared_preferences.dart';
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
-      path: '/',
+      path: '/Onboard',
       builder: (BuildContext context, GoRouterState state) => const OnBoard(),
     ),
     GoRoute(
       path: '/login',
-      builder: (BuildContext context, GoRouterState state) => const LoginScreen(),
+      builder: (BuildContext context, GoRouterState state) =>
+          const LoginScreen(),
     ),
     GoRoute(
       path: '/signup',
-      builder: (BuildContext context, GoRouterState state) => const SignUpScreen(),
+      builder: (BuildContext context, GoRouterState state) =>
+          const SignUpScreen(),
     ),
     GoRoute(
-      path: '/home',
-      builder: (BuildContext context, GoRouterState state) => const HomeScreen(),
+      path: '/',
+      builder: (BuildContext context, GoRouterState state) =>
+          const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/event',
+      builder: (BuildContext context, GoRouterState state) =>
+          const EventScreen(),
+      routes: [
+        GoRoute(
+          path: 'add',
+          builder: (BuildContext context, GoRouterState state) =>
+          const AddEvent(),
+        ),
+
+      ],
     ),
     GoRoute(
       path: '/forgot-password',
-      builder: (BuildContext context, GoRouterState state) => const ForgotPassword(),
+      builder: (BuildContext context, GoRouterState state) =>
+          const ForgotPassword(),
       routes: [
         GoRoute(
           path: 'verify-otp',
-          builder: (BuildContext context, GoRouterState state) => const OtpPage(),
+          builder: (BuildContext context, GoRouterState state) =>
+              const OtpPage(),
         ),
         GoRoute(
           path: 'reset-password',
-          builder: (BuildContext context, GoRouterState state) => const ResetPassword(),
+          builder: (BuildContext context, GoRouterState state) =>
+              const ResetPassword(),
         ),
       ],
     ),
@@ -47,9 +68,8 @@ final GoRouter router = GoRouter(
     final isViewed = await _checkViewedStatus();
     final isLoggedIn = await _checkAuth();
     final currentPath = state.location.toString();
-
     if (!isViewed) {
-      return '/';
+      return '/onboard';
     } else if (!isLoggedIn) {
       if (currentPath == '/signup') {
         return '/signup';
@@ -70,6 +90,7 @@ final GoRouter router = GoRouter(
 Future<bool> _checkViewedStatus() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool? isViewed = prefs.getBool("onBoard");
+
   return isViewed ?? false;
 }
 
