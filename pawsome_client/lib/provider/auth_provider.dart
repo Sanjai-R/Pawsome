@@ -89,7 +89,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<dynamic> verifyOtp(String email,String otp) async {
-    final res = await AuthService.verifyOtp(email,"${otp}5");
+    final res = await AuthService.verifyOtp(email,otp);
     notifyListeners();
     if (res != null) {
       return {'status': true, 'message': 'Otp verified Successfully'};
@@ -101,7 +101,6 @@ class AuthProvider extends ChangeNotifier {
   Future<dynamic> resetPassword(String email,String password) async {
     final res = await AuthService.resetPassword(email,password);
     notifyListeners();
-    print("res $res email $email password $password");
     if (res != null) {
       return {'status': true, 'message': 'Password reset Successfully'};
     } else {

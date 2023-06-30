@@ -27,6 +27,7 @@ class _ResetPasswordState extends State<ResetPassword> {
         content: Text('Password and Confirm Password does not match'),
         backgroundColor: Colors.red,
       ));
+      
     } else {
       setState(() {
         _isLoading = true;

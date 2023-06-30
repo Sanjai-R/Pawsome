@@ -1,9 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
 import 'package:pawsome_client/provider/auth_provider.dart';
-import 'package:pawsome_client/widgets/custom_button.dart';
 import 'package:pawsome_client/widgets/custom_form_field.dart';
 import 'package:provider/provider.dart';
 

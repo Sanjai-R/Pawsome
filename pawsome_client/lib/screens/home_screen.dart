@@ -23,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-
         child: Column(
           mainAxisAlignment:
           MainAxisAlignment.center,
@@ -42,6 +41,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 context.go('/login');
               },
               child: const Text('Logout'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                context.go('/event');
+              },
+              child: const Text('Event'),
             ),
           ],
         ),
