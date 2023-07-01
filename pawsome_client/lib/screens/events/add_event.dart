@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
+import 'package:pawsome_client/provider/app_provider.dart';
 import 'package:pawsome_client/provider/event_provider.dart';
 import 'package:pawsome_client/widgets/custom_form_field.dart';
 import 'package:provider/provider.dart';
@@ -60,7 +61,8 @@ class _AddEventState extends State<AddEvent> {
 
         if (res['status']) {
           setState(() => _isLoading = false);
-          context.go('/events');
+          Provider.of<AppProvider>(context, listen: false).changeIndex(2);
+          context.go('/');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -82,6 +84,13 @@ class _AddEventState extends State<AddEvent> {
               .copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Provider.of<AppProvider>(context, listen: false).changeIndex(2);
+            context.go('/');
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
       ),
       resizeToAvoidBottomInset: false,
       body: Stack(

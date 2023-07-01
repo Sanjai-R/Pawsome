@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pawsome_client/provider/app_provider.dart';
 import 'package:pawsome_client/provider/auth_provider.dart';
 import 'package:pawsome_client/provider/event_provider.dart';
 import 'package:pawsome_client/router/router.dart';
@@ -18,6 +19,7 @@ void main() async {
       ChangeNotifierProvider(
         create: (_) => EventProvider(),
       ),
+      ChangeNotifierProvider(create: (_) => AppProvider()),
     ],
     child: const MyApp(),
   ));

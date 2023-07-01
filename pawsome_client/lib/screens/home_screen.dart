@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iconly/iconly.dart';
+import 'package:pawsome_client/provider/app_provider.dart';
 import 'package:pawsome_client/screens/events/event_screen.dart';
+import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -8,54 +11,57 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0;
+
 
   final List<Widget> _tabs = [
-    EventScreen(),
-    WalkTrackerTab(),
-    MealTrackerTab(),
     DashboardTab(),
+    WalkTrackerTab(),
+    const EventScreen(),
+    MealTrackerTab(),
   ];
 
   @override
   Widget build(BuildContext context) {
+  int _currentIndex = Provider.of<AppProvider>(context).currentIndex;
     return Scaffold(
-      appBar: AppBar(),
+
       body: _tabs[_currentIndex],
       bottomNavigationBar: NavigationBar(
         // backgroundColor: Colors.white,
         indicatorShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(100),
+          borderRadius: BorderRadius.circular(0),
         ),
         elevation: 2,
 
         selectedIndex: _currentIndex,
         indicatorColor: Colors.transparent,
-        onDestinationSelected: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
+        onDestinationSelected: (index) {
+          Provider.of<AppProvider>(context, listen: false).changeIndex(index);
+
         },
         labelBehavior: NavigationDestinationLabelBehavior.values[1],
         animationDuration: const Duration(seconds: 3),
-        destinations: [
+        destinations: const [
           NavigationDestination(
-            icon: Icon(CupertinoIcons.home,),
+            icon: Icon(
+              IconlyLight.home,
+            ),
+            selectedIcon: Icon(IconlyBold.home),
             label: 'Home',
           ),
           NavigationDestination(
-            icon: Icon(CupertinoIcons.arrow_up_doc),
-
+            icon: Icon(IconlyLight.heart),
+            selectedIcon: Icon(IconlyBold.heart),
             label: 'Diary',
           ),
           NavigationDestination(
-            icon: Icon(Icons.event_busy_rounded),
-
+            icon: Icon(IconlyLight.calendar),
+            selectedIcon: Icon(IconlyBold.calendar),
             label: 'Meal Tracker',
           ),
           NavigationDestination(
-            icon: Icon(CupertinoIcons.profile_circled),
-            selectedIcon: Icon(Icons.account_circle),
+            icon: Icon(IconlyLight.user),
+            selectedIcon: Icon(IconlyBold.user_2),
             label: 'Account',
           ),
         ],
@@ -67,25 +73,35 @@ class _MyHomePageState extends State<MyHomePage> {
 class EventTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Event Tab'),
-    );
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Page 1'),
+      ),
+      body: Center(
+        child: Text('Page 1 content'),
+      ),
+    );;
   }
 }
 
 class WalkTrackerTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Walk Tracker Tab'),
-    );
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Page 2'),
+      ),
+      body: Center(
+        child: Text('Page 3 content'),
+      ),
+    );;
   }
 }
 
 class MealTrackerTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('Meal Tracker Tab'),
     );
   }
@@ -94,7 +110,7 @@ class MealTrackerTab extends StatelessWidget {
 class DashboardTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('Dashboard Tab'),
     );
   }
