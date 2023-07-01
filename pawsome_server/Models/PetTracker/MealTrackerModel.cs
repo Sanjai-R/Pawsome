@@ -18,6 +18,9 @@ namespace pawsome_server.Models
         [ForeignKey("NutrientTracker")]
         public int NutrientTrackerId { get; set; }
 
+        [ForeignKey("Pets")]
+        public int PetId { get; set; }
+
         public virtual NutrientTrackerModel NutrientTracker { get; set; }
     }
 }

@@ -1,9 +1,7 @@
 import 'package:date_picker_timeline/date_picker_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconly/iconly.dart';
-import 'package:intl/intl.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
 import 'package:pawsome_client/provider/event_provider.dart';
 import 'package:pawsome_client/screens/events/components/event_category_list.dart';
@@ -67,7 +65,7 @@ centerTitle: true,
                   setState(() {
                     selectedDate = date;
                   });
-                  print(date);
+
                 },
                 height: 100,
               ),

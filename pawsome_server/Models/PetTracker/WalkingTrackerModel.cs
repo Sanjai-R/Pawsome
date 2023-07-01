@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace pawsome_server.Models
     {
@@ -12,5 +13,8 @@ namespace pawsome_server.Models
 
         [Required]
         public int MinutesCovered { get; set; }
-        }
+
+        [ForeignKey("Pets")]
+        public int PetId { get; set; }
+    }
     }
