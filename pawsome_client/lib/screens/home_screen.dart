@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:pawsome_client/provider/app_provider.dart';
 import 'package:pawsome_client/screens/events/event_screen.dart';
+import 'package:pawsome_client/screens/pet_tracker/tracker/dashboard.dart';
+import 'package:pawsome_client/screens/pet_tracker/tracker/tracker.dart';
 import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -14,17 +16,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   final List<Widget> _tabs = [
-    DashboardTab(),
-    WalkTrackerTab(),
+    Dashboard(),
+    Tracker(),
     const EventScreen(),
-    MealTrackerTab(),
+    EventTab(),
   ];
 
   @override
   Widget build(BuildContext context) {
   int _currentIndex = Provider.of<AppProvider>(context).currentIndex;
     return Scaffold(
-
+backgroundColor: Color(0xffF9FAFB),
       body: _tabs[_currentIndex],
       bottomNavigationBar: NavigationBar(
         // backgroundColor: Colors.white,
@@ -84,28 +86,7 @@ class EventTab extends StatelessWidget {
   }
 }
 
-class WalkTrackerTab extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Page 2'),
-      ),
-      body: Center(
-        child: Text('Page 3 content'),
-      ),
-    );;
-  }
-}
 
-class MealTrackerTab extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Meal Tracker Tab'),
-    );
-  }
-}
 
 class DashboardTab extends StatelessWidget {
   @override

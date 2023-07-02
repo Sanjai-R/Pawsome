@@ -17,12 +17,17 @@ class EventProvider extends ChangeNotifier {
     "hasReminder": false
   };
 
-
   bool get isLoading => _isLoading;
 
   bool get hasError => _hasError;
 
   String get errorMessage => _errorMessage;
+  DateTime selectedDate = DateTime.now();
+
+  void setDate(DateTime date) {
+    selectedDate = date;
+    notifyListeners();
+  }
 
   List<Event> get events => _events;
 
@@ -34,6 +39,7 @@ class EventProvider extends ChangeNotifier {
       return {'status': false, 'message': 'Event Posting Failed'};
     }
   }
+
   Future<void> fetchAllEvents() async {
     _isLoading = true;
     notifyListeners();
@@ -42,6 +48,7 @@ class EventProvider extends ChangeNotifier {
 
     if (res != null) {
       res.map((e) => print(e));
+
       _events = res.map((e) => Event.fromJson(e)).toList().cast<Event>();
       _hasError = false;
       _errorMessage = '';

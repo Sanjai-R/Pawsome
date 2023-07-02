@@ -16,7 +16,7 @@ namespace pawsome_server.Controllers.PetTracker
     public class NutrientTrackerController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-private readonly IBackgroundJobClient _backgroundJobs;
+        private readonly IBackgroundJobClient _backgroundJobs;
         public NutrientTrackerController(ApplicationDbContext context, IBackgroundJobClient backgroundJobs)
         {
             _context = context;
@@ -44,12 +44,20 @@ private readonly IBackgroundJobClient _backgroundJobs;
             return nutrientTrackerModel;
         }
 
-     
+
         [HttpPut("ResetData")]
         public async Task<IActionResult> ResetAllNutrientTrackerModel()
         {
             Console.WriteLine("Reset Data Job");
             var nutrientTrackerModels = await _context.NutrientTracker.ToListAsync();
+            var mealTrackerModels = await _context.MealTracker.ToListAsync();
+            foreach (var mealTrackerModel in mealTrackerModels)
+            {
+                Console.WriteLine(mealTrackerModel.FoodConsumed);
+                mealTrackerModel.FoodConsumed = 0;
+                _context.Entry(mealTrackerModel).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
             foreach (var nutrientTrackerModel in nutrientTrackerModels)
             {
                 nutrientTrackerModel.CarbsConsumed = 0;
@@ -82,6 +90,7 @@ private readonly IBackgroundJobClient _backgroundJobs;
                 if (mealTrackerModel != null)
                 {
                     // Update the foodConsumed property based on the updated nutrientTrackerModel
+                    mealTrackerModel.DailyPlan = nutrientTrackerModel.CarbsPlan + nutrientTrackerModel.ProteinPlan + nutrientTrackerModel.FatPlan;
                     mealTrackerModel.FoodConsumed = nutrientTrackerModel.CarbsConsumed + nutrientTrackerModel.ProteinConsumed + nutrientTrackerModel.FatConsumed;
                     _context.Entry(mealTrackerModel).State = EntityState.Modified;
                     await _context.SaveChangesAsync();

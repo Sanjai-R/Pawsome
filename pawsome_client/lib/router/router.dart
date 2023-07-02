@@ -10,6 +10,7 @@ import 'package:pawsome_client/screens/forgot_password/otp_verification.dart';
 import 'package:pawsome_client/screens/forgot_password/reset_password.dart';
 import 'package:pawsome_client/screens/home_screen.dart';
 import 'package:pawsome_client/screens/onboard.dart';
+import 'package:pawsome_client/screens/pet_tracker/tracker/create_meal_plan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final GoRouter router = GoRouter(
@@ -30,8 +31,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/',
-      builder: (BuildContext context, GoRouterState state) =>
-          MyHomePage(),
+      builder: (BuildContext context, GoRouterState state) => MyHomePage(),
     ),
     GoRoute(
       path: '/event',
@@ -41,9 +41,8 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'add',
           builder: (BuildContext context, GoRouterState state) =>
-          const AddEvent(),
+              const AddEvent(),
         ),
-
       ],
     ),
     GoRoute(
@@ -62,6 +61,12 @@ final GoRouter router = GoRouter(
               const ResetPassword(),
         ),
       ],
+    ),
+    GoRoute(
+      path: '/tracker/meal/create',
+      builder: (BuildContext context, GoRouterState state) =>
+          const CreateMealPlan(),
+
     ),
   ],
   redirect: (context, state) async {

@@ -1,5 +1,5 @@
+
 import 'package:date_picker_timeline/date_picker_timeline.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -30,10 +30,10 @@ class _AddEventState extends State<AddEvent> {
     }
   }
 
-  TextEditingController _title = TextEditingController();
-  TextEditingController _description = TextEditingController();
+  final TextEditingController _title = TextEditingController();
+  final TextEditingController _description = TextEditingController();
   late DateTime selectedDate;
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   bool hasReminder = false;
 
@@ -42,7 +42,7 @@ class _AddEventState extends State<AddEvent> {
     final Map<String, dynamic> data =
         Provider.of<EventProvider>(context, listen: false).data;
     final theme = Theme.of(context).colorScheme;
-    void _onSubmit() async {
+    void onSubmit() async {
       if (_formKey.currentState!.validate()) {
         setState(() => _isLoading = true);
         _formKey.currentState!.save();
@@ -101,20 +101,18 @@ class _AddEventState extends State<AddEvent> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    child: DatePicker(
-                      DateTime.now(),
-                      initialSelectedDate: DateTime.now(),
-                      selectionColor: theme.primary,
-                      selectedTextColor: Colors.white,
-                      onDateChange: (date) {
-                        setState(() {
-                          selectedDate = date;
-                        });
-                        print(date);
-                      },
-                      height: 100,
-                    ),
+                  DatePicker(
+                    DateTime.now(),
+                    initialSelectedDate: DateTime.now(),
+                    selectionColor: theme.primary,
+                    selectedTextColor: Colors.white,
+                    onDateChange: (date) {
+                      setState(() {
+                        selectedDate = date;
+                      });
+
+                    },
+                    height: 100,
                   ),
                   const SizedBox(height: defaultPadding * 1.5),
                   Form(
@@ -160,42 +158,40 @@ class _AddEventState extends State<AddEvent> {
                     ],
                   ),
                   const SizedBox(height: defaultPadding * 1.5),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Select Time",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87,
-                          ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Select Time",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
                         ),
-                        IconButton(
-                          icon: Icon(Icons.access_time),
-                          onPressed: () async {
-                            final TimeOfDay? pickedTime = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.fromDateTime(selectedDate),
-                            );
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.access_time),
+                        onPressed: () async {
+                          final TimeOfDay? pickedTime = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.fromDateTime(selectedDate),
+                          );
 
-                            if (pickedTime != null) {
-                              setState(() {
-                                selectedDate = DateTime(
-                                  selectedDate.year,
-                                  selectedDate.month,
-                                  selectedDate.day,
-                                  pickedTime.hour,
-                                  pickedTime.minute,
-                                );
-                                print(selectedDate);
-                              });
-                            }
-                          },
-                        ),
-                      ],
-                    ),
+                          if (pickedTime != null) {
+                            setState(() {
+                              selectedDate = DateTime(
+                                selectedDate.year,
+                                selectedDate.month,
+                                selectedDate.day,
+                                pickedTime.hour,
+                                pickedTime.minute,
+                              );
+                              print(selectedDate);
+                            });
+                          }
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -219,7 +215,7 @@ class _AddEventState extends State<AddEvent> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: _onSubmit,
+                  onPressed: onSubmit,
                   child: _isLoading
                       ? const CircularProgressIndicator(
                           color: Colors.white,

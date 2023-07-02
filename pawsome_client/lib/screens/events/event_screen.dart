@@ -26,19 +26,22 @@ class _EventScreenState extends State<EventScreen> {
     "Training",
     "Custom Event"
   ];
-  late DateTime selectedDate;
 
   @override
   Widget build(BuildContext context) {
+    DateTime selectedDate =
+        Provider.of<EventProvider>(context, listen: false).selectedDate;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "Events",
-          style: Theme.of(context).textTheme
-            .headlineSmall!
-            .copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(context)
+              .textTheme
+              .headlineSmall!
+              .copyWith(fontWeight: FontWeight.bold),
         ),
-centerTitle: true,
+        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {
@@ -63,9 +66,9 @@ centerTitle: true,
                 selectedTextColor: Colors.white,
                 onDateChange: (date) {
                   setState(() {
-                    selectedDate = date;
+                    Provider.of<EventProvider>(context, listen: false)
+                        .setDate(date);
                   });
-
                 },
                 height: 100,
               ),

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pawsome_client/provider/app_provider.dart';
 import 'package:pawsome_client/provider/auth_provider.dart';
 import 'package:pawsome_client/provider/event_provider.dart';
+import 'package:pawsome_client/provider/tracker_provider.dart';
 import 'package:pawsome_client/router/router.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,9 @@ void main() async {
       ),
       ChangeNotifierProvider(
         create: (_) => EventProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => TrackerProvider(),
       ),
       ChangeNotifierProvider(create: (_) => AppProvider()),
     ],
