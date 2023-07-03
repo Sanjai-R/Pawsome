@@ -26,6 +26,7 @@ class _PetHomePageState extends State<PetHomePage> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Provider.of<AuthProvider>(context, listen: false).getAuthData();
     });
+
     super.initState();
   }
 

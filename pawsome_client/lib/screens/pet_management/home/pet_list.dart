@@ -12,6 +12,14 @@ class PetList extends StatefulWidget {
 
 class _PetListState extends State<PetList> {
   @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<PetProvider>(context, listen: false).fetchAllPets();
+    });
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return Container(
 
@@ -57,7 +65,7 @@ class _PetListState extends State<PetList> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      i['name'],
+                                      i.name.toString(),
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleMedium!
