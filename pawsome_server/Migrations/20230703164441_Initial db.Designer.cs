@@ -12,8 +12,8 @@ using pawsome_server.Data;
 namespace pawsome_server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230701071708_Added petId field in MealTracker")]
-    partial class AddedpetIdfieldinMealTracker
+    [Migration("20230703164441_Initial db")]
+    partial class Initialdb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,11 +92,11 @@ namespace pawsome_server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
-                    b.Property<string>("CategoryDescription")
+                    b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CategoryName")
+                    b.Property<string>("img")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

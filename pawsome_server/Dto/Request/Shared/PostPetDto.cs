@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace pawsome_server.Dto.Request.Shared
 {
-    public class PetDto
+    public class PostPetDto
     {
         [Required]
         public string Name { get; set; }
@@ -23,7 +23,7 @@ namespace pawsome_server.Dto.Request.Shared
         public string Image { get; set; }
 
         [Required]
-        public int OwnerId { get; set; }
+        public int UserId { get; set; }
         [Required]
         public int CategoryId { get; set; }
     }

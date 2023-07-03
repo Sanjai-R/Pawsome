@@ -10,6 +10,6 @@ namespace pawsome_server.Models
         [Required]
         public string CategoryName { get; set; }
         [Required]
-        public string CategoryDescription { get; set; }
+        public string img { get; set; }
     }
 }

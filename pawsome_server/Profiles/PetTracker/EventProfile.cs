@@ -10,7 +10,6 @@ namespace pawsome_server.Profiles.PetTracker
     {
         public EventProfile() {
             CreateMap<AddEventDto, EventModal>();
-            
         }
     }
 }
