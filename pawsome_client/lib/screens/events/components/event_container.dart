@@ -54,9 +54,13 @@ class _EventListState extends State<EventList> {
             ),
             const SizedBox(height: 8),
             Consumer<EventProvider>(builder: (context, eventProvider, child) {
-              final events = eventProvider.events.where((element) =>
-                  DateTime.parse(element.eventDateTime.toString()).toLocal().day ==
-                  eventProvider.selectedDate.day).toList();
+              final events = eventProvider.events
+                  .where((element) =>
+                      DateTime.parse(element.eventDateTime.toString())
+                          .toLocal()
+                          .day ==
+                      eventProvider.selectedDate.day)
+                  .toList();
               if (eventProvider.isLoading) {
                 return Center(
                   child: Text('loading'), // Loading indicator
