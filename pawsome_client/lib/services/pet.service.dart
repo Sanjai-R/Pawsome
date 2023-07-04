@@ -13,11 +13,22 @@ class PetService {
     }
     return null;
   }
+  static Future<dynamic> getPetById(id) async {
+    try {
+      final res = await Dio().get('${AppUrl.baseUrl}/Pet/$id');
 
+      if (res != null && (res.statusCode == 200 || res.statusCode == 201)) {
+        return res.data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
   static Future<dynamic> getCategories() async {
     try {
       final res = await Dio().get('${AppUrl.baseUrl}/PetCategory');
-      print(res);
+
       if (res != null && (res.statusCode == 200 || res.statusCode == 201)) {
         return res.data;
       }

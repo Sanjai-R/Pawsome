@@ -42,6 +42,11 @@ class _EventScreenState extends State<EventScreen> {
               .copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        leading: BackButton(
+          onPressed: () {
+            context.go('/');
+          },
+        ),
         actions: [
           IconButton(
             onPressed: () {

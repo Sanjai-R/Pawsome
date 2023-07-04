@@ -61,8 +61,8 @@ class _AddEventState extends State<AddEvent> {
 
         if (res['status']) {
           setState(() => _isLoading = false);
-          Provider.of<AppProvider>(context, listen: false).changeIndex(2);
-          context.go('/');
+
+          context.go('/event');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -87,7 +87,7 @@ class _AddEventState extends State<AddEvent> {
         leading: IconButton(
           onPressed: () {
             Provider.of<AppProvider>(context, listen: false).changeIndex(2);
-            context.go('/');
+            context.go('/event');
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),

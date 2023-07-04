@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
 import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:provider/provider.dart';
@@ -31,76 +34,80 @@ class _PetListState extends State<PetList> {
               scrollDirection: Axis.horizontal,
               children: [
                 for (var i in pets)
-                  Container(
-
-                    margin: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14.0),
-                      boxShadow: boxShadow,
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(14.0),
-                            child: Image.network(
-                              'https://img.freepik.com/free-photo/golden-retriever-puppy-running-outdoors-playing-joyfully-generated-by-ai_188544-43257.jpg?t=st=1688379065~exp=1688379665~hmac=4336fa059505b435de73b44c58e1ae30804105b66b37ed471f9862f2fe598913&w=996',
-                              height: 200,
-                              width: 200,
-                              fit: BoxFit.cover,
+                  GestureDetector(
+                    onTap: () {
+                      context.go('/pet/details?dynamicData=${i.petId}');
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14.0),
+                        boxShadow: boxShadow,
+                        color: Colors.white,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(14.0),
+                              child: Image.network(
+                                'https://img.freepik.com/free-photo/golden-retriever-puppy-running-outdoors-playing-joyfully-generated-by-ai_188544-43257.jpg?t=st=1688379065~exp=1688379665~hmac=4336fa059505b435de73b44c58e1ae30804105b66b37ed471f9862f2fe598913&w=996',
+                                height: 200,
+                                width: 200,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 200,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      i.name.toString(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium!
-                                          .copyWith(fontWeight: FontWeight.bold),
-                                    ),
+                          SizedBox(
+                            width: 200,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        i.name.toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium!
+                                            .copyWith(fontWeight: FontWeight.bold),
+                                      ),
 
-                                    Text(
-                                      '12 KM away',
-                                      style:Theme.of(context)
-                                          .textTheme
-                                          .titleMedium!
-                                          .copyWith(fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).colorScheme.secondary),
-                                    ),
-                                  ],
+                                      Text(
+                                        '12 KM away',
+                                        style:Theme.of(context)
+                                            .textTheme
+                                            .titleMedium!
+                                            .copyWith(fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).colorScheme.secondary),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              // const Spacer(),
-                              Container(
-                                height: 40,
-                                width: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(14.0),
-                                  boxShadow: boxShadow,
-                                  color: Colors.white,
+                                // const Spacer(),
+                                Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(14.0),
+                                    boxShadow: boxShadow,
+                                    color: Colors.white,
+                                  ),
+                                  child: const Icon(
+                                    Icons.favorite_border,
+                                    size: 30,
+                                  ),
                                 ),
-                                child: const Icon(
-                                  Icons.favorite_border,
-                                  size: 30,
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   )
               ],

@@ -65,4 +65,26 @@ class PetProvider extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
   }
+
+  Future<Map<String,dynamic>?> fetchPetById(id) async {
+    _isLoading = true;
+
+
+    final res = await PetService.getPetById(id);
+    print(res);
+    notifyListeners();
+    if (res != null) {
+
+      _hasError = false;
+      _errorMessage = '';
+      _isLoading = false;
+      return res;
+    } else {
+      _hasError = true;
+      _errorMessage = 'Failed to get Pet';
+    }
+
+     _isLoading = false;
+
+  }
 }

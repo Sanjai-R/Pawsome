@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/meal_tracker.dart';
 
 class Tracker extends StatefulWidget {
@@ -28,13 +29,19 @@ class _TrackerState extends State<Tracker>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tracker App'),
+       leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.go('/');
+          },
+        ),
         bottom: TabBar(
           controller: _tabController,
           tabs: [
             Tab(text: 'Walking Tracker'),
             Tab(text: 'Meal Tracker'),
           ],
+
         ),
       ),
       body: TabBarView(

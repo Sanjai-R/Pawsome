@@ -44,8 +44,7 @@ class _CreateMealPlanState extends State<CreateMealPlan> {
 
       if (res['status']) {
         setState(() => _isLoading = false);
-        Provider.of<AppProvider>(context, listen: false).changeIndex(2);
-        context.go('/');
+        context.go('/tracker');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -73,7 +72,7 @@ class _CreateMealPlanState extends State<CreateMealPlan> {
         leading: IconButton(
           onPressed: () {
             Provider.of<AppProvider>(context, listen: false).changeIndex(1);
-            context.go('/');
+            context.go('/tracker');
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),

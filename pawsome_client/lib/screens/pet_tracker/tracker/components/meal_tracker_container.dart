@@ -62,18 +62,15 @@ class _MealTrackerContainerState extends State<MealTrackerContainer> {
                     child: Text('loading'), // Loading indicator
                   );
                 }
-                if(meal == null) {
+                if (meal == null) {
                   return Center(
-
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      // mainAxisSize: MainAxisSize.min,
                       children: [
                         Text('You have not created a meal plan yet'),
                         SizedBox(height: 16.0),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),
@@ -84,10 +81,10 @@ class _MealTrackerContainerState extends State<MealTrackerContainer> {
                           child: const Text('Create Meal Plan'),
                         ),
                       ],
-                    ), // Loading indicator
+                    ),
                   );
-                }
-                else{
+                } else {
+
                   return Column(
                     children: [
                       Row(
@@ -195,11 +192,9 @@ class _MealTrackerContainerState extends State<MealTrackerContainer> {
                     ],
                   );
                 }
-
-
-
               },
             )
+
           ],
         ));
   }

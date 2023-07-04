@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:pawsome_client/provider/app_provider.dart';
 import 'package:pawsome_client/screens/pet_management/home/home_screen.dart';
+import 'package:pawsome_client/screens/pet_tracker/tracker/dashboard.dart';
 import 'package:provider/provider.dart';
 import '../home_screen.dart';
-
 
 class Layout extends StatefulWidget {
   const Layout({super.key});
@@ -19,7 +19,7 @@ class _LayoutState extends State<Layout> {
     const PetHomePage(),
     EventTab(),
     EventTab(),
-    EventTab(),
+    Dashboard(),
     EventTab()
   ];
 
@@ -27,6 +27,7 @@ class _LayoutState extends State<Layout> {
   Widget build(BuildContext context) {
     int currentIndex = Provider.of<AppProvider>(context).currentIndex;
     return Scaffold(
+
       backgroundColor: const Color(0xffF9FAFB),
       body: _tabs[currentIndex],
       bottomNavigationBar: NavigationBar(
@@ -35,7 +36,7 @@ class _LayoutState extends State<Layout> {
           borderRadius: BorderRadius.circular(0),
         ),
         elevation: 2,
-labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         selectedIndex: currentIndex,
         indicatorColor: Colors.transparent,
         onDestinationSelected: (index) {
@@ -45,36 +46,42 @@ labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         animationDuration: const Duration(seconds: 1),
         destinations: [
           NavigationDestination(
-            icon: Icon(
-              IconlyLight.home,
-        color: Theme.of(context).colorScheme.primary
+            icon: Icon(IconlyLight.home,
+                color: Theme.of(context).colorScheme.primary),
+            selectedIcon: Icon(
+              IconlyBold.home,
+              color: Theme.of(context).colorScheme.primary,
             ),
-            selectedIcon: Icon(IconlyBold.home,
-              color: Theme.of(context).colorScheme.primary,),
             label: 'Home',
           ),
           NavigationDestination(
-            icon: Icon(CupertinoIcons.heart, color: Theme.of(context).colorScheme.primary),
-            selectedIcon: Icon(CupertinoIcons.heart_fill, color: Theme.of(context).colorScheme.primary),
+            icon: Icon(CupertinoIcons.heart,
+                color: Theme.of(context).colorScheme.primary),
+            selectedIcon: Icon(CupertinoIcons.heart_fill,
+                color: Theme.of(context).colorScheme.primary),
             label: 'Favorites',
           ),
           NavigationDestination(
-
-            icon: Icon(IconlyBold.plus,
+            icon: Icon(
+              IconlyBold.plus,
               size: 40,
-            color: Theme.of(context).colorScheme.primary,),
+              color: Theme.of(context).colorScheme.primary,
+            ),
             label: 'Add',
           ),
-
           NavigationDestination(
-            icon: Icon(IconlyLight.user, color: Theme.of(context).colorScheme.primary),
-            selectedIcon: Icon(IconlyBold.user_2, color: Theme.of(context).colorScheme.primary),
+            icon: Icon(IconlyLight.chart,
+                color: Theme.of(context).colorScheme.primary),
+            selectedIcon: Icon(IconlyBold.chart,
+                color: Theme.of(context).colorScheme.primary),
             label: 'Account',
           ),
-           NavigationDestination(
-            icon: Icon(CupertinoIcons.bell, color: Theme.of(context).colorScheme.primary),
-            selectedIcon: Icon(CupertinoIcons.bell_fill, color: Theme.of(context).colorScheme.primary),
-            label: 'Notification',
+          NavigationDestination(
+            icon: Icon(CupertinoIcons.bag,
+                color: Theme.of(context).colorScheme.primary),
+            selectedIcon: Icon(CupertinoIcons.bag_fill,
+                color: Theme.of(context).colorScheme.primary),
+            label: 'Cart',
           ),
         ],
       ),

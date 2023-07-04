@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.poppins().fontFamily,
       ),
       routerConfig: router,
+      
     );
   }
 }
