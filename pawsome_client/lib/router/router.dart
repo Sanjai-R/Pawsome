@@ -14,7 +14,7 @@ import 'package:pawsome_client/screens/forgot_password/reset_password.dart';
 import 'package:pawsome_client/screens/home_screen.dart';
 import 'package:pawsome_client/screens/onboard.dart';
 import 'package:pawsome_client/screens/pet_management/Layout.dart';
-import 'package:pawsome_client/screens/pet_management/home/pet_details.dart';
+import 'package:pawsome_client/screens/pet_management/pet/pet_details.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/create_meal_plan.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/dashboard.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/tracker.dart';
