@@ -1,19 +1,19 @@
 import 'package:form_field_validator/form_field_validator.dart';
 
 String? Function(String?)? getValidator(type,label) {
-  switch (type) {
-    case 'email':
+  switch (label) {
+    case 'Email':
       return MultiValidator([
         RequiredValidator(errorText: 'Email is required'),
         EmailValidator(errorText: 'Enter a valid email address'),
       ]);
-    case 'password':
+    case 'Password':
       return MultiValidator([
         RequiredValidator(errorText: 'Password is required'),
         MinLengthValidator(3,
             errorText: 'Password must be at least 6 digits long'),
       ]);
-    case 'number':
+    case 'Mobile':
       return MultiValidator([
         RequiredValidator(errorText: 'Mobile number is required'),
         MinLengthValidator(10,

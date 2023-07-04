@@ -7,7 +7,7 @@ namespace pawsome_server.Profiles
     public class PetProfile : Profile
     {
         public PetProfile() {
-            CreateMap<PetDto, Pet>();
+            CreateMap<PostPetDto, Pet>();
         }
     }
 }

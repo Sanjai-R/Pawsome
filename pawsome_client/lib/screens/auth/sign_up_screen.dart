@@ -33,10 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
       _formKey.currentState!.save();
-      final res = await Provider.of<AuthProvider>(context, listen: false).login(
-        email: _email.text,
-        password: _password.text,
-      );
+      final res = await Provider.of<AuthProvider>(context, listen: false).signUp(userName: _username.text, email: _email.text, password: _password.text, phoneNumber: _mobile.text);
 
       if (!context.mounted) return;
       if (res['status']) {

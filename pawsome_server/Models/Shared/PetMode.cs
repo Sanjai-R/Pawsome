@@ -10,7 +10,6 @@ namespace pawsome_server.Models.Shared
         public int PetId { get; set; }
         [Required]
         public string Name { get; set; }
-
         [Required]
         public string Gender { get; set; }
         [Required]
@@ -25,12 +24,10 @@ namespace pawsome_server.Models.Shared
         [Required]
         public string Image { get; set; }
 
-        [ForeignKey("Users")]
-        [Required]
-        public int OwnerId { get; set; }
+        [ForeignKey("UserModel")]
+        public int UserId { get; set; }
 
         [ForeignKey("PetCategoryModel")]
-        [Required]
         public int CategoryId { get; set; }
         public PetCategory Category { get; set; }
         public UserModel User { get; set; }

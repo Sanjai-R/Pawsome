@@ -1,7 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pawsome_client/core/constant/event_colot_palatte.dart';
+import 'package:pawsome_client/provider/event_provider.dart';
+import 'package:provider/provider.dart';
 
 class EventCategoryList extends StatelessWidget {
   final List<String> categories;
@@ -27,26 +30,33 @@ class EventCategoryList extends StatelessWidget {
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, childAspectRatio: 1 / 0.3),
             itemBuilder: (context, index) {
-              return Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  color: EventPallate[categories[index]],
-                ),
-                margin: EdgeInsets.all(8),
-                padding: EdgeInsets.all(8.0),
-                height: 15,
-                child: Row(
-                  children: [
-                    Icon(Icons.add_circle_outline_rounded),
-                    SizedBox(width: 8.0),
-                    Text(
-                      categories[index],
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87,),
-                    ),
-                  ],
+              return GestureDetector(
+                onTap: () {
+                  Provider.of<EventProvider>(context, listen: false)
+                      .data['eventTitle'] = categories[index];
+                  context.go('/event/add');
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: EventPallate[categories[index]],
+                  ),
+                  margin: EdgeInsets.all(8),
+                  padding: EdgeInsets.all(8.0),
+                  height: 15,
+                  child: Row(
+                    children: [
+                      Icon(Icons.add_circle_outline_rounded),
+                      SizedBox(width: 8.0),
+                      Text(
+                        categories[index],
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },

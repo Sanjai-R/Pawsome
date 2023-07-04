@@ -7,6 +7,14 @@ const backgroundColor = Color(0xFFE6EFF9);
 const redColor = Color(0xFFE85050);
 final secondary = Colors.grey[200];
 const defaultPadding = 16.0;
+final boxShadow = [
+  BoxShadow(
+    color: Colors.grey.withOpacity(0.5),
+    spreadRadius: 0.5,
+    blurRadius: 0.5,
+    offset: const Offset(0, 0.5), // changes position of shadow
+  ),
+];
 
 OutlineInputBorder textFieldBorder = OutlineInputBorder(
   borderSide: BorderSide(

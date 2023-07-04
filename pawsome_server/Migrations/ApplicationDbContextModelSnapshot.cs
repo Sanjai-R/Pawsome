@@ -71,6 +71,9 @@ namespace pawsome_server.Migrations
                     b.Property<int>("NutrientTrackerId")
                         .HasColumnType("int");
 
+                    b.Property<int>("PetId")
+                        .HasColumnType("int");
+
                     b.HasKey("MealTrackerId");
 
                     b.HasIndex("NutrientTrackerId");
@@ -78,7 +81,28 @@ namespace pawsome_server.Migrations
                     b.ToTable("MealTracker");
                 });
 
-            modelBuilder.Entity("pawsome_server.Models.NutrientTrackerModel", b =>
+            modelBuilder.Entity("pawsome_server.Models.PetCategory", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("img")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("PetCategory");
+                });
+
+            modelBuilder.Entity("pawsome_server.Models.PetTracker.NutrientTrackerModel", b =>
                 {
                     b.Property<int>("NutrientTrackerId")
                         .ValueGeneratedOnAdd()
@@ -109,7 +133,7 @@ namespace pawsome_server.Migrations
                     b.ToTable("NutrientTracker");
                 });
 
-            modelBuilder.Entity("pawsome_server.Models.Pet", b =>
+            modelBuilder.Entity("pawsome_server.Models.Shared.Pet", b =>
                 {
                     b.Property<int>("PetId")
                         .ValueGeneratedOnAdd()
@@ -143,13 +167,10 @@ namespace pawsome_server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OwnerId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("PetId");
@@ -159,27 +180,6 @@ namespace pawsome_server.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Pets");
-                });
-
-            modelBuilder.Entity("pawsome_server.Models.PetCategory", b =>
-                {
-                    b.Property<int>("CategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
-
-                    b.Property<string>("CategoryDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CategoryId");
-
-                    b.ToTable("PetCategory");
                 });
 
             modelBuilder.Entity("pawsome_server.Models.UserModel", b =>
@@ -229,6 +229,9 @@ namespace pawsome_server.Migrations
                     b.Property<int>("MinutesCovered")
                         .HasColumnType("int");
 
+                    b.Property<int>("PetId")
+                        .HasColumnType("int");
+
                     b.Property<int>("WalkingGoalMinutes")
                         .HasColumnType("int");
 
@@ -239,7 +242,7 @@ namespace pawsome_server.Migrations
 
             modelBuilder.Entity("pawsome_server.Models.EventModal", b =>
                 {
-                    b.HasOne("pawsome_server.Models.Pet", "Pet")
+                    b.HasOne("pawsome_server.Models.Shared.Pet", "Pet")
                         .WithMany()
                         .HasForeignKey("PetId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -250,7 +253,7 @@ namespace pawsome_server.Migrations
 
             modelBuilder.Entity("pawsome_server.Models.MealTrackerModel", b =>
                 {
-                    b.HasOne("pawsome_server.Models.NutrientTrackerModel", "NutrientTracker")
+                    b.HasOne("pawsome_server.Models.PetTracker.NutrientTrackerModel", "NutrientTracker")
                         .WithMany()
                         .HasForeignKey("NutrientTrackerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -259,7 +262,7 @@ namespace pawsome_server.Migrations
                     b.Navigation("NutrientTracker");
                 });
 
-            modelBuilder.Entity("pawsome_server.Models.Pet", b =>
+            modelBuilder.Entity("pawsome_server.Models.Shared.Pet", b =>
                 {
                     b.HasOne("pawsome_server.Models.PetCategory", "Category")
                         .WithMany()
@@ -269,7 +272,9 @@ namespace pawsome_server.Migrations
 
                     b.HasOne("pawsome_server.Models.UserModel", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 
