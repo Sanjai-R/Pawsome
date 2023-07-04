@@ -20,5 +20,6 @@ namespace pawsome_server.Data
         
         public DbSet<WalkingTrackerModel> WalkingTracker { get; set; }
 
+
     }
 }
