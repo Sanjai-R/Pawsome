@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pawsome_client/core/constant/event_colot_palatte.dart';
 import 'package:pawsome_client/provider/event_provider.dart';
+import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:provider/provider.dart';
 
 class Event {
@@ -18,12 +19,17 @@ class EventList extends StatefulWidget {
 }
 
 class _EventListState extends State<EventList> {
+  late final num petId;
   @override
   void initState() {
     // TODO: implement initState
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<EventProvider>(context, listen: false).fetchAllEvents();
+      petId =
+      Provider.of<PetProvider>(context, listen: false).selectedPet['petId'];
+      Provider.of<EventProvider>(context, listen: false).fetchAllEvents(petId);
     });
+
     super.initState();
   }
 
@@ -48,12 +54,13 @@ class _EventListState extends State<EventList> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Events",
+            Text(
+              "Events ",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Consumer<EventProvider>(builder: (context, eventProvider, child) {
+              print(eventProvider.events);
               final events = eventProvider.events
                   .where((element) =>
                       DateTime.parse(element.eventDateTime.toString())
@@ -72,7 +79,7 @@ class _EventListState extends State<EventList> {
                       alignment: Alignment.center,
                       child: Text(
                         "No events available",
-                        style: TextStyle(fontSize: 16),
+
                       ),
                     )
                   : SizedBox(

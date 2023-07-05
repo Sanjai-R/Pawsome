@@ -26,10 +26,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
   int _currentIndex = Provider.of<AppProvider>(context).currentIndex;
     return Scaffold(
-backgroundColor: Color(0xffF9FAFB),
+
       body: _tabs[_currentIndex],
       bottomNavigationBar: NavigationBar(
-        // backgroundColor: Colors.white,
+        backgroundColor: Color(0xffEDF2F7),
         indicatorShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0),
         ),

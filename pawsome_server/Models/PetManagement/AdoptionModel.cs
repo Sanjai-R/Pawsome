@@ -22,7 +22,7 @@ namespace pawsome_server.Models.PetManagement
         public DateTime Date { get; set; }
 
         public virtual Pet Pet { get; set; }
-        public virtual UserModel User { get; set; }
+        public virtual UserModel Buyer{ get; set; }
 
     }
 }

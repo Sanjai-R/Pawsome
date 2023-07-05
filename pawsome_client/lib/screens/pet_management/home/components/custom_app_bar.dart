@@ -93,6 +93,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
               CircleAvatar(
                 radius: 20.0,
                 backgroundImage: NetworkImage(
+
                     'https://img.freepik.com/premium-photo/digital-painting-boy-with-freckles-red-hoodie_921202-1.jpg?size=626&ext=jpg&ga=GA1.2.873758883.1686891337&semt=sph'),
               ),
             ],

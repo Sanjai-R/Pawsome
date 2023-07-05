@@ -1,67 +1,56 @@
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using pawsome_server.Data;
-using pawsome_server.Models;
-using pawsome_server.Models.PetTracker;
-using pawsome_server.Models.PetManagement;
-using AutoMapper;
 using pawsome_server.Dto.Request.PetTracker;
+using pawsome_server.Models.PetManagement;
 
 namespace pawsome_server.Controllers.PetManagement
 {
     [Route("api/[controller]")]
     [ApiController]
-    class AdoptionController:ControllerBase
+    public class AdoptionController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+
         private readonly IMapper _mapper;
         public AdoptionController(ApplicationDbContext context, IMapper mapper) {
             _mapper = mapper;
             _context = context;
         }
 
+        // GET: api/Adoption
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AdoptionModel>>> GetEvents()
+        public async Task<ActionResult<IEnumerable<AdoptionModel>>> GetAdoption()
         {
-            return await _context.Adoption.ToListAsync();
+            return await _context.Adoption.Include(c=>c.Buyer).
+                Include(c=>c.Pet).ThenInclude(c=>c.User).ToListAsync();
         }
 
+        // GET: api/Adoption/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<AdoptionModel>> GetEventModal(int id)
+        public async Task<ActionResult<AdoptionModel>> GetAdoptionModel(int id)
         {
-            var eventModal = await _context.Adoption.FindAsync(id);
+            var adoptionModel = await _context.Adoption.FindAsync(id);
 
-            if (eventModal == null)
+            if (adoptionModel == null)
             {
                 return NotFound();
             }
 
-            return eventModal;
-        }
-        // POST: api/Event
-        [HttpPost]
-        public async Task<ActionResult<AdoptionModel>> PostEventModal(AdoptDto req)
-        {
-            AdoptionModel adoptionModel = _mapper.Map<AdoptionModel>(req);
-            try
-            {
-                _context.Adoption.Add(adoptionModel);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return BadRequest(ex.Message);
-            }
-            return Ok(adoptionModel);
+            return adoptionModel;
         }
 
+        // PUT: api/Adoption/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-
-        public async Task<IActionResult> UpdateAdoptModal(int id, AdoptionModel req)
+        public async Task<IActionResult> PutAdoptionModel(int id, AdoptionModel adoptionModel)
         {
-            AdoptionModel adoptionModel = _mapper.Map<AdoptionModel>(req);
             if (id != adoptionModel.Id)
             {
                 return BadRequest();
@@ -85,12 +74,43 @@ namespace pawsome_server.Controllers.PetManagement
                 }
             }
 
+            return NoContent();
+        }
+
+        // POST: api/Adoption
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<AdoptionModel>> PostAdoptModal(AdoptDto req) {
+            AdoptionModel adoptionModel = _mapper.Map<AdoptionModel>(req);
+            try {
+                _context.Adoption.Add(adoptionModel);
+                await _context.SaveChangesAsync();
+            } catch(Exception ex) {
+                Console.WriteLine(ex);
+                return BadRequest(ex.Message);
+            }
             return Ok(adoptionModel);
+        }
+
+        // DELETE: api/Adoption/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAdoptionModel(int id)
+        {
+            var adoptionModel = await _context.Adoption.FindAsync(id);
+            if (adoptionModel == null)
+            {
+                return NotFound();
+            }
+
+            _context.Adoption.Remove(adoptionModel);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
         private bool AdoptionModelExists(int id)
         {
             return _context.Adoption.Any(e => e.Id == id);
         }
-    } 
+    }
 }

@@ -37,4 +37,42 @@ class PetService {
     }
     return null;
   }
+
+  static Future<dynamic> postAdopt(data) async {
+    try {
+      final res = await Dio().post('${AppUrl.baseUrl}/Adoption', data: data);
+      if (res != null && (res.statusCode == 200 || res.statusCode == 201)) {
+        return res.data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  static Future<dynamic> getAdoptedData() async {
+    try {
+      final res = await Dio().get('${AppUrl.baseUrl}/Adoption');
+      print(res);
+      if (res != null && (res.statusCode == 200 || res.statusCode == 201)) {
+        return res.data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  static Future<dynamic> updateAdoptStatus(id, data) async {
+    try {
+      final res = await Dio().put('${AppUrl.baseUrl}/Adoption/$id', data: data);
+      print(res);
+      if (res != null && (res.statusCode == 204 || res.statusCode == 201)) {
+        return true;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
 }

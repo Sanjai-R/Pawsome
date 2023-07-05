@@ -23,7 +23,8 @@ namespace pawsome_server
               .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
               .UseSimpleAssemblyNameTypeSerializer()
               .UseRecommendedSerializerSettings()
-              .UseSqlServerStorage(builder.Configuration.GetConnectionString("Db"), new SqlServerStorageOptions {
+              .UseSqlServerStorage(builder.Configuration.GetConnectionString("Db"), new SqlServerStorageOptions
+              {
                   CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                   SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
                   QueuePollInterval = TimeSpan.Zero,
@@ -47,7 +48,8 @@ namespace pawsome_server
                 app.UseSwaggerUI();
             }
             //        app.UseHttpsRedirection();
-            using(var scope = app.Services.CreateScope()) {
+            using (var scope = app.Services.CreateScope())
+            {
                 var serviceProvider = scope.ServiceProvider;
                 var recurringJobManager = serviceProvider.GetRequiredService<IRecurringJobManager>();
 
@@ -64,7 +66,7 @@ namespace pawsome_server
             app.Run();
 
         }
-       
+
 
     }
 }

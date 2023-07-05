@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
+import 'package:pawsome_client/model/adopt_model.dart';
+import 'package:pawsome_client/provider/auth_provider.dart';
 
 import 'package:pawsome_client/provider/pet_provier.dart';
 
 import 'package:provider/provider.dart';
 
 class PetDetails extends StatefulWidget {
-
   final String petId;
 
   const PetDetails({super.key, required this.petId});
@@ -18,6 +20,7 @@ class PetDetails extends StatefulWidget {
 
 class _PetDetailsState extends State<PetDetails> {
   Map<String, dynamic>? pet;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -27,6 +30,42 @@ class _PetDetailsState extends State<PetDetails> {
       setState(() {
         pet = result;
       });
+    });
+    petProvider.fetchAdoptData();
+  }
+
+  void onSubmit() {
+    _isLoading = true;
+    final petProvider = Provider.of<PetProvider>(context, listen: false);
+    final authData = Provider.of<AuthProvider>(context, listen: false).user;
+    final data = {
+      'petId': widget.petId,
+      'buyerId': authData['userId'],
+      'status': 'pending',
+      'date': DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+          .format(DateTime.now().toUtc())
+    };
+
+    petProvider.adoptPet(data).then((result) {
+      setState(() {
+        _isLoading = false;
+      });
+      if (result['status']) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result['message']),
+            backgroundColor: Colors.green,
+          ),
+        );
+        context.go('/');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result['message']),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     });
   }
 
@@ -45,6 +84,9 @@ class _PetDetailsState extends State<PetDetails> {
       ),
       body: Consumer<PetProvider>(
         builder: (context, petProvider, child) {
+          dynamic adopt = petProvider.adopts;
+          bool isRequested =
+              adopt.any((element) => element.petId == int.parse(widget.petId));
           if (petProvider.isLoading) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -55,7 +97,10 @@ class _PetDetailsState extends State<PetDetails> {
           return Column(
             children: [
               Container(
-                padding: const EdgeInsets.only(bottom: defaultPadding,left: defaultPadding,right: defaultPadding),
+                padding: const EdgeInsets.only(
+                    bottom: defaultPadding,
+                    left: defaultPadding,
+                    right: defaultPadding),
                 height: 300,
                 width: double.infinity,
                 child: ClipRRect(
@@ -147,20 +192,29 @@ class _PetDetailsState extends State<PetDetails> {
                                 child: FilledButton(
                                   style: FilledButton.styleFrom(
                                     padding: const EdgeInsets.all(15),
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.primary,
+                                    backgroundColor: isRequested
+                                        ? Colors.redAccent
+                                        : Theme.of(context).primaryColor,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),
-
                                   ),
-                                  onPressed: () {},
-                                  child: const Text("Adopt",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      )),
+                                  onPressed: isRequested
+                                      ? () {}
+                                      : () {
+                                          onSubmit();
+                                        },
+                                  child: _isLoading
+                                      ? const CircularProgressIndicator(
+                                          color: Colors.white,
+                                        )
+                                      : Text(
+                                          isRequested ? "Requested" : "Adopt",
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          )),
                                 ))
                           ],
                         ),

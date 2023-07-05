@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/meal_tracker.dart';
+import 'package:provider/provider.dart';
 
 class Tracker extends StatefulWidget {
   @override
@@ -28,7 +30,9 @@ class _TrackerState extends State<Tracker>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffF7FAFC),
       appBar: AppBar(
+        backgroundColor: Color(0xffF7FAFC),
        leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -44,12 +48,19 @@ class _TrackerState extends State<Tracker>
 
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          buildWalkingTrackerTab(),
-          MealTracker(),
-        ],
+      body: Consumer<PetProvider>(
+        builder:(context,petProvider,child){
+          final pet = petProvider.selectedPet;
+          return TabBarView(
+            controller: _tabController,
+            children: [
+              buildWalkingTrackerTab(),
+              MealTracker(),
+            ],
+          );
+
+
+        }
       ),
     );
   }

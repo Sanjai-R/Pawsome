@@ -12,7 +12,7 @@ class TrackerProvider extends ChangeNotifier {
     "dailyPlan": 0,
     "foodConsumed": 0,
     "nutrientTrackerId": 0,
-    "petId": 5,
+    "petId": 0,
     "nutrientTracker": {
       "nutrientTrackerId": 0,
       "proteinPlan": 0,
@@ -41,14 +41,13 @@ class TrackerProvider extends ChangeNotifier {
     }
   }
 
-  Future<dynamic> getMealTrack() async {
+  Future<dynamic> getMealTrack(petId) async {
     _isLoading = true;
     notifyListeners();
-    final res = await TrackerService.getMealTrackingData();
+    final res = await TrackerService.getMealTrackingData(petId);
     print(res);
-    if (res != null) {
-
-      _mealTracker = MealTrackerModel.fromJson(res);
+    if (res.isNotEmpty) {
+      _mealTracker = MealTrackerModel.fromJson(res[0]);
       _hasError = false;
       _errorMessage = '';
     } else {

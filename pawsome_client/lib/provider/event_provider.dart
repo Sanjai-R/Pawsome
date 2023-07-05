@@ -10,10 +10,10 @@ class EventProvider extends ChangeNotifier {
   String _errorMessage = '';
   List<Event> _events = [];
   Map<String, dynamic> data = {
-    "petId": 4,
+    "petId": "",
     "eventDateTime": "",
     "eventTitle": "",
-    "eventDesc": "Lorem",
+    "eventDesc": "",
     "hasReminder": false
   };
 
@@ -40,11 +40,11 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchAllEvents() async {
+  Future<void> fetchAllEvents(petId) async {
     _isLoading = true;
     notifyListeners();
 
-    final res = await EventService.getEvents();
+    final res = await EventService.getEventData(petId);
 
     if (res != null) {
       res.map((e) => print(e));

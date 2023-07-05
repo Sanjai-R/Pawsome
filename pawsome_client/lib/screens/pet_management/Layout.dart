@@ -28,10 +28,9 @@ class _LayoutState extends State<Layout> {
     int currentIndex = Provider.of<AppProvider>(context).currentIndex;
     return Scaffold(
 
-      backgroundColor: const Color(0xffF9FAFB),
       body: _tabs[currentIndex],
       bottomNavigationBar: NavigationBar(
-        // backgroundColor: Colors.white,
+
         indicatorShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0),
         ),

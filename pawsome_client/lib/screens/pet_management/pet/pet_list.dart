@@ -6,6 +6,8 @@ import 'package:pawsome_client/core/constant/constant.dart';
 import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:provider/provider.dart';
 
+import '../../../provider/auth_provider.dart';
+
 class PetList extends StatefulWidget {
   const PetList({super.key});
 
@@ -18,7 +20,9 @@ class _PetListState extends State<PetList> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<PetProvider>(context, listen: false).fetchAllPets();
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final userId = authProvider.user['userId'];
+      Provider.of<PetProvider>(context, listen: false).fetchAllPets(userId);
     });
     super.initState();
   }
@@ -53,7 +57,7 @@ class _PetListState extends State<PetList> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(14.0),
                               child: Image.network(
-                                'https://img.freepik.com/free-photo/golden-retriever-puppy-running-outdoors-playing-joyfully-generated-by-ai_188544-43257.jpg?t=st=1688379065~exp=1688379665~hmac=4336fa059505b435de73b44c58e1ae30804105b66b37ed471f9862f2fe598913&w=996',
+                                i.image.toString(),
                                 height: 200,
                                 width: 200,
                                 fit: BoxFit.cover,

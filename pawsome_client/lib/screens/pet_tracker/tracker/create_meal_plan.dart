@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:iconly/iconly.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
 import 'package:pawsome_client/provider/app_provider.dart';
+import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:pawsome_client/provider/tracker_provider.dart';
 import 'package:pawsome_client/widgets/custom_form_field.dart';
 import 'package:provider/provider.dart';
@@ -16,12 +17,12 @@ class CreateMealPlan extends StatefulWidget {
 
 class _CreateMealPlanState extends State<CreateMealPlan> {
   bool _isLoading = false;
-
+  late final petId;
   final _proteincontroller = TextEditingController();
   final _fatcontroller = TextEditingController();
   final _carbscontroller = TextEditingController();
 
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void onSubmit() async {
     if (_formKey.currentState!.validate()) {
@@ -29,10 +30,11 @@ class _CreateMealPlanState extends State<CreateMealPlan> {
       _formKey.currentState!.save();
       final Map<String, dynamic> data =
           Provider.of<TrackerProvider>(context, listen: false).mealData;
-      data['nutrientTracker']['proteinPlan'] =int.parse( _proteincontroller.text);
+      data['nutrientTracker']['proteinPlan'] =
+          int.parse(_proteincontroller.text);
       data['nutrientTracker']['fatPlan'] = int.parse(_fatcontroller.text);
       data['nutrientTracker']['carbsPlan'] = int.parse(_carbscontroller.text);
-
+      data['petId'] = petId;
 
       final res = await Provider.of<TrackerProvider>(context, listen: false)
           .createMealTrackerPlan(data);
@@ -54,6 +56,14 @@ class _CreateMealPlanState extends State<CreateMealPlan> {
         );
       }
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    final selectedPet = context.read<PetProvider>().selectedPet;
+    petId = selectedPet['petId'];
+    super.initState();
   }
 
   @override

@@ -113,6 +113,9 @@ namespace pawsome_server.Migrations
                     b.Property<int>("BuyerId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("PetId")
                         .HasColumnType("int");
 
@@ -120,17 +123,11 @@ namespace pawsome_server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("date")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("PetId");
+                    b.HasIndex("BuyerId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("PetId");
 
                     b.ToTable("Adoption");
                 });
@@ -297,19 +294,21 @@ namespace pawsome_server.Migrations
 
             modelBuilder.Entity("pawsome_server.Models.PetManagement.AdoptionModel", b =>
                 {
+                    b.HasOne("pawsome_server.Models.UserModel", "Buyer")
+                        .WithMany()
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("pawsome_server.Models.Shared.Pet", "Pet")
                         .WithMany()
                         .HasForeignKey("PetId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("pawsome_server.Models.UserModel", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.Navigation("Buyer");
 
                     b.Navigation("Pet");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("pawsome_server.Models.Shared.Pet", b =>
