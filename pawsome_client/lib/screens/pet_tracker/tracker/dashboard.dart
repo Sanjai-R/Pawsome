@@ -22,21 +22,27 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  late num userId;
-late num petId;
+  num userId=0;
+
   @override
   void initState() {
     // TODO: implement initState
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final petProvider = Provider.of<TrackerProvider>(context, listen: false);
-    // petId = petProvider.;
-    userId = authProvider.user['userId'];
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+      setState(() {
+        userId = authProvider.user['userId'];
+      });
+    });
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final selectedPet = Provider.of<PetProvider>(context).selectedPet;
+    print(selectedPet);
     return Scaffold(
         appBar: AppBar(
           forceMaterialTransparency: true,
@@ -76,18 +82,20 @@ late num petId;
                           fontWeight: FontWeight.bold,
                         ),
                   ),
-
                   SizedBox(height: 16.0),
                   ManagePet(),
                   SizedBox(height: 16.0),
-                  if(selectedPet.isEmpty)
-                    Text('Please add a pet to continue')
-                  else
-                  EventList(),
-                  SizedBox(height: 16.0),
-                  MealTrackerContainer(),
-                  SizedBox(height: 16.0),
-                  AdoptContainer()
+                  selectedPet.isEmpty
+                      ? Center(child: const Text('Please select a pet to get analytics'))
+                      : Column(
+                          children: [
+                            EventList(),
+                            SizedBox(height: 16.0),
+                            MealTrackerContainer(),
+                            SizedBox(height: 16.0),
+                            AdoptContainer()
+                          ],
+                        )
                 ],
               ),
             ),

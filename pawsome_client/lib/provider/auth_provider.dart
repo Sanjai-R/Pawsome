@@ -12,6 +12,11 @@ class AuthProvider extends ChangeNotifier {
 
   String get email => _email;
 
+  void clear() {
+    _user = <String, dynamic>{};
+    _email = '';
+    notifyListeners();
+  }
 
   void setEmail(String value) {
     _email = value;

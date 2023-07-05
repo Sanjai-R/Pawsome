@@ -32,9 +32,22 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      Provider.of<PetProvider>(context, listen: false).fetchAdoptData();
+      Provider.of<AuthProvider>(context, listen: false).getAuthData();
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
@@ -49,7 +62,7 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.poppins().fontFamily,
       ),
       routerConfig: router,
-      
+
     );
   }
 }

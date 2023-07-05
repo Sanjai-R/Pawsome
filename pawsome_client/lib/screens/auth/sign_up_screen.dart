@@ -38,7 +38,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (!context.mounted) return;
       if (res['status']) {
         setState(() => _isLoading = false);
-        context.go('/home');
+        context.go('/');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

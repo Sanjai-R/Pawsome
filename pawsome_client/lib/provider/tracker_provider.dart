@@ -103,4 +103,26 @@ class TrackerProvider extends ChangeNotifier {
     });
     return mp;
   }
+  void clear() {
+    _isLoading = false;
+    _hasError = false;
+    _errorMessage = '';
+    _mealTracker = null;
+    mealData = {
+      "mealTrackerId": 0,
+      "dailyPlan": 0,
+      "foodConsumed": 0,
+      "nutrientTrackerId": 0,
+      "petId": 0,
+      "nutrientTracker": {
+        "nutrientTrackerId": 0,
+        "proteinPlan": 0,
+        "proteinConsumed": 0,
+        "fatPlan": 0,
+        "fatConsumed": 0,
+        "carbsPlan": 0,
+        "carbsConsumed": 0
+      }
+    };
+  }
 }

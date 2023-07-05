@@ -174,4 +174,15 @@ class PetProvider extends ChangeNotifier {
       return {'status': false, 'message': 'Adoption Status Updation Failed'};
     }
   }
+  void clear() {
+    isSearchPressed = false;
+    _categories = [];
+    _isLoading = false;
+    _hasError = false;
+    _pets = [];
+    _adopts = [];
+    _selectedPet = {};
+    _errorMessage = '';
+  }
+
 }

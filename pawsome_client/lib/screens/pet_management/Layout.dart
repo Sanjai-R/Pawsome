@@ -4,6 +4,7 @@ import 'package:iconly/iconly.dart';
 import 'package:pawsome_client/provider/app_provider.dart';
 import 'package:pawsome_client/screens/pet_management/home/home_screen.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/dashboard.dart';
+import 'package:pawsome_client/screens/profile/profile.dart';
 import 'package:provider/provider.dart';
 import '../home_screen.dart';
 
@@ -20,7 +21,7 @@ class _LayoutState extends State<Layout> {
     EventTab(),
     EventTab(),
     Dashboard(),
-    EventTab()
+    Profile()
   ];
 
   @override
@@ -62,8 +63,8 @@ class _LayoutState extends State<Layout> {
           ),
           NavigationDestination(
             icon: Icon(
-              IconlyBold.plus,
-              size: 40,
+              Icons.pets_sharp,
+              size: 30,
               color: Theme.of(context).colorScheme.primary,
             ),
             label: 'Add',
@@ -73,14 +74,14 @@ class _LayoutState extends State<Layout> {
                 color: Theme.of(context).colorScheme.primary),
             selectedIcon: Icon(IconlyBold.chart,
                 color: Theme.of(context).colorScheme.primary),
-            label: 'Account',
+            label: 'Dashboard',
           ),
           NavigationDestination(
-            icon: Icon(CupertinoIcons.bag,
+            icon: Icon(IconlyLight.profile,
                 color: Theme.of(context).colorScheme.primary),
-            selectedIcon: Icon(CupertinoIcons.bag_fill,
+            selectedIcon: Icon(IconlyBold.profile,
                 color: Theme.of(context).colorScheme.primary),
-            label: 'Cart',
+            label: 'Profile',
           ),
         ],
       ),

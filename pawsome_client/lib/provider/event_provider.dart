@@ -60,4 +60,19 @@ class EventProvider extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
   }
+  void clear() {
+    _isLoading = false;
+    _hasError = false;
+    _errorMessage = '';
+    _events = [];
+    data = {
+      "petId": "",
+      "eventDateTime": "",
+      "eventTitle": "",
+      "eventDesc": "",
+      "hasReminder": false
+    };
+    selectedDate = DateTime.now();
+    notifyListeners();
+  }
 }
