@@ -7,6 +7,7 @@ import 'package:pawsome_client/provider/auth_provider.dart';
 import 'package:pawsome_client/provider/event_provider.dart';
 import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:pawsome_client/provider/tracker_provider.dart';
+import 'package:pawsome_client/screens/profile/bookmark.dart';
 import 'package:pawsome_client/screens/profile/donated_pet.dart';
 import 'package:pawsome_client/widgets/adopt_container.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       Provider.of<PetProvider>(context, listen: false)
           .fetchAllPetsByUser(user['userId']);
       context.read<PetProvider>().fetchAdoptData();
+      context.read<PetProvider>().getBookmarks(user['userId']);
     });
 
     tabController = TabController(length: 2, vsync: this);
@@ -51,16 +53,16 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         actions: [
           IconButton(
             icon: const Icon(IconlyLight.logout),
-            onPressed: () async{
-              SharedPreferences prefs = await SharedPreferences.getInstance() ;
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
               prefs.remove('authData');
               Provider.of<AuthProvider>(context, listen: false).clear();
-               Provider.of<AppProvider>(context, listen: false).clear();
-               Provider.of<EventProvider>(context, listen: false).clear();
-               Provider.of<PetProvider>(context, listen: false).clear();
+              Provider.of<AppProvider>(context, listen: false).clear();
+              Provider.of<EventProvider>(context, listen: false).clear();
+              Provider.of<PetProvider>(context, listen: false).clear();
               Provider.of<TrackerProvider>(context, listen: false).clear();
               context.go('/login');
-             ScaffoldMessenger.of(context).showSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Logout Success'),
                   backgroundColor: Colors.green,
@@ -71,36 +73,40 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
             },
           ),
         ],
-
       ),
       body: Consumer2<AuthProvider, PetProvider>(
         builder: (context, AuthProvider authProvider, PetProvider petProvider,
             child) {
           final authData = authProvider.user;
           final petData = petProvider.pets;
+          final savedData = petProvider.bookmarks;
+          print(savedData);
           final adoptedData = petProvider.adopts
               .where((element) =>
-                  element.pet?.userId == authProvider.user['userId'] )
+                  element.pet?.userId == authProvider.user['userId'])
+              .toList();
+          final pets = petData
+              .where((element) => element.userId == authData['userId'])
               .toList();
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
             child: Column(
               children: [
-                _buildProfile(authData,petData,adoptedData),
+                _buildProfile(authData, petData, adoptedData),
                 const SizedBox(height: defaultPadding),
                 TabBar(
                   controller: tabController,
                   tabs: [
                     const Tab(text: 'Saved'),
-                    const Tab(text: 'Donated'),
+                    const Tab(text: 'Your Pets'),
                   ],
                 ),
                 Expanded(
                   child: TabBarView(
                     controller: tabController,
                     children: [
-                      DonatedPets(pets: adoptedData),
-                      DonatedPets(pets:  adoptedData),
+                      BookMark(bookmarks: savedData),
+                      DonatedPets(pets: pets),
                     ],
                   ),
                 ),
@@ -112,7 +118,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     ));
   }
 
-  Widget _buildProfileAnalytics(authData,petData,adoptedData) {
+  Widget _buildProfileAnalytics(authData, petData, adoptedData) {
     return Expanded(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -150,8 +156,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildProfile(authData,petData,adoptedData) {
-
+  Widget _buildProfile(authData, petData, adoptedData) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -173,7 +178,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
             const SizedBox(
               width: 10,
             ),
-            _buildProfileAnalytics(authData,petData,adoptedData),
+            _buildProfileAnalytics(authData, petData, adoptedData),
           ],
         ),
         const SizedBox(height: defaultPadding),

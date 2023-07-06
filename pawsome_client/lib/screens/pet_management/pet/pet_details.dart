@@ -93,7 +93,7 @@ class _PetDetailsState extends State<PetDetails> {
               element.petId == int.parse(widget.petId) &&
               element.status == 'approved');
 
-          print(isSold);
+
           if (petProvider.isLoading) {
             return const Center(child: CircularProgressIndicator());
           }

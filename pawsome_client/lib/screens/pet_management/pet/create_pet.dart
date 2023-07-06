@@ -18,7 +18,6 @@ class CreatePet extends StatefulWidget {
 class _CreatePetState extends State<CreatePet> {
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
-  final List<String> _dropdownItems = ['Seven', 'Nine'];
   String? _selectedData;
 late int userId;
   final TextEditingController _petname = TextEditingController();

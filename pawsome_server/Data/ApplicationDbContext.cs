@@ -20,6 +20,7 @@ namespace pawsome_server.Data
         
         public DbSet<WalkingTrackerModel> WalkingTracker { get; set; }
 
+        public DbSet<BookMarkModel> bookMarkModels { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 

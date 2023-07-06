@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,57 +7,53 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using pawsome_server.Data;
-using pawsome_server.Dto.Request.PetTracker;
+using pawsome_server.Dto.Request.PetManagement;
 using pawsome_server.Models.PetManagement;
 
 namespace pawsome_server.Controllers.PetManagement
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdoptionController : ControllerBase
+    public class BookMarkController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
         private readonly IMapper _mapper;
-        public AdoptionController(ApplicationDbContext context, IMapper mapper)
+        public BookMarkController(ApplicationDbContext context, IMapper mapper)
         {
             _mapper = mapper;
             _context = context;
         }
-
-        // GET: api/Adoption
+        // GET: api/BookMark
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AdoptionModel>>> GetAdoption()
+        public async Task<ActionResult<IEnumerable<BookMarkModel>>> GetbookMarkModels()
         {
-            return await _context.Adoption.Include(c => c.Buyer).
-                Include(c => c.Pet).ThenInclude(c => c.User).ToListAsync();
+            return await _context.bookMarkModels.ToListAsync();
         }
 
-        // GET: api/Adoption/5
+        // GET: api/BookMark/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<AdoptionModel>> GetAdoptionModel(int id)
+        public async Task<ActionResult<BookMarkModel>> GetBookMarkModel(int id)
         {
-            var adoptionModel = await _context.Adoption.FindAsync(id);
-
-            if (adoptionModel == null)
+            var bookMarks = await _context.bookMarkModels.Include(c => c.Pet).Where(c => c.UserId == id).ToListAsync();
+            if (bookMarks == null)
             {
                 return NotFound();
             }
 
-            return adoptionModel;
+            return Ok(bookMarks);
         }
 
-        // PUT: api/Adoption/5
+        // PUT: api/BookMark/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAdoptionModel(int id, AdoptionModel adoptionModel)
+        public async Task<IActionResult> PutBookMarkModel(int id, BookMarkModel bookMarkModel)
         {
-            if (id != adoptionModel.Id)
+            if (id != bookMarkModel.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(adoptionModel).State = EntityState.Modified;
+            _context.Entry(bookMarkModel).State = EntityState.Modified;
 
             try
             {
@@ -65,7 +61,7 @@ namespace pawsome_server.Controllers.PetManagement
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AdoptionModelExists(id))
+                if (!BookMarkModelExists(id))
                 {
                     return NotFound();
                 }
@@ -78,44 +74,47 @@ namespace pawsome_server.Controllers.PetManagement
             return NoContent();
         }
 
-        // POST: api/Adoption
+        // POST: api/BookMark
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<AdoptionModel>> PostAdoptModal(AdoptDto req)
+        public async Task<ActionResult<BookMarkModel>> PostBookMarkModel(AddBookmarkDto dto)
         {
-            AdoptionModel adoptionModel = _mapper.Map<AdoptionModel>(req);
+            BookMarkModel bookMarkModel = _mapper.Map<BookMarkModel>(dto);
+
             try
             {
-                _context.Adoption.Add(adoptionModel);
+                _context.bookMarkModels.Add(bookMarkModel);
                 await _context.SaveChangesAsync();
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 return BadRequest(ex.Message);
             }
-            return Ok(adoptionModel);
+
+            return Ok(bookMarkModel);
         }
 
-        // DELETE: api/Adoption/5
+        // DELETE: api/BookMark/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAdoptionModel(int id)
+        public async Task<IActionResult> DeleteBookMarkModel(int id)
         {
-            var adoptionModel = await _context.Adoption.FindAsync(id);
-            if (adoptionModel == null)
+            var bookMarkModel = await _context.bookMarkModels.FindAsync(id);
+            if (bookMarkModel == null)
             {
                 return NotFound();
             }
 
-            _context.Adoption.Remove(adoptionModel);
+            _context.bookMarkModels.Remove(bookMarkModel);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool AdoptionModelExists(int id)
+        private bool BookMarkModelExists(int id)
         {
-            return _context.Adoption.Any(e => e.Id == id);
+            return _context.bookMarkModels.Any(e => e.Id == id);
         }
     }
 }

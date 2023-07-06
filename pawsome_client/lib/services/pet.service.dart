@@ -85,4 +85,28 @@ class PetService {
     }
     return false;
   }
+
+  static Future<dynamic> postBookMark(data) async{
+    try {
+      final res = await Dio().post('${AppUrl.baseUrl}/BookMark', data: data);
+      if (res != null && (res.statusCode == 200 || res.statusCode == 201)) {
+        return true;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+  static Future<dynamic> getBookMarks(userID)async{
+    try {
+      final res = await Dio().get('${AppUrl.baseUrl}/BookMark/$userID');
+
+      if (res != null && (res.statusCode == 200 || res.statusCode == 201)) {
+        return res.data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
 }

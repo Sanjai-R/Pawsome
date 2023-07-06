@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pawsome_client/model/adopt_model.dart';
+import 'package:pawsome_client/model/bookmark_model.dart';
 import 'package:pawsome_client/model/pet_model.dart';
 import 'package:pawsome_client/services/pet.service.dart';
 
@@ -10,6 +11,7 @@ class PetProvider extends ChangeNotifier {
   bool _hasError = false;
   List<PetModel> _pets = [];
   List<AdoptModel> _adopts = [];
+  List<BookmarkModel> _bookmarks = [];
   Map<String, dynamic> _selectedPet = {};
 
   String _errorMessage = '';
@@ -23,6 +25,8 @@ class PetProvider extends ChangeNotifier {
   List<PetModel> get pets => _pets;
 
   List<AdoptModel> get adopts => _adopts;
+
+  List<BookmarkModel> get bookmarks => _bookmarks;
 
   Map<String, dynamic> get selectedPet => _selectedPet;
 
@@ -172,6 +176,31 @@ class PetProvider extends ChangeNotifier {
       };
     } else {
       return {'status': false, 'message': 'Adoption Status Updation Failed'};
+    }
+  }
+
+  Future<void> getBookmarks(userId) async {
+    final res = await PetService.getBookMarks(userId);
+    if (res != null) {
+      _bookmarks = res
+          .map((e) => BookmarkModel.fromJson(e))
+          .toList()
+          .cast<BookmarkModel>();
+
+      _hasError = false;
+      _errorMessage = '';
+    } else {
+      _hasError = true;
+      _errorMessage = 'Failed to get categories';
+    }
+  }
+
+  Future<dynamic> postBookmarks(data) async {
+    final res = await PetService.postBookMark(data);
+    if (res != null) {
+      return {'status': true, 'message': 'Bookmarked Successfully'};
+    } else {
+      return {'status': false, 'message': 'Bookmarking Failed'};
     }
   }
 

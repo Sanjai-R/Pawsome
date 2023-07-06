@@ -21,6 +21,7 @@ class _DonatedPetsState extends State<DonatedPets> {
         itemBuilder: (BuildContext context, int index) {
           return Container(
             padding: const EdgeInsets.all(8.0),
+            margin: const EdgeInsets.symmetric(vertical: 5.0),
             decoration: BoxDecoration(
               boxShadow: boxShadow,
               color: Colors.white,
@@ -32,7 +33,7 @@ class _DonatedPetsState extends State<DonatedPets> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Image.network(
-                    widget.pets[index].pet!.image!,
+                    widget.pets[index].image!,
                     height: 100,
                     width: 100,
                     fit: BoxFit.cover,
@@ -47,35 +48,18 @@ class _DonatedPetsState extends State<DonatedPets> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.pets[index].pet!.name!,
+                            widget.pets[index].name!,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Container(
-                              padding: const EdgeInsets.all(4.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(3.0),
-                                color: statusBgColor[
-                                widget.pets[index].status.toString()],
-                              ),
-                              child: Text(
-                                widget.pets[index].status.toString(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall!
-                                    .copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: statusColor[widget
-                                        .pets[index].status
-                                        .toString()]),
-                              ))
+
                         ],
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        widget.pets[index].pet!.description!,
+                        widget.pets[index].description!,
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
