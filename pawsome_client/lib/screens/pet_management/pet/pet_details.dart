@@ -84,9 +84,16 @@ class _PetDetailsState extends State<PetDetails> {
       ),
       body: Consumer<PetProvider>(
         builder: (context, petProvider, child) {
-          dynamic adopt = petProvider.adopts;
-          bool isRequested =
-              adopt.any((element) => element.petId == int.parse(widget.petId));
+          List<AdoptModel> adopt = petProvider.adopts;
+
+          bool isRequested = adopt.any((element) =>
+              element.petId == int.parse(widget.petId) &&
+              element.status == 'pending');
+          bool isSold = adopt.any((element) =>
+              element.petId == int.parse(widget.petId) &&
+              element.status == 'approved');
+
+          print(isSold);
           if (petProvider.isLoading) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -148,14 +155,14 @@ class _PetDetailsState extends State<PetDetails> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
-                                    child: _buildCard(
-                                        "Age", "2.5 years", const Color(0xFFDDF8E6))),
+                                    child: _buildCard("Age", "2.5 years",
+                                        const Color(0xFFDDF8E6))),
                                 Expanded(
-                                    child: _buildCard(
-                                        "Weight", "2.5 kg", const Color(0xFFFFF9C4))),
+                                    child: _buildCard("Weight", "2.5 kg",
+                                        const Color(0xFFFFF9C4))),
                                 Expanded(
-                                    child: _buildCard(
-                                        "gender", "male", const Color(0xFFDAEBFF))),
+                                    child: _buildCard("gender", "male",
+                                        const Color(0xFFDAEBFF))),
                               ],
                             ),
                             const SizedBox(
@@ -193,8 +200,12 @@ class _PetDetailsState extends State<PetDetails> {
                                   style: FilledButton.styleFrom(
                                     padding: const EdgeInsets.all(15),
                                     backgroundColor: isRequested
-                                        ? Colors.redAccent
-                                        : Theme.of(context).primaryColor,
+                                        ? Colors.grey
+                                        : isSold
+                                            ? Colors.red
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .primary,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),
@@ -209,7 +220,11 @@ class _PetDetailsState extends State<PetDetails> {
                                           color: Colors.white,
                                         )
                                       : Text(
-                                          isRequested ? "Requested" : "Adopt",
+                                          isRequested
+                                              ? "Requested"
+                                              : isSold
+                                                  ? "Sold"
+                                                  : "Adopt",
                                           style: const TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,

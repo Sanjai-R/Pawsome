@@ -37,7 +37,17 @@ class PetService {
     }
     return null;
   }
-
+  static Future<bool> postPet(data) async{
+    try {
+      final res = await Dio().post('${AppUrl.baseUrl}/Pet', data: data);
+      if (res != null && (res.statusCode == 200 || res.statusCode == 201)) {
+        return true;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
   static Future<dynamic> postAdopt(data) async {
     try {
       final res = await Dio().post('${AppUrl.baseUrl}/Adoption', data: data);

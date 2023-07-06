@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
+import 'package:pawsome_client/provider/app_provider.dart';
+import 'package:pawsome_client/provider/auth_provider.dart';
 import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:pawsome_client/screens/pet_management/pet/component/create_pet_form.dart';
 import 'package:provider/provider.dart';
@@ -13,11 +16,11 @@ class CreatePet extends StatefulWidget {
 }
 
 class _CreatePetState extends State<CreatePet> {
-  final bool _isLoading = false;
+  bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
   final List<String> _dropdownItems = ['Seven', 'Nine'];
   String? _selectedData;
-
+late int userId;
   final TextEditingController _petname = TextEditingController();
   final TextEditingController _gender = TextEditingController();
   final TextEditingController _breed = TextEditingController();
@@ -31,7 +34,27 @@ class _CreatePetState extends State<CreatePet> {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       context.read<PetProvider>().fetchCategories();
+      final user = Provider.of<AuthProvider>(context, listen: false).user;
+      userId = user['userId'];
     });
+
+  }
+
+  DateTime? _selectedBirthDate;
+
+  Future<void> _selectBirthDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        _selectedBirthDate = picked;
+        _birthDate.text = picked.toString();
+      });
+    }
   }
 
   @override
@@ -100,12 +123,6 @@ class _CreatePetState extends State<CreatePet> {
                               'controller': _price,
                             },
                             {
-                              'label': 'Birth Date',
-                              'hintText': '2023-07-06',
-                              'type': 'text',
-                              'controller': _birthDate,
-                            },
-                            {
                               'label': 'Image URL',
                               'hintText': 'https://example.com/image.png',
                               'type': 'text',
@@ -113,12 +130,67 @@ class _CreatePetState extends State<CreatePet> {
                             },
                           ],
                         ),
+                        // ...
+                        SizedBox(height: defaultPadding / 2),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Birth Date",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Colors.grey.shade400,
+                                ),
+                              ),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: TextFormField(
+                                      controller: _birthDate,
+                                      decoration: InputDecoration(
+                                        hintText: 'Select Birth Date',
+                                        contentPadding: defaultInputPadding,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        hintStyle:
+                                            TextStyle(color: Colors.grey[600]),
+                                      ),
+                                      onTap: () {
+                                        _selectBirthDate(context);
+                                      },
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      _selectBirthDate(context);
+                                    },
+                                    icon: Icon(Icons.calendar_today),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: defaultPadding / 2),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: defaultPadding / 3),
+                              padding:
+                                  EdgeInsets.only(bottom: defaultPadding / 3),
                               child: Text(
                                 "Category",
                                 style: TextStyle(
@@ -180,7 +252,7 @@ class _CreatePetState extends State<CreatePet> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 // Form is valid, proceed with submitting the data
                                 final petData = {
@@ -189,9 +261,35 @@ class _CreatePetState extends State<CreatePet> {
                                   'breed': _breed.text,
                                   'description': _description.text,
                                   'price': double.parse(_price.text),
-                                  'birthDate': _birthDate.text,
+                                  'birthDate': DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                                      .format(_selectedBirthDate!.toUtc()).toString(),
                                   'image': _image.text,
+                                  'categoryId': int.parse(_selectedData!),
+                                  'userId': userId,
                                 };
+                                final res = await petProvider.postPet(
+                                    petData);
+                                if (res['status']) {
+                                  setState(() => _isLoading = false);
+                                  petProvider.fetchAllPetsByUser(userId);
+
+                                  context.read<AppProvider>().changeIndex(4);
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(res['message']),
+                                      backgroundColor: Colors.green,
+                                    ),
+                                  );
+                                  context.go('/');
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(res['message']),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
                                 // TODO: Call API or perform desired action with petData
                               }
                             },

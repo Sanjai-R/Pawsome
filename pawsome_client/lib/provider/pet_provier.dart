@@ -60,6 +60,15 @@ class PetProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<dynamic> postPet(data) async {
+    final res = await PetService.postPet(data);
+    if (res != null) {
+      return {'status': true, 'message': 'Pet Posted Successfully'};
+    } else {
+      return {'status': false, 'message': 'Pet Posting Failed'};
+    }
+  }
+
   Future<void> fetchAllPetsByUser(userId) async {
     _isLoading = true;
 
