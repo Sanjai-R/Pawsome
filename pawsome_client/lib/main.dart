@@ -8,7 +8,6 @@ import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:pawsome_client/provider/tracker_provider.dart';
 import 'package:pawsome_client/router/router.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +41,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<PetProvider>(context, listen: false).fetchAdoptData();
       Provider.of<AuthProvider>(context, listen: false).getAuthData();
     });

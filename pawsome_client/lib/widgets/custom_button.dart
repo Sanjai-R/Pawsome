@@ -29,21 +29,21 @@ class _ReusableButtonState extends State<ReusableButton> {
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading ? CircularProgressIndicator() : _buildButton();
+    return _isLoading ? const CircularProgressIndicator() : _buildButton();
   }
 
   Widget _buildButton() {
     switch (widget.style) {
       case ButtonStyleType.elevated:
         return ElevatedButton(
-          child: _buildButtonContent(),
           onPressed: _handleOnPressed,
+          child: _buildButtonContent(),
         );
       case ButtonStyleType.filled:
         return TextButton(
           style: TextButton.styleFrom(),
-          child: _buildButtonContent(),
           onPressed: _handleOnPressed,
+          child: _buildButtonContent(),
         );
       case ButtonStyleType.icon:
         return IconButton(
@@ -52,11 +52,11 @@ class _ReusableButtonState extends State<ReusableButton> {
         );
       case ButtonStyleType.text:
         return TextButton(
-          child: _buildButtonContent(),
           onPressed: _handleOnPressed,
+          child: _buildButtonContent(),
         );
       default:
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
     }
   }
 
@@ -65,7 +65,7 @@ class _ReusableButtonState extends State<ReusableButton> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.icon != null) Icon(widget.icon),
-        if (widget.icon != null && widget.text.isNotEmpty) SizedBox(width: 8),
+        if (widget.icon != null && widget.text.isNotEmpty) const SizedBox(width: 8),
         if (widget.text.isNotEmpty) Text(widget.text),
       ],
     );

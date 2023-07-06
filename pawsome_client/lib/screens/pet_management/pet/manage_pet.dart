@@ -38,11 +38,11 @@ class _ManagePetState extends State<ManagePet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Manage Pet',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Row(
@@ -79,7 +79,7 @@ class _ManagePetState extends State<ManagePet> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Expanded(
@@ -89,7 +89,7 @@ class _ManagePetState extends State<ManagePet> {
                   child: Consumer<PetProvider>(
                     builder: (context, petProvider, child) {
                       if (petProvider.isLoading) {
-                        return Center(
+                        return const Center(
                           child: CircularProgressIndicator(),
                         );
                       }
@@ -144,7 +144,7 @@ class _ManagePetState extends State<ManagePet> {
                                   ),
                                   Text(
                                     pet.name.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                     ),

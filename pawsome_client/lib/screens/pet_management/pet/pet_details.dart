@@ -93,7 +93,7 @@ class _PetDetailsState extends State<PetDetails> {
           if (pet == null) {
             return const Center(child: Text('Failed to load pet details.'));
           }
-          print(pet!['user']!['location'].toString());
+
           return Column(
             children: [
               Container(
@@ -135,7 +135,7 @@ class _PetDetailsState extends State<PetDetails> {
                               ),
                             ),
                             Text(
-                              "${pet!['user']!['location'].toString()}",
+                              pet!['user']!['location'].toString(),
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
@@ -149,13 +149,13 @@ class _PetDetailsState extends State<PetDetails> {
                               children: [
                                 Expanded(
                                     child: _buildCard(
-                                        "Age", "2.5 years", Color(0xFFDDF8E6))),
+                                        "Age", "2.5 years", const Color(0xFFDDF8E6))),
                                 Expanded(
                                     child: _buildCard(
-                                        "Weight", "2.5 kg", Color(0xFFFFF9C4))),
+                                        "Weight", "2.5 kg", const Color(0xFFFFF9C4))),
                                 Expanded(
                                     child: _buildCard(
-                                        "gender", "male", Color(0xFFDAEBFF))),
+                                        "gender", "male", const Color(0xFFDAEBFF))),
                               ],
                             ),
                             const SizedBox(

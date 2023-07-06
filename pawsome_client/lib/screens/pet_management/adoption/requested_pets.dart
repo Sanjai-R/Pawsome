@@ -17,7 +17,7 @@ class _RequestedPetsState extends State<RequestedPets> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(defaultPadding),
+      padding: const EdgeInsets.all(defaultPadding),
       child: ListView.builder(
         itemCount: widget.adopts.length,
         itemBuilder: (BuildContext context, int index) {
@@ -74,7 +74,7 @@ class _RequestedPetsState extends State<RequestedPets> {
                             ),
                           ),
                           Container(
-                              padding: EdgeInsets.all(4.0),
+                              padding: const EdgeInsets.all(4.0),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(3.0),
                                 color: statusBgColor[
@@ -93,7 +93,7 @@ class _RequestedPetsState extends State<RequestedPets> {
                               )),
                         ],
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Column(
                         children: [
                           Text('Requested Data',
@@ -103,7 +103,7 @@ class _RequestedPetsState extends State<RequestedPets> {
                                   .copyWith(
                                     fontWeight: FontWeight.bold,
                                   )),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Text(
                             DateFormat('MMMM d,yyyy').format(DateTime.parse(
                                 widget.adopts[index].date.toString()!)),

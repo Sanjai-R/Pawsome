@@ -30,9 +30,9 @@ class _TrackerState extends State<Tracker>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF7FAFC),
+      backgroundColor: const Color(0xffF7FAFC),
       appBar: AppBar(
-        backgroundColor: Color(0xffF7FAFC),
+        backgroundColor: const Color(0xffF7FAFC),
        leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -41,7 +41,7 @@ class _TrackerState extends State<Tracker>
         ),
         bottom: TabBar(
           controller: _tabController,
-          tabs: [
+          tabs: const [
             Tab(text: 'Walking Tracker'),
             Tab(text: 'Meal Tracker'),
           ],
@@ -55,7 +55,7 @@ class _TrackerState extends State<Tracker>
             controller: _tabController,
             children: [
               buildWalkingTrackerTab(),
-              MealTracker(),
+              const MealTracker(),
             ],
           );
 
@@ -66,7 +66,7 @@ class _TrackerState extends State<Tracker>
   }
 
   Widget buildWalkingTrackerTab() {
-    return Center(
+    return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

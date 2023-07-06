@@ -51,7 +51,7 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     notifyListeners();
     final res = await AuthService.login(email, password);
-    print("res $res");
+
     if (res != null) {
       _user = res.toJson();
       setData();
@@ -70,7 +70,7 @@ class AuthProvider extends ChangeNotifier {
   void getAuthData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? mapString = prefs.getString('authData');
-    print("mapString $mapString");
+
     if (mapString != null) {
       Map<String, dynamic> authData = json.decode(mapString);
       _user = authData;

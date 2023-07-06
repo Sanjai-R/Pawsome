@@ -45,7 +45,7 @@ class TrackerProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     final res = await TrackerService.getMealTrackingData(petId);
-    print(res);
+
     if (res.isNotEmpty) {
       _mealTracker = MealTrackerModel.fromJson(res[0]);
       _hasError = false;
@@ -60,7 +60,7 @@ class TrackerProvider extends ChangeNotifier {
   }
 
   Future<dynamic> updateMealPlan(data) async {
-    print(data);
+
     final res = await TrackerService.updateNutrients(
         data['nutrientTrackerId'].toString(), data);
 
@@ -89,10 +89,9 @@ class TrackerProvider extends ChangeNotifier {
   }
 
   Map<String, dynamic> calculateNutrients(Map<String, dynamic> json) {
-    final totalNutrients = json['totalNutrients'] as Map<String, dynamic>;
-    final totalDaily = json['totalDaily'] as Map<String, dynamic>;
+   final totalDaily = json['totalDaily'] as Map<String, dynamic>;
     Map<String, dynamic> mp = {};
-    print('Total Nutrients:');
+
 
     totalDaily.forEach((key, value) {
       final label = value['label'] as String;

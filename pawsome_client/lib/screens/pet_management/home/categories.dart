@@ -67,7 +67,7 @@ class _PetCategoriesState extends State<PetCategories> {
                         const SizedBox(
                           width: 5,
                         ),
-                        Text(
+                        const Text(
                           'Filter',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),

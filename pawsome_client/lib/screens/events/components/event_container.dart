@@ -28,6 +28,7 @@ class _EventListState extends State<EventList> {
       petId =
       Provider.of<PetProvider>(context, listen: false).selectedPet['petId'];
       Provider.of<EventProvider>(context, listen: false).fetchAllEvents(petId);
+      print(petId);
     });
 
     super.initState();

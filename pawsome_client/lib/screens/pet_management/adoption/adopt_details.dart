@@ -54,7 +54,7 @@ class _ViewAdoptDetailsState extends State<ViewAdoptDetails>
         ),
         bottom: TabBar(
           controller: _tabController,
-          tabs: [
+          tabs: const [
             Tab(text: 'Requests for your Pets'),
             Tab(text: 'Requested by you'),
           ],
@@ -70,9 +70,9 @@ class _ViewAdoptDetailsState extends State<ViewAdoptDetails>
                   .where((element) =>
                       element.pet?.userId == authProivider.user['userId'] && element.status == 'pending')
                   .toList();
-              print(adopts.length);
+
               if (adopts.isEmpty) {
-                return Center(
+                return const Center(
                   child: Text('No Adopt Requests'),
                 );
               } else {

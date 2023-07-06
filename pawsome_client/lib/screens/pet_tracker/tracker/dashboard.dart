@@ -34,6 +34,8 @@ class _DashboardState extends State<Dashboard> {
       setState(() {
         userId = authProvider.user['userId'];
       });
+      Provider.of<PetProvider>(context, listen: false).fetchAllPets(userId);
+
     });
 
     super.initState();
@@ -42,7 +44,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     final selectedPet = Provider.of<PetProvider>(context).selectedPet;
-    print(selectedPet);
+
     return Scaffold(
         appBar: AppBar(
           forceMaterialTransparency: true,
@@ -51,13 +53,13 @@ class _DashboardState extends State<Dashboard> {
               onPressed: () {
                 context.go('/event');
               },
-              icon: Icon(CupertinoIcons.calendar_badge_plus),
+              icon: const Icon(CupertinoIcons.calendar_badge_plus),
             ),
             IconButton(
               onPressed: () {
                 context.go('/tracker');
               },
-              icon: Icon(CupertinoIcons.chart_pie),
+              icon: const Icon(CupertinoIcons.chart_pie),
             ),
           ],
           title: Text(
@@ -82,18 +84,18 @@ class _DashboardState extends State<Dashboard> {
                           fontWeight: FontWeight.bold,
                         ),
                   ),
-                  SizedBox(height: 16.0),
-                  ManagePet(),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
+                  const ManagePet(),
+                  const SizedBox(height: 16.0),
                   selectedPet.isEmpty
-                      ? Center(child: const Text('Please select a pet to get analytics'))
+                      ? const Center(child: Text('Please select a pet to get analytics'))
                       : Column(
                           children: [
                             EventList(),
-                            SizedBox(height: 16.0),
-                            MealTrackerContainer(),
-                            SizedBox(height: 16.0),
-                            AdoptContainer()
+                            const SizedBox(height: 16.0),
+                            const MealTrackerContainer(),
+                            const SizedBox(height: 16.0),
+                            const AdoptContainer()
                           ],
                         )
                 ],

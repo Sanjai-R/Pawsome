@@ -1,4 +1,4 @@
-import 'dart:convert';
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:pawsome_client/model/event_model.dart';
@@ -47,7 +47,7 @@ class EventProvider extends ChangeNotifier {
     final res = await EventService.getEventData(petId);
 
     if (res != null) {
-      res.map((e) => print(e));
+
 
       _events = res.map((e) => Event.fromJson(e)).toList().cast<Event>();
       _hasError = false;

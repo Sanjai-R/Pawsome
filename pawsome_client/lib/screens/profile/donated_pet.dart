@@ -15,12 +15,12 @@ class _DonatedPetsState extends State<DonatedPets> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10.0),
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
       child: ListView.builder(
         itemCount: widget.pets.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
               boxShadow: boxShadow,
               color: Colors.white,
@@ -38,7 +38,7 @@ class _DonatedPetsState extends State<DonatedPets> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,13 +48,13 @@ class _DonatedPetsState extends State<DonatedPets> {
                         children: [
                           Text(
                             widget.pets[index].pet!.name!,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Container(
-                              padding: EdgeInsets.all(4.0),
+                              padding: const EdgeInsets.all(4.0),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(3.0),
                                 color: statusBgColor[
@@ -73,15 +73,15 @@ class _DonatedPetsState extends State<DonatedPets> {
                               ))
                         ],
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                         widget.pets[index].pet!.description!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
 
                     ],
                   ),

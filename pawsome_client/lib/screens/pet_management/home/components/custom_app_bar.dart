@@ -79,7 +79,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                         decoration: InputDecoration(
                           prefixIcon: const Icon(CupertinoIcons.search),
                           hintText: 'Enter your search query',
-                          contentPadding: EdgeInsets.all(16.0),
+                          contentPadding: const EdgeInsets.all(16.0),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
                             borderSide: BorderSide.none,
@@ -90,7 +90,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                         ),
                       ),
                     ),
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 20.0,
                 backgroundImage: NetworkImage(
 

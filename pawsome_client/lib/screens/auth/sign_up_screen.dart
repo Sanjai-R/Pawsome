@@ -53,7 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     if (token != null) {
-      context.go('/home');
+      context.go('/');
     }
   }
   @override

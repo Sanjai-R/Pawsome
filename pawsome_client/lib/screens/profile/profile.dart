@@ -61,7 +61,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
               Provider.of<TrackerProvider>(context, listen: false).clear();
               context.go('/login');
              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
+                const SnackBar(
                   content: Text('Logout Success'),
                   backgroundColor: Colors.green,
                 ),
@@ -87,12 +87,12 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
             child: Column(
               children: [
                 _buildProfile(authData,petData,adoptedData),
-                SizedBox(height: defaultPadding),
+                const SizedBox(height: defaultPadding),
                 TabBar(
                   controller: tabController,
                   tabs: [
-                    Tab(text: 'Saved'),
-                    Tab(text: 'Donated'),
+                    const Tab(text: 'Saved'),
+                    const Tab(text: 'Donated'),
                   ],
                 ),
                 Expanded(
@@ -170,13 +170,13 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             _buildProfileAnalytics(authData,petData,adoptedData),
           ],
         ),
-        SizedBox(height: defaultPadding),
+        const SizedBox(height: defaultPadding),
         Text(
           authData['username'],
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
@@ -184,7 +184,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 fontSize: 20,
               ),
         ),
-        SizedBox(height: defaultPadding / 2),
+        const SizedBox(height: defaultPadding / 2),
         Text(
           authData['email'],
           textAlign: TextAlign.center,
@@ -192,15 +192,15 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 fontSize: 16,
               ),
         ),
-        SizedBox(height: defaultPadding / 2),
+        const SizedBox(height: defaultPadding / 2),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Icon(
+            const Icon(
               IconlyLight.location,
               size: 20,
             ),
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
             Text(
@@ -212,13 +212,13 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
             ),
           ],
         ),
-        SizedBox(height: defaultPadding),
+        const SizedBox(height: defaultPadding),
         Container(
           width: double.infinity,
           height: 50,
           child: ElevatedButton(
             onPressed: () {},
-            child: Text('Edit Profile'),
+            child: const Text('Edit Profile'),
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),

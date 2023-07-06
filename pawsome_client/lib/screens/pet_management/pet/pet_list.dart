@@ -28,7 +28,7 @@ class _PetListState extends State<PetList> {
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
 
         height: 300,
         child: Consumer(

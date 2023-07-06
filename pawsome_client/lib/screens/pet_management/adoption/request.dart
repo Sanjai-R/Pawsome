@@ -22,14 +22,14 @@ class _RequestState extends State<Request> {
     if (res['status']) {
       context.go('/');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Adopt request sent'),
           backgroundColor: Colors.green,
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Failed to send request'),
           backgroundColor: Colors.red,
         ),
@@ -40,12 +40,12 @@ class _RequestState extends State<Request> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.all(defaultPadding),
+        padding: const EdgeInsets.all(defaultPadding),
         child: ListView.builder(
           itemCount: widget.adopts.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
-              padding: EdgeInsets.all(defaultPadding),
+              padding: const EdgeInsets.all(defaultPadding),
               decoration: BoxDecoration(
                 boxShadow: boxShadow,
                 color: Colors.white,
@@ -62,7 +62,7 @@ class _RequestState extends State<Request> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(width: defaultPadding / 2),
+                  const SizedBox(width: defaultPadding / 2),
                   Expanded(
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,7 +80,7 @@ class _RequestState extends State<Request> {
                                     .copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
-                            SizedBox(height: defaultPadding / 2),
+                            const SizedBox(height: defaultPadding / 2),
                             Center(
                                 child: Text(
                               "Buyer Details",
@@ -99,13 +99,13 @@ class _RequestState extends State<Request> {
                                 "Requested Date",
                                 DateFormat('dd-MM-yyyy')
                                     .format(widget.adopts[index].date!)),
-                            SizedBox(height: defaultPadding / 2),
+                            const SizedBox(height: defaultPadding / 2),
                             Row(
                               children: [
                                 Expanded(
                                   child: FilledButton(
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(0xFF38A169),
+                                      backgroundColor: const Color(0xFF38A169),
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
@@ -118,16 +118,16 @@ class _RequestState extends State<Request> {
 
                                       onSubmit(data);
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       'Accept',
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 8.0),
+                                const SizedBox(width: 8.0),
                                 Expanded(
                                   child: FilledButton(
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(0xFFE53E3E),
+                                      backgroundColor: const Color(0xFFE53E3E),
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
@@ -140,7 +140,7 @@ class _RequestState extends State<Request> {
 
                                       onSubmit(data);
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       'Reject',
                                     ),
                                   ),

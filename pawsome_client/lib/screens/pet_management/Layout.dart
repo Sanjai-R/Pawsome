@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:pawsome_client/provider/app_provider.dart';
 import 'package:pawsome_client/screens/pet_management/home/home_screen.dart';
+import 'package:pawsome_client/screens/pet_management/pet/create_pet.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/dashboard.dart';
 import 'package:pawsome_client/screens/profile/profile.dart';
 import 'package:provider/provider.dart';
@@ -19,9 +20,9 @@ class _LayoutState extends State<Layout> {
   final List<Widget> _tabs = [
     const PetHomePage(),
     EventTab(),
-    EventTab(),
-    Dashboard(),
-    Profile()
+    const CreatePet(),
+    const Dashboard(),
+    const Profile()
   ];
 
   @override

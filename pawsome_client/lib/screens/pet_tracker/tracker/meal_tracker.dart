@@ -44,7 +44,7 @@ class _MealTrackerState extends State<MealTracker> {
           final meal = trackerProvider.mealTracker;
 
           if (trackerProvider.isLoading) {
-            return Center(
+            return const Center(
               child: Text('loading'), // Loading indicator
             );
           }
@@ -53,8 +53,8 @@ class _MealTrackerState extends State<MealTracker> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('You have not created a meal plan yet'),
-                  SizedBox(height: 16.0),
+                  const Text('You have not created a meal plan yet'),
+                  const SizedBox(height: 16.0),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -126,7 +126,7 @@ class _MealTrackerState extends State<MealTracker> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   Container(
                     padding: const EdgeInsets.all(12.0),
                     decoration: BoxDecoration(
@@ -162,7 +162,7 @@ class _MealTrackerState extends State<MealTracker> {
                                 child: const Icon(IconlyLight.edit))
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 16.0,
                         ),
                         _buildValue(
@@ -180,7 +180,7 @@ class _MealTrackerState extends State<MealTracker> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton.icon(
@@ -234,7 +234,7 @@ class _MealTrackerState extends State<MealTracker> {
                 color: const Color(0xffDDEFB3),
               ),
               child: Text(value.toString(),
-                  style: TextStyle(fontWeight: FontWeight.bold))),
+                  style: const TextStyle(fontWeight: FontWeight.bold))),
         ],
       ),
     );
@@ -248,7 +248,7 @@ class _MealTrackerState extends State<MealTracker> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -258,7 +258,7 @@ class _MealTrackerState extends State<MealTracker> {
                   type: "text",
                   onSaved: (val) {},
                   controller: controller),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
@@ -324,18 +324,18 @@ class _MealTrackerState extends State<MealTracker> {
   void openBottomSheet(BuildContext context, MealTrackerModel mt) {
     bool isLoading = false;
 
-    final _proteincontroller = TextEditingController();
-    final _fatcontroller = TextEditingController();
-    final _carbscontroller = TextEditingController();
+    final proteincontroller = TextEditingController();
+    final fatcontroller = TextEditingController();
+    final carbscontroller = TextEditingController();
 
-    _proteincontroller.text = mt.nutrientTracker!.proteinPlan.toString();
-    _fatcontroller.text = mt.nutrientTracker!.fatPlan.toString();
-    _carbscontroller.text = mt.nutrientTracker!.carbsPlan.toString();
+    proteincontroller.text = mt.nutrientTracker!.proteinPlan.toString();
+    fatcontroller.text = mt.nutrientTracker!.fatPlan.toString();
+    carbscontroller.text = mt.nutrientTracker!.carbsPlan.toString();
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -346,9 +346,9 @@ class _MealTrackerState extends State<MealTracker> {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Container(
-                padding: EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(10.0),
                 // optional padding around the container
                 child: Column(
                   children: [
@@ -357,19 +357,19 @@ class _MealTrackerState extends State<MealTracker> {
                         hintText: "300g",
                         type: "text",
                         onSaved: (val) {},
-                        controller: _proteincontroller),
+                        controller: proteincontroller),
                     MyCustomInput(
                         label: "Enter Fats",
                         hintText: "400g",
                         type: "text",
                         onSaved: (val) {},
-                        controller: _fatcontroller),
+                        controller: fatcontroller),
                     MyCustomInput(
                         label: "Enter Carbs",
                         hintText: "200g",
                         type: "text",
                         onSaved: (val) {},
-                        controller: _carbscontroller),
+                        controller: carbscontroller),
                   ],
                 ),
               ),
@@ -384,9 +384,9 @@ class _MealTrackerState extends State<MealTracker> {
                       padding: const EdgeInsets.symmetric(vertical: 12)),
                   onPressed: () async {
                     Map<String, dynamic> mp = mt.toJson()['nutrientTracker'];
-                    mp['proteinPlan'] = _proteincontroller.text;
-                    mp['fatPlan'] = _fatcontroller.text;
-                    mp['carbsPlan'] = _carbscontroller.text;
+                    mp['proteinPlan'] = proteincontroller.text;
+                    mp['fatPlan'] = fatcontroller.text;
+                    mp['carbsPlan'] = carbscontroller.text;
 
                     final res = await Provider.of<TrackerProvider>(context,
                             listen: false)

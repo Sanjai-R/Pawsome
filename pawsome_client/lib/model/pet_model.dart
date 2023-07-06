@@ -19,7 +19,7 @@ class PetModel {
   final String? gender;
   final String? breed;
   final String? description;
-  final dynamic? price;
+  final dynamic price;
   final DateTime? birthDate;
   final String? image;
   final int? userId;

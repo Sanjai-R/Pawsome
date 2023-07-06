@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pawsome_client/model/adopt_model.dart';
 import 'package:pawsome_client/model/pet_model.dart';
-import 'package:pawsome_client/provider/auth_provider.dart';
 import 'package:pawsome_client/services/pet.service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PetProvider extends ChangeNotifier {
   bool isSearchPressed = false;
@@ -45,10 +43,8 @@ class PetProvider extends ChangeNotifier {
 
     final filteredResults =
         res.where((c) => c['user']['userId'] != userId).toList();
-    print(filteredResults.length);
+
     if (res != null) {
-      res.map((e) => print(e));
-      _selectedPet = filteredResults[0];
       _pets = filteredResults
           .map((e) => PetModel.fromJson(e))
           .toList()
@@ -72,8 +68,6 @@ class PetProvider extends ChangeNotifier {
     final filteredResults =
         res.where((c) => c['user']['userId'] == userId).toList();
 
-    print(filteredResults.length);
-
     if (res != null) {
       _pets = filteredResults
           .map((e) => PetModel.fromJson(e))
@@ -96,7 +90,6 @@ class PetProvider extends ChangeNotifier {
     final res = await PetService.getCategories();
 
     if (res != null) {
-      res.map((e) => print(e));
       _categories =
           res.map((e) => Category.fromJson(e)).toList().cast<Category>();
 
@@ -131,7 +124,6 @@ class PetProvider extends ChangeNotifier {
   }
 
   Future<dynamic> adoptPet(data) async {
-    print(data);
     final res = await PetService.postAdopt(data);
 
     if (res != null) {
@@ -147,7 +139,6 @@ class PetProvider extends ChangeNotifier {
     final res = await PetService.getAdoptedData();
 
     if (res != null) {
-      res.map((e) => print(e));
       _adopts =
           res.map((e) => AdoptModel.fromJson(e)).toList().cast<AdoptModel>();
 
@@ -164,7 +155,7 @@ class PetProvider extends ChangeNotifier {
 
   Future<dynamic> updateStatus(data) async {
     final res = await PetService.updateAdoptStatus(data['id'], data);
-    print(data);
+
     if (res) {
       return {
         'status': true,
@@ -174,6 +165,7 @@ class PetProvider extends ChangeNotifier {
       return {'status': false, 'message': 'Adoption Status Updation Failed'};
     }
   }
+
   void clear() {
     isSearchPressed = false;
     _categories = [];
@@ -184,5 +176,4 @@ class PetProvider extends ChangeNotifier {
     _selectedPet = {};
     _errorMessage = '';
   }
-
 }
