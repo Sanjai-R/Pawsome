@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:pawsome_client/provider/app_provider.dart';
+import 'package:pawsome_client/screens/news/news_screen.dart';
 import 'package:pawsome_client/screens/pet_management/home/home_screen.dart';
 import 'package:pawsome_client/screens/pet_management/pet/create_pet.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/dashboard.dart';
@@ -19,7 +20,7 @@ class Layout extends StatefulWidget {
 class _LayoutState extends State<Layout> {
   final List<Widget> _tabs = [
     const PetHomePage(),
-    EventTab(),
+    const NewsScreen(),
     const CreatePet(),
     const Dashboard(),
     const Profile()
@@ -29,10 +30,8 @@ class _LayoutState extends State<Layout> {
   Widget build(BuildContext context) {
     int currentIndex = Provider.of<AppProvider>(context).currentIndex;
     return Scaffold(
-
       body: _tabs[currentIndex],
       bottomNavigationBar: NavigationBar(
-
         indicatorShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0),
         ),
@@ -43,7 +42,6 @@ class _LayoutState extends State<Layout> {
         onDestinationSelected: (index) {
           Provider.of<AppProvider>(context, listen: false).changeIndex(index);
         },
-
         animationDuration: const Duration(seconds: 1),
         destinations: [
           NavigationDestination(

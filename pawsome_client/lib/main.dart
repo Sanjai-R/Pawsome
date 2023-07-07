@@ -4,6 +4,7 @@ import 'package:pawsome_client/SizeConfig.dart';
 import 'package:pawsome_client/provider/app_provider.dart';
 import 'package:pawsome_client/provider/auth_provider.dart';
 import 'package:pawsome_client/provider/event_provider.dart';
+import 'package:pawsome_client/provider/news_provider.dart';
 import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:pawsome_client/provider/tracker_provider.dart';
 import 'package:pawsome_client/router/router.dart';
@@ -26,6 +27,7 @@ void main() async {
       ),
       ChangeNotifierProvider(create: (_) => AppProvider()),
       ChangeNotifierProvider(create: (_) => PetProvider()),
+      ChangeNotifierProvider(create: (_) => NewsProvider())
     ],
     child: const MyApp(),
   ));
@@ -47,6 +49,7 @@ class _MyAppState extends State<MyApp> {
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
@@ -61,7 +64,6 @@ class _MyAppState extends State<MyApp> {
         fontFamily: GoogleFonts.poppins().fontFamily,
       ),
       routerConfig: router,
-
     );
   }
 }
