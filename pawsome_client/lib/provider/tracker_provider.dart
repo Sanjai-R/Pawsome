@@ -12,7 +12,7 @@ class TrackerProvider extends ChangeNotifier {
     "dailyPlan": 0,
     "foodConsumed": 0,
     "nutrientTrackerId": 0,
-    "petId": 5,
+    "petId": 0,
     "nutrientTracker": {
       "nutrientTrackerId": 0,
       "proteinPlan": 0,
@@ -41,14 +41,13 @@ class TrackerProvider extends ChangeNotifier {
     }
   }
 
-  Future<dynamic> getMealTrack() async {
+  Future<dynamic> getMealTrack(petId) async {
     _isLoading = true;
     notifyListeners();
-    final res = await TrackerService.getMealTrackingData();
-    print(res);
-    if (res != null) {
+    final res = await TrackerService.getMealTrackingData(petId);
 
-      _mealTracker = MealTrackerModel.fromJson(res);
+    if (res.isNotEmpty) {
+      _mealTracker = MealTrackerModel.fromJson(res[0]);
       _hasError = false;
       _errorMessage = '';
     } else {
@@ -61,7 +60,7 @@ class TrackerProvider extends ChangeNotifier {
   }
 
   Future<dynamic> updateMealPlan(data) async {
-    print(data);
+
     final res = await TrackerService.updateNutrients(
         data['nutrientTrackerId'].toString(), data);
 
@@ -90,10 +89,9 @@ class TrackerProvider extends ChangeNotifier {
   }
 
   Map<String, dynamic> calculateNutrients(Map<String, dynamic> json) {
-    final totalNutrients = json['totalNutrients'] as Map<String, dynamic>;
-    final totalDaily = json['totalDaily'] as Map<String, dynamic>;
+   final totalDaily = json['totalDaily'] as Map<String, dynamic>;
     Map<String, dynamic> mp = {};
-    print('Total Nutrients:');
+
 
     totalDaily.forEach((key, value) {
       final label = value['label'] as String;
@@ -103,5 +101,27 @@ class TrackerProvider extends ChangeNotifier {
       }
     });
     return mp;
+  }
+  void clear() {
+    _isLoading = false;
+    _hasError = false;
+    _errorMessage = '';
+    _mealTracker = null;
+    mealData = {
+      "mealTrackerId": 0,
+      "dailyPlan": 0,
+      "foodConsumed": 0,
+      "nutrientTrackerId": 0,
+      "petId": 0,
+      "nutrientTracker": {
+        "nutrientTrackerId": 0,
+        "proteinPlan": 0,
+        "proteinConsumed": 0,
+        "fatPlan": 0,
+        "fatConsumed": 0,
+        "carbsPlan": 0,
+        "carbsConsumed": 0
+      }
+    };
   }
 }

@@ -14,7 +14,9 @@ import 'package:pawsome_client/screens/forgot_password/reset_password.dart';
 import 'package:pawsome_client/screens/home_screen.dart';
 import 'package:pawsome_client/screens/onboard.dart';
 import 'package:pawsome_client/screens/pet_management/Layout.dart';
-import 'package:pawsome_client/screens/pet_management/home/pet_details.dart';
+import 'package:pawsome_client/screens/pet_management/adoption/adopt_details.dart';
+import 'package:pawsome_client/screens/pet_management/pet/create_pet.dart';
+import 'package:pawsome_client/screens/pet_management/pet/pet_details.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/create_meal_plan.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/dashboard.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/tracker.dart';
@@ -76,8 +78,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/tracker',
-      builder: (BuildContext context, GoRouterState state) =>
-          Tracker(),
+      builder: (BuildContext context, GoRouterState state) => Tracker(),
     ),
     GoRoute(
       path: '/tracker/meal/create',
@@ -85,12 +86,21 @@ final GoRouter router = GoRouter(
           const CreateMealPlan(),
     ),
     GoRoute(
+        path: '/pet/create',
+        builder: (BuildContext context, GoRouterState state) {
+          return CreatePet();
+        }),
+    GoRoute(
         path: '/pet/details',
         builder: (BuildContext context, GoRouterState state) {
           dynamic petId = state.queryParameters['dynamicData'];
 
           return PetDetails(petId: petId);
         }),
+    GoRoute(
+        path: '/adopt',
+        builder: (BuildContext context, GoRouterState state) =>
+            const ViewAdoptDetails()),
   ],
   redirect: (context, state) async {
     final isViewed = await _checkViewedStatus();

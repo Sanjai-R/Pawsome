@@ -1,13 +1,13 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iconly/iconly.dart';
+
 import 'package:pawsome_client/core/constant/constant.dart';
 import 'package:pawsome_client/provider/auth_provider.dart';
 import 'package:pawsome_client/screens/pet_management/home/categories.dart';
 import 'package:pawsome_client/screens/pet_management/home/components/banner.dart';
 import 'package:pawsome_client/screens/pet_management/home/components/custom_app_bar.dart';
-import 'package:pawsome_client/screens/pet_management/home/pet_list.dart';
+import 'package:pawsome_client/screens/pet_management/pet/pet_list.dart';
 import 'package:provider/provider.dart';
 
 class PetHomePage extends StatefulWidget {
@@ -54,16 +54,16 @@ class _PetHomePageState extends State<PetHomePage> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(height: defaultPadding),
-                HomeBanner(),
-                SizedBox(height: defaultPadding),
+                const SizedBox(height: defaultPadding),
+                const HomeBanner(),
+                const SizedBox(height: defaultPadding),
 // Banner(),
-                PetCategories(),
+                const PetCategories(),
                 const SizedBox(height: defaultPadding),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'Popular Pets',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

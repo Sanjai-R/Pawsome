@@ -36,6 +36,20 @@ namespace pawsome_server.Controllers
 
             return eventModal;
         }
+
+        [HttpGet("getEventByPet/{id}")]
+        public async Task<ActionResult<IEnumerable<EventModal>>> GetEventModelByPetId(int id) {
+            var EventModels = await _context.Events.Include(c=>c.Pet)
+                .Where(mt => mt.PetId == id)
+                .ToListAsync();
+
+            if(EventModels.Count == 0) {
+                return new List<EventModal>(); // Return an empty array if no meal trackers are found
+            }
+
+            return EventModels;
+        }
+
         // POST: api/Event
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

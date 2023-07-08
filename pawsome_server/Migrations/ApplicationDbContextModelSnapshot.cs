@@ -102,6 +102,79 @@ namespace pawsome_server.Migrations
                     b.ToTable("PetCategory");
                 });
 
+            modelBuilder.Entity("pawsome_server.Models.PetManagement.AdoptionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BuyerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PetId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("PetId");
+
+                    b.ToTable("Adoption");
+                });
+
+            modelBuilder.Entity("pawsome_server.Models.PetManagement.BookMarkModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("PetId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PetId");
+
+                    b.ToTable("bookMarkModels");
+                });
+
+            modelBuilder.Entity("pawsome_server.Models.PetManagement.FoodProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ContainNutrient")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Img")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("foodProducts");
+                });
+
             modelBuilder.Entity("pawsome_server.Models.PetTracker.NutrientTrackerModel", b =>
                 {
                     b.Property<int>("NutrientTrackerId")
@@ -260,6 +333,36 @@ namespace pawsome_server.Migrations
                         .IsRequired();
 
                     b.Navigation("NutrientTracker");
+                });
+
+            modelBuilder.Entity("pawsome_server.Models.PetManagement.AdoptionModel", b =>
+                {
+                    b.HasOne("pawsome_server.Models.UserModel", "Buyer")
+                        .WithMany()
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("pawsome_server.Models.Shared.Pet", "Pet")
+                        .WithMany()
+                        .HasForeignKey("PetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("Pet");
+                });
+
+            modelBuilder.Entity("pawsome_server.Models.PetManagement.BookMarkModel", b =>
+                {
+                    b.HasOne("pawsome_server.Models.Shared.Pet", "Pet")
+                        .WithMany()
+                        .HasForeignKey("PetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pet");
                 });
 
             modelBuilder.Entity("pawsome_server.Models.Shared.Pet", b =>

@@ -16,7 +16,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   final List<Widget> _tabs = [
-    Dashboard(),
+    const Dashboard(),
     Tracker(),
     const EventScreen(),
     EventTab(),
@@ -26,10 +26,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
   int _currentIndex = Provider.of<AppProvider>(context).currentIndex;
     return Scaffold(
-backgroundColor: Color(0xffF9FAFB),
+
       body: _tabs[_currentIndex],
       bottomNavigationBar: NavigationBar(
-        // backgroundColor: Colors.white,
+        backgroundColor: const Color(0xffEDF2F7),
         indicatorShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0),
         ),
@@ -77,9 +77,9 @@ class EventTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Page 1'),
+        title: const Text('Page 1'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Page 1 content'),
       ),
     );;

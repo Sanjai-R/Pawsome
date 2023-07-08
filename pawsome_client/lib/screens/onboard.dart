@@ -116,7 +116,7 @@ class _OnBoardState extends State<OnBoard> {
                       Text(
                         screens[index].text,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 24.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
@@ -125,7 +125,7 @@ class _OnBoardState extends State<OnBoard> {
                       Text(
                         screens[index].desc,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16.0,
                           fontFamily: 'Montserrat',
                           color: Colors.black,
@@ -191,7 +191,7 @@ class _OnBoardState extends State<OnBoard> {
                   currentIndex == screens.length - 1
                       ? "Get Started"
                       : "Explore",
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.white

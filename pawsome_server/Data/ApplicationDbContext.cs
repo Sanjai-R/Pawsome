@@ -20,5 +20,24 @@ namespace pawsome_server.Data
         
         public DbSet<WalkingTrackerModel> WalkingTracker { get; set; }
 
+        public DbSet<BookMarkModel> bookMarkModels { get; set; }
+
+        public DbSet<FoodProduct> foodProducts { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            base.OnModelCreating(modelBuilder);
+
+            // Configure the relationships
+            modelBuilder.Entity<AdoptionModel>()
+                .HasOne(adoption => adoption.Pet)
+                .WithMany()
+                .HasForeignKey(adoption => adoption.PetId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AdoptionModel>()
+                .HasOne(adoption => adoption.Buyer)
+                .WithMany()
+                .HasForeignKey(adoption => adoption.BuyerId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }

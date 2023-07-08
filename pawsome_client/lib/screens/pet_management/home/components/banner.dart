@@ -1,8 +1,6 @@
-import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iconly/iconly.dart';
+
 
 class HomeBanner extends StatelessWidget {
   const HomeBanner({super.key});
@@ -16,7 +14,7 @@ class HomeBanner extends StatelessWidget {
             height: 150,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              image: DecorationImage(
+              image: const DecorationImage(
                 image:NetworkImage(
                   "https://img.freepik.com/free-photo/lovely-pet-portrait-isolated_23-2149192357.jpg?w=900&t=st=1688361622~exp=1688362222~hmac=1dd88a6d80b8e10d4d66662e976b03502c7bd4ea7fc5b0dccb038166f222728f",
                   ),

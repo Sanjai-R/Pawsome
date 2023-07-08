@@ -4,10 +4,14 @@ import 'package:go_router/go_router.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
+import 'package:pawsome_client/provider/auth_provider.dart';
 import 'package:pawsome_client/provider/event_provider.dart';
+import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:pawsome_client/provider/tracker_provider.dart';
 import 'package:pawsome_client/screens/events/components/event_container.dart';
+import 'package:pawsome_client/screens/pet_management/pet/manage_pet.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/components/meal_tracker_container.dart';
+import 'package:pawsome_client/widgets/adopt_container.dart';
 import 'package:provider/provider.dart';
 
 class Dashboard extends StatefulWidget {
@@ -18,14 +22,20 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  num userId=0;
+
   @override
   void initState() {
     // TODO: implement initState
-    Provider.of<EventProvider>(context, listen: false).selectedDate =
-        DateTime.now();
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<EventProvider>(context, listen: false).fetchAllEvents();
-      Provider.of<TrackerProvider>(context, listen: false).getMealTrack();
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+      setState(() {
+        userId = authProvider.user['userId'];
+      });
+      Provider.of<PetProvider>(context, listen: false).fetchAllPets(userId);
+
     });
 
     super.initState();
@@ -33,25 +43,14 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedPet = Provider.of<PetProvider>(context).selectedPet;
+
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          actions: [
-            IconButton(
-              onPressed: () {
-                context.go('/event');
-              },
-              icon: Icon(CupertinoIcons.calendar_badge_plus),
-            ),
-            IconButton(
-              onPressed: () {
-                context.go('/tracker');
-              },
-              icon: Icon(CupertinoIcons.chart_pie),
-            ),
-          ],
+          forceMaterialTransparency: true,
+
           title: Text(
-            "Dashboard",
+            "Dashboard $userId",
             style: Theme.of(context)
                 .textTheme
                 .headlineSmall!
@@ -60,21 +59,35 @@ class _DashboardState extends State<Dashboard> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(defaultPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Text('Dashboard'),
-              Text(
-                'Today, ${DateFormat('MMMMd').format(DateTime.now())}',
-                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Today, ${DateFormat('MMMMd').format(DateTime.now())}',
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 16.0),
+                  const ManagePet(),
+                  const SizedBox(height: 16.0),
+                  selectedPet.isEmpty
+                      ? const Center(child: Text('Please select a pet to get analytics'))
+                      : Column(
+                          children: [
+                            EventList(),
+                            const SizedBox(height: 16.0),
+                            const MealTrackerContainer(),
+                            const SizedBox(height: 16.0),
+                            const AdoptContainer()
+                          ],
+                        )
+                ],
               ),
-              SizedBox(height: 16.0),
-              EventList(),
-              SizedBox(height: 16.0),
-              MealTrackerContainer()
-            ],
+            ),
           ),
         ));
   }

@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     if (token != null) {
-      context.go('/home');
+      context.go('/');
     }
   }
 
@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (res['status']) {
         setState(() => _isLoading = false);
-        context.go('/home');
+        context.go('/');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

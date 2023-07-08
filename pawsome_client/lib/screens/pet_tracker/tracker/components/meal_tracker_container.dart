@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:pawsome_client/provider/tracker_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +18,11 @@ class _MealTrackerContainerState extends State<MealTrackerContainer> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<TrackerProvider>(context, listen: false).getMealTrack();
+      final selectedPet = context.read<PetProvider>().selectedPet;
+
+      if (selectedPet.isNotEmpty) {
+        context.read<TrackerProvider>().getMealTrack(selectedPet['petId']);
+      }
     });
     // TODO: implement initState
     super.initState();
@@ -45,12 +51,17 @@ class _MealTrackerContainerState extends State<MealTrackerContainer> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 Text(
                   "Meal",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                Icon(Icons.analytics_outlined)
+                IconButton(
+                  onPressed: () {
+                    context.go('/tracker');
+                  },
+                  icon: const Icon(CupertinoIcons.chart_pie),
+                ),
               ],
             ),
             SizedBox(height: 8),
@@ -84,7 +95,6 @@ class _MealTrackerContainerState extends State<MealTrackerContainer> {
                     ),
                   );
                 } else {
-
                   return Column(
                     children: [
                       Row(
@@ -93,19 +103,19 @@ class _MealTrackerContainerState extends State<MealTrackerContainer> {
                         children: [
                           RichText(
                               text: TextSpan(children: [
-                                TextSpan(
-                                    text: 'Daily Plan: ',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
+                            TextSpan(
+                                text: 'Daily Plan: ',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                     )),
-                                TextSpan(
-                                    text: meal!.dailyPlan.toString(),
-                                    style: Theme.of(context).textTheme.bodySmall)
-                              ])),
+                            TextSpan(
+                                text: meal!.dailyPlan.toString(),
+                                style: Theme.of(context).textTheme.bodySmall)
+                          ])),
                           SizedBox(
                             width: 100,
                             height: 100,
@@ -148,19 +158,20 @@ class _MealTrackerContainerState extends State<MealTrackerContainer> {
                           ),
                           RichText(
                               text: TextSpan(children: [
-                                TextSpan(
-                                    text: 'Remaining: ',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
+                            TextSpan(
+                                text: 'Remaining: ',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                     )),
-                                TextSpan(
-                                    text: (meal.dailyPlan! - meal.foodConsumed!).toString(),
-                                    style: Theme.of(context).textTheme.bodySmall)
-                              ])),
+                            TextSpan(
+                                text: (meal.dailyPlan! - meal.foodConsumed!)
+                                    .toString(),
+                                style: Theme.of(context).textTheme.bodySmall)
+                          ])),
                         ],
                       ),
                       Row(
@@ -194,7 +205,6 @@ class _MealTrackerContainerState extends State<MealTrackerContainer> {
                 }
               },
             )
-
           ],
         ));
   }
@@ -206,17 +216,17 @@ class _MealTrackerContainerState extends State<MealTrackerContainer> {
         Text(
           title,
           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+                fontWeight: FontWeight.bold,
+              ),
         ),
         SizedBox(
           height: 4,
         ),
         LinearProgressIndicator(
-          value: value/plan,
-
+          value: value / plan,
           backgroundColor: Colors.grey[300],
-          valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.primary),
+          valueColor: AlwaysStoppedAnimation<Color>(
+              Theme.of(context).colorScheme.primary),
         ),
         SizedBox(
           height: 4,

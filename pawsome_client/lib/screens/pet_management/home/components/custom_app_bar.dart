@@ -79,7 +79,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                         decoration: InputDecoration(
                           prefixIcon: const Icon(CupertinoIcons.search),
                           hintText: 'Enter your search query',
-                          contentPadding: EdgeInsets.all(16.0),
+                          contentPadding: const EdgeInsets.all(16.0),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
                             borderSide: BorderSide.none,
@@ -90,9 +90,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
                         ),
                       ),
                     ),
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 20.0,
                 backgroundImage: NetworkImage(
+
                     'https://img.freepik.com/premium-photo/digital-painting-boy-with-freckles-red-hoodie_921202-1.jpg?size=626&ext=jpg&ga=GA1.2.873758883.1686891337&semt=sph'),
               ),
             ],

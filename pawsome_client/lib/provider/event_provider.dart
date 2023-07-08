@@ -1,4 +1,4 @@
-import 'dart:convert';
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:pawsome_client/model/event_model.dart';
@@ -10,10 +10,10 @@ class EventProvider extends ChangeNotifier {
   String _errorMessage = '';
   List<Event> _events = [];
   Map<String, dynamic> data = {
-    "petId": 4,
+    "petId": "",
     "eventDateTime": "",
     "eventTitle": "",
-    "eventDesc": "Lorem",
+    "eventDesc": "",
     "hasReminder": false
   };
 
@@ -40,14 +40,14 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchAllEvents() async {
+  Future<void> fetchAllEvents(petId) async {
     _isLoading = true;
     notifyListeners();
 
-    final res = await EventService.getEvents();
+    final res = await EventService.getEventData(petId);
 
     if (res != null) {
-      res.map((e) => print(e));
+
 
       _events = res.map((e) => Event.fromJson(e)).toList().cast<Event>();
       _hasError = false;
@@ -58,6 +58,21 @@ class EventProvider extends ChangeNotifier {
     }
 
     _isLoading = false;
+    notifyListeners();
+  }
+  void clear() {
+    _isLoading = false;
+    _hasError = false;
+    _errorMessage = '';
+    _events = [];
+    data = {
+      "petId": "",
+      "eventDateTime": "",
+      "eventTitle": "",
+      "eventDesc": "",
+      "hasReminder": false
+    };
+    selectedDate = DateTime.now();
     notifyListeners();
   }
 }

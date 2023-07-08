@@ -37,7 +37,8 @@ namespace pawsome_server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Pet>> GetPet(int id)
         {
-            var pet = await _context.Pets.FindAsync(id);
+            var pet = await _context.Pets.Include(p => p.Category) // Include Category navigation property
+            .Include(p => p.User).FirstOrDefaultAsync();
 
             if (pet == null)
             {

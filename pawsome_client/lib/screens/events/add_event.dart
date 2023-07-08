@@ -6,10 +6,12 @@ import 'package:intl/intl.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
 import 'package:pawsome_client/provider/app_provider.dart';
 import 'package:pawsome_client/provider/event_provider.dart';
+import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:pawsome_client/widgets/custom_form_field.dart';
 import 'package:provider/provider.dart';
 
 class AddEvent extends StatefulWidget {
+
   const AddEvent({Key? key}) : super(key: key);
 
   @override
@@ -17,10 +19,10 @@ class AddEvent extends StatefulWidget {
 }
 
 class _AddEventState extends State<AddEvent> {
+  late final _petId ;
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
+
     if (Provider.of<EventProvider>(context, listen: false).data['eventTitle'] !=
         null) {
       _title.text =
@@ -28,6 +30,8 @@ class _AddEventState extends State<AddEvent> {
     } else {
       selectedDate = DateTime.now();
     }
+    _petId = Provider.of<PetProvider>(context, listen: false).selectedPet['petId'];
+    super.initState();
   }
 
   final TextEditingController _title = TextEditingController();
@@ -39,18 +43,21 @@ class _AddEventState extends State<AddEvent> {
 
   @override
   Widget build(BuildContext context) {
+
     final Map<String, dynamic> data =
         Provider.of<EventProvider>(context, listen: false).data;
     final theme = Theme.of(context).colorScheme;
     void onSubmit() async {
       if (_formKey.currentState!.validate()) {
+        DateTime parsedDateTime = DateTime.parse(selectedDate.toString());
+        String convertedDateTime = DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').format(parsedDateTime);
         setState(() => _isLoading = true);
         _formKey.currentState!.save();
         data['eventTitle'] = _title.text;
         data['eventDesc'] = _description.text;
-        data["eventDateTime"] = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-            .format(selectedDate.toUtc());
+        data["eventDateTime"] = convertedDateTime;
         data['hasReminder'] = hasReminder;
+        data['petId'] = _petId;
         final res = await Provider.of<EventProvider>(context, listen: false)
             .postEvent(data);
         if (res != null) {
@@ -61,8 +68,9 @@ class _AddEventState extends State<AddEvent> {
 
         if (res['status']) {
           setState(() => _isLoading = false);
-
-          context.go('/event');
+          Provider.of<EventProvider>(context, listen: false)
+              .fetchAllEvents(_petId);
+          context.go('/');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -77,7 +85,7 @@ class _AddEventState extends State<AddEvent> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Create Event",
+          "Create Event ",
           style: Theme.of(context)
               .textTheme
               .headlineSmall!

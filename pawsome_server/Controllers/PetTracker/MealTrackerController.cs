@@ -32,16 +32,17 @@ namespace pawsome_server.Controllers.PetTracker
 
         // GET: api/MealTracker/5
         [HttpGet("getMealTrackerByPet/{id}")]
-        public async Task<ActionResult<MealTrackerModel>> GetMealTrackerModelByPetId(int id)
-        {
-            var mealTrackerModel = await _context.MealTracker.Include(c => c.NutrientTracker).FirstOrDefaultAsync(mt => mt.PetId == id);
+        public async Task<ActionResult<IEnumerable<MealTrackerModel>>> GetMealTrackerModelByPetId(int id) {
+            var mealTrackerModels = await _context.MealTracker
+                .Include(mt => mt.NutrientTracker)
+                .Where(mt => mt.PetId == id)
+                .ToListAsync();
 
-            if (mealTrackerModel == null)
-            {
-                return NotFound();
+            if(mealTrackerModels.Count == 0) {
+                return new List<MealTrackerModel>(); // Return an empty array if no meal trackers are found
             }
 
-            return mealTrackerModel;
+            return mealTrackerModels;
         }
 
         // PUT: api/MealTracker/5
