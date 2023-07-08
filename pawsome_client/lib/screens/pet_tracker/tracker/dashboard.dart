@@ -48,20 +48,7 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
         appBar: AppBar(
           forceMaterialTransparency: true,
-          actions: [
-            IconButton(
-              onPressed: () {
-                context.go('/event');
-              },
-              icon: const Icon(CupertinoIcons.calendar_badge_plus),
-            ),
-            IconButton(
-              onPressed: () {
-                context.go('/tracker');
-              },
-              icon: const Icon(CupertinoIcons.chart_pie),
-            ),
-          ],
+
           title: Text(
             "Dashboard $userId",
             style: Theme.of(context)

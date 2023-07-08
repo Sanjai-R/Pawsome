@@ -4,6 +4,7 @@ import 'package:pawsome_client/SizeConfig.dart';
 import 'package:pawsome_client/provider/app_provider.dart';
 import 'package:pawsome_client/provider/auth_provider.dart';
 import 'package:pawsome_client/provider/event_provider.dart';
+import 'package:pawsome_client/provider/food_provider.dart';
 import 'package:pawsome_client/provider/news_provider.dart';
 import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:pawsome_client/provider/tracker_provider.dart';
@@ -27,7 +28,8 @@ void main() async {
       ),
       ChangeNotifierProvider(create: (_) => AppProvider()),
       ChangeNotifierProvider(create: (_) => PetProvider()),
-      ChangeNotifierProvider(create: (_) => NewsProvider())
+      ChangeNotifierProvider(create: (_) => NewsProvider()),
+      ChangeNotifierProvider(create: (_) => FoodProvider()),
     ],
     child: const MyApp(),
   ));

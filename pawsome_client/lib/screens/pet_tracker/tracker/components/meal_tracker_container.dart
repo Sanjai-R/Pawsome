@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pawsome_client/provider/pet_provier.dart';
@@ -50,12 +51,17 @@ class _MealTrackerContainerState extends State<MealTrackerContainer> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 Text(
                   "Meal",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                Icon(Icons.analytics_outlined)
+                IconButton(
+                  onPressed: () {
+                    context.go('/tracker');
+                  },
+                  icon: const Icon(CupertinoIcons.chart_pie),
+                ),
               ],
             ),
             SizedBox(height: 8),

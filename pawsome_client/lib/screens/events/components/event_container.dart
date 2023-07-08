@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:pawsome_client/core/constant/event_colot_palatte.dart';
 import 'package:pawsome_client/provider/event_provider.dart';
@@ -38,7 +40,7 @@ class _EventListState extends State<EventList> {
   Widget build(BuildContext context) {
     return Container(
         padding: const EdgeInsets.all(12.0),
-        height: 150,
+
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
           color: Colors.white,
@@ -55,9 +57,20 @@ class _EventListState extends State<EventList> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Events ",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Events",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                IconButton(
+                  onPressed: () {
+                    context.go('/event');
+                  },
+                  icon: const Icon(CupertinoIcons.calendar_badge_plus),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
             Consumer<EventProvider>(builder: (context, eventProvider, child) {

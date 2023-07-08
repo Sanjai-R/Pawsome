@@ -62,8 +62,8 @@ namespace pawsome_server.Controllers.PetManagement
                 bool hasSufficientCarbs = mealTracker[0].NutrientTracker.CarbsConsumed < mealTracker[0].NutrientTracker.CarbsPlan;
                 bool hasSufficientProtein = mealTracker[0].NutrientTracker.ProteinConsumed < mealTracker[0].NutrientTracker.ProteinPlan;
                 bool hasSufficientFat = mealTracker[0].NutrientTracker.FatConsumed < mealTracker[0].NutrientTracker.FatPlan;
-                Console.WriteLine($"{mealTracker[0].NutrientTracker.FatConsumed}{mealTracker[0].NutrientTracker.FatPlan}");
-                if (!hasSufficientCarbs && !hasSufficientFat && !hasSufficientProtein)
+              
+                if (hasSufficientCarbs && hasSufficientFat && hasSufficientProtein)
                 {
                     return await _context.foodProducts.ToListAsync();
                 }

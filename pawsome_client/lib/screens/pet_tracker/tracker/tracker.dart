@@ -4,7 +4,11 @@ import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/meal_tracker.dart';
 import 'package:provider/provider.dart';
 
+import '../../food/recommend_food.dart';
+
 class Tracker extends StatefulWidget {
+  const Tracker({super.key});
+
   @override
   _TrackerState createState() => _TrackerState();
 }
@@ -53,9 +57,9 @@ class _TrackerState extends State<Tracker>
           final pet = petProvider.selectedPet;
           return TabBarView(
             controller: _tabController,
-            children: [
-              buildWalkingTrackerTab(),
-              const MealTracker(),
+            children: const[
+              RecommendedFoods(),
+              MealTracker(),
             ],
           );
 
