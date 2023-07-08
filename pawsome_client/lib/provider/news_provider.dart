@@ -36,11 +36,10 @@ class NewsProvider extends ChangeNotifier {
   }
 
   Future<void> getMoreNews() async {
+
     if (_isLoading || isLastPage) return;
-
-    _isLoading = true;
     _currentPage++;
-
+    _isLoading = true;
     final res = await NewsService.getNews(_currentPage);
 
     if (res != null) {

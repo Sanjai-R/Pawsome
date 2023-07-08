@@ -16,12 +16,13 @@ class _NewsScreenState extends State<NewsScreen> {
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
 
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       context.read<NewsProvider>().getNews();
     });
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+
   }
 
   @override
@@ -44,17 +45,22 @@ class _NewsScreenState extends State<NewsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('News',
-        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-          fontWeight: FontWeight.bold,
-        ),),
+        title: Text(
+          'News',
+          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
         centerTitle: true,
       ),
       body: Consumer<NewsProvider>(
         builder: (context, newsProvider, child) {
-          final news = newsProvider.news;
+          final news = newsProvider.news.where(
+                (element) => element['urlToImage'] != null,
+          ).toList();
 
-          if (newsProvider.isLoading && news.isEmpty) {
+
+          if (newsProvider.isLoading ) {
             return Center(
               child: CircularProgressIndicator(),
             );
@@ -66,76 +72,77 @@ class _NewsScreenState extends State<NewsScreen> {
                 controller: _scrollController,
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
-                  if (index < news.length) {
-                    return Container(
-                      padding: const EdgeInsets.all(8.0),
-                      margin: const EdgeInsets.symmetric(vertical: 5.0),
-                      decoration: BoxDecoration(
-                        boxShadow: boxShadow,
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.0),
-                        border: Border.all(color: Colors.grey.shade300),
-                      ),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Image.network(
-                              news[index]['urlToImage'] ??
-                                  'https://via.placeholder.com/150',
-                              height: 100,
-                              width: 100,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        news[index]['title'].toString(),
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        maxLines: 2,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  news[index]['description'].toString(),
-                                  maxLines: 2,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else if (newsProvider.isLoading) {
-                    // Show a loading indicator at the end of the list
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  } else {
-                    // Reached the end of the list and no more data to load
-                    return const SizedBox(); // Return an empty SizedBox
-                  }
+                 if(index < news.length ){
+                   return Container(
+                     padding: const EdgeInsets.all(8.0),
+                     margin: const EdgeInsets.symmetric(vertical: 5.0),
+                     decoration: BoxDecoration(
+                       boxShadow: boxShadow,
+                       color: Colors.white,
+                       borderRadius: BorderRadius.circular(8.0),
+                       border: Border.all(color: Colors.grey.shade300),
+                     ),
+                     child: Row(
+                       children: [
+                         ClipRRect(
+                           borderRadius: BorderRadius.circular(8.0),
+                           child: Image.network(
+                             news[index]['urlToImage'] ??
+                                 'https://via.placeholder.com/150',
+                             height: 100,
+                             width: 100,
+                             fit: BoxFit.cover,
+                           ),
+                         ),
+                         const SizedBox(width: 10),
+                         Expanded(
+                           child: Column(
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
+                               Row(
+                                 mainAxisAlignment:
+                                 MainAxisAlignment.spaceBetween,
+                                 children: [
+                                   Expanded(
+                                     child: Text(
+                                       news[index]['title'].toString(),
+                                       style: const TextStyle(
+                                         fontSize: 18,
+                                         fontWeight: FontWeight.bold,
+                                       ),
+                                       maxLines: 2,
+                                     ),
+                                   ),
+                                 ],
+                               ),
+                               const SizedBox(height: 5),
+                               Text(
+                                 news[index]['description'].toString(),
+                                 maxLines: 2,
+                                 style: const TextStyle(
+                                   fontSize: 14,
+                                   fontWeight: FontWeight.w400,
+                                 ),
+                               ),
+                               const SizedBox(height: 5),
+                             ],
+                           ),
+                         ),
+                       ],
+                     ),
+                   );
+                 }
+                 else if(newsProvider.isLastPage){
+                   return Center(
+                     child: Text('No more news'),
+                   );
+                 }
+                 else{
+                   return Center(
+                     child: CircularProgressIndicator(),
+                   );
+                 }
+                  // return NewsContainer(news: news[index]
                 },
               ),
             );
