@@ -50,7 +50,7 @@ class _DashboardState extends State<Dashboard> {
           forceMaterialTransparency: true,
 
           title: Text(
-            "Dashboard $userId",
+            "Dashboard ",
             style: Theme.of(context)
                 .textTheme
                 .headlineSmall!

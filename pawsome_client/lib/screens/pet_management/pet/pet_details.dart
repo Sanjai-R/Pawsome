@@ -77,10 +77,18 @@ class _PetDetailsState extends State<PetDetails> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            context.go('/');
+            Navigator.pop(context);
           },
         ),
         backgroundColor: Colors.blueGrey[100],
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.go('/pet/edit/${widget.petId}');
+            },
+            icon: const Icon(Icons.edit),
+          ),
+        ],
       ),
       body: Consumer<PetProvider>(
         builder: (context, petProvider, child) {
