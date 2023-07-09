@@ -35,66 +35,38 @@ class _CustomAppBarState extends State<CustomAppBar> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  boxShadow: boxShadow,
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: IconButton(
-                  icon: Icon(
-                    isSearchPressed
-                        ? CupertinoIcons.xmark
-                        : CupertinoIcons.search,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  onPressed: toggleSearch,
-                ),
-              ),
-              !isSearchPressed
-                  ? Row(
-                      children: [
-                        Icon(
-                          IconlyLight.location,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        Text(
-                          'Chennai,TN',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    )
-                  : Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        color: Colors.grey[200],
-                      ),
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      child: TextFormField(
-                        // Customize the TextFormField as needed
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(CupertinoIcons.search),
-                          hintText: 'Enter your search query',
-                          contentPadding: const EdgeInsets.all(16.0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: BorderSide.none,
-                          ),
-                          fillColor: Colors.grey[200],
-                          hintStyle: TextStyle(color: Colors.grey[600]),
-                          filled: true,
-                        ),
-                      ),
-                    ),
+
+
               const CircleAvatar(
                 radius: 20.0,
                 backgroundImage: NetworkImage(
 
                     'https://img.freepik.com/premium-photo/digital-painting-boy-with-freckles-red-hoodie_921202-1.jpg?size=626&ext=jpg&ga=GA1.2.873758883.1686891337&semt=sph'),
+              ),
+              Row(
+                children: [
+                  Icon(
+                    IconlyLight.location,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  Text(
+                    'Chennai,TN',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              IconButton(
+                onPressed: () {
+                  toggleSearch();
+                },
+                icon: Icon(
+                  IconlyLight.notification,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
             ],
           ),

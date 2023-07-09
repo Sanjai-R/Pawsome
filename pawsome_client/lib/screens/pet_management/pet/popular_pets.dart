@@ -109,69 +109,62 @@ class _PopularPetsState extends State<PopularPets> {
                                   ],
                                 ),
                               ),
-                              // const Spacer(),
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(14.0),
-                                  boxShadow: boxShadow,
-                                  color: Colors.white,
-                                ),
-                                child: IconButton(
-                                  onPressed: () async {
-                                    final data = {
-                                      'userId': userId,
-                                      'petId': i.petId,
-                                    };
 
-                                    if (bookMarksId.contains(i.petId)) {
-                                      late BookmarkModel temp;
-                                      for (var element in bookmarks) {
-                                        if (element.petId == i.petId) {
-                                          temp = element;
-                                        }
-                                      }
-                                      final res = await petProvider
-                                          .deleteBookmarks(temp.id!);
-                                      if (res['status']) {
-                                        petProvider.getBookmarks(userId);
-                                        context
-                                            .read<AppProvider>()
-                                            .changeIndex(4);
+                              IconButton(
+                                onPressed: () async {
+                                  final data = {
+                                    'userId': userId,
+                                    'petId': i.petId,
+                                  };
 
-                                        context.go('/');
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                                content: Text(
-                                                    'Something went wrong')));
-                                      }
-                                    } else {
-                                      final res =
-                                          await petProvider.postBookmarks(data);
-                                      if (res['status']) {
-                                        petProvider.getBookmarks(userId);
-                                        context
-                                            .read<AppProvider>()
-                                            .changeIndex(4);
-
-                                        context.go('/');
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                                content: Text(
-                                                    'Something went wrong')));
+                                  if (bookMarksId.contains(i.petId)) {
+                                    late BookmarkModel temp;
+                                    for (var element in bookmarks) {
+                                      if (element.petId == i.petId) {
+                                        temp = element;
                                       }
                                     }
-                                  },
-                                  icon: Center(
-                                    child: Icon(
-                                      bookMarksId.contains(i.petId)
-                                          ? CupertinoIcons.bookmark_fill
-                                          : CupertinoIcons.bookmark,
-                                      size: 30,
-                                      color:
-                                          Theme.of(context).colorScheme.error,
-                                    ),
+                                    final res = await petProvider
+                                        .deleteBookmarks(temp.id!);
+                                    if (res['status']) {
+                                      petProvider.getBookmarks(userId);
+                                      context
+                                          .read<AppProvider>()
+                                          .changeIndex(4);
+
+                                      context.go('/');
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  'Something went wrong')));
+                                    }
+                                  } else {
+                                    final res =
+                                        await petProvider.postBookmarks(data);
+                                    if (res['status']) {
+                                      petProvider.getBookmarks(userId);
+                                      context
+                                          .read<AppProvider>()
+                                          .changeIndex(4);
+
+                                      context.go('/');
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  'Something went wrong')));
+                                    }
+                                  }
+                                },
+                                icon: Center(
+                                  child: Icon(
+                                    bookMarksId.contains(i.petId)
+                                        ? CupertinoIcons.bookmark_fill
+                                        : CupertinoIcons.bookmark,
+                                    size: 24,
+                                    color:
+                                        Theme.of(context).colorScheme.error,
                                   ),
                                 ),
                               ),

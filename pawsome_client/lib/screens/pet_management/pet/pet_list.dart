@@ -35,6 +35,9 @@ class _PetListState extends State<PetList> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> imgs = [
+      "https://img.freepik.com/free-photo/portrait-beautiful-purebred-pussycat-with-shorthair-orange-collar-neck-sitting-floor-reacting-camera-flash-scared-looking-light-indoor_8353-12551.jpg?w=360&t=st=1688887223~exp=1688887823~hmac=9b259dea6b308a5358b7b6810bbc54b0002d265192626c665e415d22a2b20ea0",
+    ];
     return SizedBox(
         height: 300,
         child: Consumer(
@@ -45,137 +48,103 @@ class _PetListState extends State<PetList> {
                 petProvider.bookmarks.map((e) => e.petId).toList() ?? [];
 
             return Scaffold(
-              body: ListView(
-                // scrollDirection: Axis.horizontal,
-                children: [
-                  for (var i in pets)
-                    Container(
-                      margin: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14.0),
-                        boxShadow: boxShadow,
-                        color: Colors.white,
+              appBar: AppBar(),
+              body: Padding(
+                padding: const EdgeInsets.all(defaultPadding),
+                child: Column(
+                  children: [
+                    TextFormField(
+                      // Customize the TextFormField as needed
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(CupertinoIcons.search),
+                        hintText: 'Enter your search query',
+                        contentPadding: const EdgeInsets.all(16.0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        fillColor: Colors.grey[200],
+                        hintStyle: TextStyle(color: Colors.grey[600]),
+                        filled: true,
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                context.go('/pet/details?dynamicData=${i.petId}');
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(14.0),
-                                child: Image.network(
-                                  i.image.toString(),
-                                  height: 200,
-                                  width: 200,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 200,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        i.name.toString(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium!
-                                            .copyWith(
-                                                fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        i.gender.toString(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium!
-                                            .copyWith(
-                                                fontWeight: FontWeight.bold,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                // const Spacer(),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(14.0),
-                                    boxShadow: boxShadow,
-                                    color: Colors.white,
-                                  ),
-                                  child: IconButton(
-                                    onPressed: () async {
-                                      final data = {
-                                        'userId': userId,
-                                        'petId': i.petId,
-                                      };
-
-                                      if (bookMarksId.contains(i.petId)) {
-                                        late BookmarkModel temp;
-                                        for (var element in bookmarks) {
-                                          if (element.petId == i.petId) {
-                                            temp = element;
-                                          }
-                                        }
-                                        final res = await petProvider
-                                            .deleteBookmarks(temp.id!);
-                                        if (res['status']) {
-                                          petProvider.getBookmarks(userId);
-                                          context.read<AppProvider>().changeIndex(4);
-
-                                          context.go('/');
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(const SnackBar(
-                                                  content: Text(
-                                                      'Something went wrong')));
-                                        }
-                                      } else {
-                                        final res = await petProvider.postBookmarks(data);
-                                        if (res['status']) {
-                                          petProvider.getBookmarks(userId);
-                                          context.read<AppProvider>().changeIndex(4);
-
-                                          context.go('/');
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(const SnackBar(
-                                              content: Text(
-                                                  'Something went wrong')));
-                                        }
-                                      }
+                    ),
+                    SizedBox(height: defaultPadding),
+                    Expanded(
+                      child: ListView.builder(
+                          itemCount: pets.length,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      context.go('/pet/details?dynamicData=${pets[index].petId}');
                                     },
-                                    icon: Center(
-                                      child: Icon(
-                                        bookMarksId.contains(i.petId)
-                                            ? CupertinoIcons.bookmark_fill
-                                            : CupertinoIcons.bookmark,
-                                        size: 30,
-                                        color:
-                                            Theme.of(context).colorScheme.error,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: Image.network(
+                                        pets[index].image.toString(),
+                                        height: 300,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              pets[index].name.toString(),
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                              pets[index].description.toString(),
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        IconButton(
+
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            size: 26,
+                                            bookMarksId
+                                                    .contains(pets[index].petId)
+                                                ? IconlyBold.bookmark
+                                                : IconlyLight.bookmark,
+                                            color: bookMarksId
+                                                    .contains(pets[index].petId)
+                                                ? Theme.of(context).colorScheme.error
+                                                : Colors.grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
                     ),
-                ],
+                  ],
+                ),
               ),
             );
           },
