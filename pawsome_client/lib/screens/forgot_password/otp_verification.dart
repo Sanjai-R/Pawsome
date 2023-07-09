@@ -25,16 +25,18 @@ class _OtpPageState extends State<OtpPage> {
     setState(() {
       _isLoading = false;
     });
-print(res);
-    if (res['status']) {
-      context.go('/forgot-password/reset-password');
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(res['message']),
-          backgroundColor: Colors.red,
-        ),
-      );
+
+    if (context.mounted) {
+      if (res['status']) {
+        context.go('/forgot-password/reset-password');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(res['message']),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -119,8 +121,8 @@ print(res);
                           Radius.circular(8),
                         ),
                         borderSide: BorderSide(
-                          color: Colors.black,  // Set your desired border color
-                          width: 2.0,          // Set the desired border width
+                          color: Colors.black, // Set your desired border color
+                          width: 2.0, // Set the desired border width
                         ),
                       ),
                     ),

@@ -8,6 +8,7 @@ import 'package:pawsome_client/screens/pet_management/home/categories.dart';
 import 'package:pawsome_client/screens/pet_management/home/components/banner.dart';
 import 'package:pawsome_client/screens/pet_management/home/components/custom_app_bar.dart';
 import 'package:pawsome_client/screens/pet_management/pet/pet_list.dart';
+import 'package:pawsome_client/screens/pet_management/pet/popular_pets.dart';
 import 'package:provider/provider.dart';
 
 class PetHomePage extends StatefulWidget {
@@ -69,7 +70,14 @@ class _PetHomePageState extends State<PetHomePage> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PetList(),
+                          ),
+                        );
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -89,7 +97,7 @@ class _PetHomePageState extends State<PetHomePage> {
                     ),
                   ],
                 ),
-                const PetList(),
+                const PopularPets(),
               ],
             ),
           ),

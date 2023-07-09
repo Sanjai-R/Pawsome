@@ -3,7 +3,7 @@ import 'package:pawsome_client/core/constant/constant.dart';
 import 'package:pawsome_client/model/bookmark_model.dart';
 
 class BookMark extends StatefulWidget {
-  final List<BookmarkModel> bookmarks;
+  final List<dynamic> bookmarks;
   const BookMark({super.key, required this.bookmarks});
 
   @override
@@ -13,6 +13,11 @@ class BookMark extends StatefulWidget {
 class _BookMarkState extends State<BookMark> {
   @override
   Widget build(BuildContext context) {
+    if(widget.bookmarks.isEmpty){
+      return const Center(
+        child: Text('No Bookmarks'),
+      );
+    }
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       child: ListView.builder(

@@ -17,7 +17,7 @@ class _NewsScreenState extends State<NewsScreen> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context.read<NewsProvider>().getNews();
     });
     _scrollController = ScrollController();
@@ -56,7 +56,7 @@ class _NewsScreenState extends State<NewsScreen> {
       body: Consumer<NewsProvider>(
         builder: (context, newsProvider, child) {
           final news = newsProvider.news.where(
-                (element) => element['urlToImage'] != null,
+                (element) => element['urlToImage'] != null && !element['urlToImage'].toString().contains('webp') ,
           ).toList();
 
 

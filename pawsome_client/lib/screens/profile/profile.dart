@@ -56,18 +56,21 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               prefs.remove('authData');
-              Provider.of<AuthProvider>(context, listen: false).clear();
-              Provider.of<AppProvider>(context, listen: false).clear();
-              Provider.of<EventProvider>(context, listen: false).clear();
-              Provider.of<PetProvider>(context, listen: false).clear();
-              Provider.of<TrackerProvider>(context, listen: false).clear();
-              context.go('/login');
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Logout Success'),
-                  backgroundColor: Colors.green,
-                ),
-              );
+              if(context.mounted){
+                Provider.of<AuthProvider>(context, listen: false).clear();
+                Provider.of<AppProvider>(context, listen: false).clear();
+                Provider.of<EventProvider>(context, listen: false).clear();
+                Provider.of<PetProvider>(context, listen: false).clear();
+                Provider.of<TrackerProvider>(context, listen: false).clear();
+                context.go('/login');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Logout Success'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              }
+
 
               // Add your logout functionality here
             },
@@ -96,9 +99,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 const SizedBox(height: defaultPadding),
                 TabBar(
                   controller: tabController,
-                  tabs: [
-                    const Tab(text: 'Saved'),
-                    const Tab(text: 'Your Pets'),
+                  tabs: const [
+                    Tab(text: 'Saved'),
+                    Tab(text: 'Your Pets'),
                   ],
                 ),
                 Expanded(

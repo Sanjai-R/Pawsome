@@ -1,9 +1,7 @@
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pawsome_client/model/pet_model.dart';
 import 'package:pawsome_client/screens/auth/login.dart';
 import 'package:pawsome_client/screens/auth/sign_up_screen.dart';
 import 'package:pawsome_client/screens/events/add_event.dart';
@@ -11,7 +9,6 @@ import 'package:pawsome_client/screens/events/event_screen.dart';
 import 'package:pawsome_client/screens/forgot_password/forgot_password.dart';
 import 'package:pawsome_client/screens/forgot_password/otp_verification.dart';
 import 'package:pawsome_client/screens/forgot_password/reset_password.dart';
-import 'package:pawsome_client/screens/home_screen.dart';
 import 'package:pawsome_client/screens/onboard.dart';
 import 'package:pawsome_client/screens/pet_management/Layout.dart';
 import 'package:pawsome_client/screens/pet_management/adoption/adopt_details.dart';
@@ -20,7 +17,6 @@ import 'package:pawsome_client/screens/pet_management/pet/pet_details.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/create_meal_plan.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/dashboard.dart';
 import 'package:pawsome_client/screens/pet_tracker/tracker/tracker.dart';
-import 'package:pawsome_client/services/pet.service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final GoRouter router = GoRouter(
@@ -41,11 +37,11 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/',
-      builder: (BuildContext context, GoRouterState state) => Layout(),
+      builder: (BuildContext context, GoRouterState state) => const Layout(),
     ),
     GoRoute(
       path: '/analytics',
-      builder: (BuildContext context, GoRouterState state) => Dashboard(),
+      builder: (BuildContext context, GoRouterState state) => const Dashboard(),
     ),
     GoRoute(
       path: '/event',
@@ -78,7 +74,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/tracker',
-      builder: (BuildContext context, GoRouterState state) => Tracker(),
+      builder: (BuildContext context, GoRouterState state) => const Tracker(),
     ),
     GoRoute(
       path: '/tracker/meal/create',
@@ -88,7 +84,7 @@ final GoRouter router = GoRouter(
     GoRoute(
         path: '/pet/create',
         builder: (BuildContext context, GoRouterState state) {
-          return CreatePet();
+          return const CreatePet();
         }),
     GoRoute(
         path: '/pet/details',
