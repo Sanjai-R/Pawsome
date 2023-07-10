@@ -109,4 +109,17 @@ class PetService {
     }
     return null;
   }
+
+  static Future<bool> deleteBookMark(bookMarkId) async{
+    print("delete called $bookMarkId");
+    try {
+      final res = await Dio().delete('${AppUrl.baseUrl}/BookMark/$bookMarkId');
+      if (res != null && (res.statusCode == 200 || res.statusCode == 201)) {
+        return true;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
 }

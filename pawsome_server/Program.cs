@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Hangfire.SqlServer;
 using pawsome_server.Controllers.PetTracker;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Azure.Core;
 
 namespace pawsome_server
 {
@@ -15,6 +18,23 @@ namespace pawsome_server
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+
+            SecretClientOptions options = new SecretClientOptions()
+            {
+                Retry = {
+          Delay = TimeSpan.FromSeconds(2),
+          MaxDelay = TimeSpan.FromSeconds(16),
+          MaxRetries = 5,
+          Mode = RetryMode.Exponential
+        }
+            };
+            var client = new SecretClient(new Uri("https://pawsome-api.vault.azure.net/"), new DefaultAzureCredential(), options);
+
+            KeyVaultSecret db = client.GetSecret("db");
+            KeyVaultSecret cacheDb = client.GetSecret("cache-db");
+            string secretValue = db.Value;
+            string cacheSecretValue = cacheDb.Value;
             // Add services to the container.
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -23,7 +43,7 @@ namespace pawsome_server
               .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
               .UseSimpleAssemblyNameTypeSerializer()
               .UseRecommendedSerializerSettings()
-              .UseSqlServerStorage(builder.Configuration.GetConnectionString("Db"), new SqlServerStorageOptions
+              .UseSqlServerStorage(secretValue, new SqlServerStorageOptions
               {
                   CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                   SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
@@ -33,12 +53,14 @@ namespace pawsome_server
               }));
             builder.Services.AddHangfireServer();
 
-            builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost:6379")); //redis
+            Console.WriteLine(secretValue);
+
+            builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(cacheSecretValue)); //redis
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-              options.UseSqlServer(builder.Configuration.GetConnectionString("Db")));
+              options.UseSqlServer(secretValue));
 
             var app = builder.Build();
             // Configure the HTTP request pipeline.
@@ -56,7 +78,6 @@ namespace pawsome_server
                 // Schedule the ResetAllNutrientTrackerModel method to run daily at 5 AM
                 RecurringJob.AddOrUpdate<NutrientTrackerController>("ResetAllNutrientTrackerModel", x => x.ResetAllNutrientTrackerModel(), Cron.Daily(5, 0));
 
-
             }
             app.UseAuthorization();
             app.UseCors(options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader());
@@ -66,7 +87,6 @@ namespace pawsome_server
             app.Run();
 
         }
-
 
     }
 }

@@ -19,23 +19,21 @@ class _ResetPasswordState extends State<ResetPassword> {
   final TextEditingController confirmPassword = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  bool _isLoading = false;
 
   void _onSubmit(String email) async {
+
     if (password.text != confirmPassword.text) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Password and Confirm Password does not match'),
         backgroundColor: Colors.red,
       ));
-      
+
     } else {
       setState(() {
-        _isLoading = true;
       });
       final res = await Provider.of<AuthProvider>(context, listen: false)
           .resetPassword(email, password.text);
       setState(() {
-        _isLoading = false;
       });
       if (res['status']) {
         ScaffoldMessenger.of(context).showSnackBar(

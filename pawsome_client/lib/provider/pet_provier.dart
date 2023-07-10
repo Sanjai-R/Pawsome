@@ -11,7 +11,7 @@ class PetProvider extends ChangeNotifier {
   bool _hasError = false;
   List<PetModel> _pets = [];
   List<AdoptModel> _adopts = [];
-  List<BookmarkModel> _bookmarks = [];
+  List<dynamic> _bookmarks = [];
   Map<String, dynamic> _selectedPet = {};
 
   String _errorMessage = '';
@@ -26,7 +26,7 @@ class PetProvider extends ChangeNotifier {
 
   List<AdoptModel> get adopts => _adopts;
 
-  List<BookmarkModel> get bookmarks => _bookmarks;
+  List<dynamic> get bookmarks => _bookmarks;
 
   Map<String, dynamic> get selectedPet => _selectedPet;
 
@@ -66,7 +66,7 @@ class PetProvider extends ChangeNotifier {
 
   Future<dynamic> postPet(data) async {
     final res = await PetService.postPet(data);
-    if (res != null) {
+    if (res ) {
       return {'status': true, 'message': 'Pet Posted Successfully'};
     } else {
       return {'status': false, 'message': 'Pet Posting Failed'};
@@ -134,6 +134,7 @@ class PetProvider extends ChangeNotifier {
     }
 
     _isLoading = false;
+    return null;
   }
 
   Future<dynamic> adoptPet(data) async {
@@ -184,8 +185,7 @@ class PetProvider extends ChangeNotifier {
     if (res != null) {
       _bookmarks = res
           .map((e) => BookmarkModel.fromJson(e))
-          .toList()
-          .cast<BookmarkModel>();
+          .toList();
 
       _hasError = false;
       _errorMessage = '';
@@ -203,6 +203,14 @@ class PetProvider extends ChangeNotifier {
       return {'status': false, 'message': 'Bookmarking Failed'};
     }
   }
+  Future<dynamic> deleteBookmarks(bookMarkId) async {
+    final res = await PetService.deleteBookMark(bookMarkId);
+    if (res != null) {
+      return {'status': true, 'message': 'Bookmarked Deleted Successfully'};
+    } else {
+      return {'status': false, 'message': 'Bookmarking Deletion Failed'};
+    }
+  }
 
   void clear() {
     isSearchPressed = false;
@@ -214,4 +222,8 @@ class PetProvider extends ChangeNotifier {
     _selectedPet = {};
     _errorMessage = '';
   }
+
+
+
+
 }

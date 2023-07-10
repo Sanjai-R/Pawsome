@@ -92,7 +92,6 @@ class TrackerProvider extends ChangeNotifier {
    final totalDaily = json['totalDaily'] as Map<String, dynamic>;
     Map<String, dynamic> mp = {};
 
-
     totalDaily.forEach((key, value) {
       final label = value['label'] as String;
       final quantity = value['quantity'] as double;

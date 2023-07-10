@@ -38,6 +38,7 @@ class _RecommendedFoodsState extends State<RecommendedFoods> {
               if (foods.isEmpty) {
                 return Text('No Recommended Foods');
               }
+
               else{
                 return Expanded(
                   child: ListView.builder(

@@ -54,7 +54,7 @@ class Pet {
   final String? gender;
   final String? breed;
   final String? description;
-  final num price;
+  final num? price;
   final DateTime? birthDate;
   final String? image;
   final int? userId;
