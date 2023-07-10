@@ -69,7 +69,7 @@ namespace pawsome_server
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            //        app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             using (var scope = app.Services.CreateScope())
             {
                 var serviceProvider = scope.ServiceProvider;
