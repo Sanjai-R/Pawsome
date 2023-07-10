@@ -69,7 +69,7 @@ namespace pawsome_server
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseHttpsRedirection();
+
             using (var scope = app.Services.CreateScope())
             {
                 var serviceProvider = scope.ServiceProvider;
@@ -83,7 +83,7 @@ namespace pawsome_server
             app.UseCors(options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader());
             app.UseHangfireDashboard("/dashboard");
             app.MapControllers();
-
+            app.UseHttpsRedirection();
             app.Run();
 
         }
