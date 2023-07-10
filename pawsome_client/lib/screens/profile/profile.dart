@@ -81,7 +81,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         builder: (context, AuthProvider authProvider, PetProvider petProvider,
             child) {
           final authData = authProvider.user;
-          final petData = petProvider.pets;
+          final petData = petProvider.myPets;
           final savedData = petProvider.bookmarks;
           print(savedData);
           final adoptedData = petProvider.adopts

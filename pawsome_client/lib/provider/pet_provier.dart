@@ -10,6 +10,7 @@ class PetProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool _hasError = false;
   List<PetModel> _pets = [];
+  List<PetModel> _myPets = [];
   List<AdoptModel> _adopts = [];
   List<dynamic> _bookmarks = [];
   Map<String, dynamic> _selectedPet = {};
@@ -24,6 +25,7 @@ class PetProvider extends ChangeNotifier {
 
   List<PetModel> get pets => _pets;
 
+  List<PetModel> get myPets => _myPets;
   List<AdoptModel> get adopts => _adopts;
 
   List<dynamic> get bookmarks => _bookmarks;
@@ -36,13 +38,13 @@ class PetProvider extends ChangeNotifier {
   }
 
   void setSelectedPet(data) {
-    notifyListeners();
     _selectedPet = data;
+    notifyListeners();
   }
 
   Future<void> fetchAllPets(userId) async {
     _isLoading = true;
-
+    print('all pets');
     final res = await PetService.getAllPets();
 
     final filteredResults =
@@ -66,7 +68,7 @@ class PetProvider extends ChangeNotifier {
 
   Future<dynamic> postPet(data) async {
     final res = await PetService.postPet(data);
-    if (res ) {
+    if (res) {
       return {'status': true, 'message': 'Pet Posted Successfully'};
     } else {
       return {'status': false, 'message': 'Pet Posting Failed'};
@@ -75,14 +77,14 @@ class PetProvider extends ChangeNotifier {
 
   Future<void> fetchAllPetsByUser(userId) async {
     _isLoading = true;
-
+    print('my pets');
     final res = await PetService.getAllPets();
 
     final filteredResults =
         res.where((c) => c['user']['userId'] == userId).toList();
 
     if (res != null) {
-      _pets = filteredResults
+      _myPets = filteredResults
           .map((e) => PetModel.fromJson(e))
           .toList()
           .cast<PetModel>();
@@ -183,9 +185,7 @@ class PetProvider extends ChangeNotifier {
   Future<void> getBookmarks(userId) async {
     final res = await PetService.getBookMarks(userId);
     if (res != null) {
-      _bookmarks = res
-          .map((e) => BookmarkModel.fromJson(e))
-          .toList();
+      _bookmarks = res.map((e) => BookmarkModel.fromJson(e)).toList();
 
       _hasError = false;
       _errorMessage = '';
@@ -203,6 +203,7 @@ class PetProvider extends ChangeNotifier {
       return {'status': false, 'message': 'Bookmarking Failed'};
     }
   }
+
   Future<dynamic> deleteBookmarks(bookMarkId) async {
     final res = await PetService.deleteBookMark(bookMarkId);
     if (res != null) {
@@ -218,12 +219,9 @@ class PetProvider extends ChangeNotifier {
     _isLoading = false;
     _hasError = false;
     _pets = [];
+    _myPets = [];
     _adopts = [];
     _selectedPet = {};
     _errorMessage = '';
   }
-
-
-
-
 }
