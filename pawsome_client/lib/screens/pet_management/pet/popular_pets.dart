@@ -46,6 +46,18 @@ class _PopularPetsState extends State<PopularPets> {
             if (pets.length > 3) {
               pets.removeRange(3, pets.length);
             }
+            if(pets.isEmpty){
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14.0),
+                  boxShadow: boxShadow,
+                  color: Colors.white,
+                ),
+                child: Center(
+                  child: Text("No Pets Found"),
+                ),
+              );
+            }
             return ListView(
               scrollDirection: Axis.horizontal,
               children: [

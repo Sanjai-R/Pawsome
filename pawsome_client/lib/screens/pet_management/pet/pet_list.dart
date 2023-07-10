@@ -80,6 +80,8 @@ class _PetListState extends State<PetList> {
                   ),
                 ),
                 const SizedBox(height: defaultPadding),
+                if(pets.isEmpty)
+                  const Center(child: Text('No Pets Found')),
                 Expanded(
                   child: ListView.builder(
                     physics: const BouncingScrollPhysics(),

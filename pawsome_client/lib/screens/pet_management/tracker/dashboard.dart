@@ -10,7 +10,7 @@ import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:pawsome_client/provider/tracker_provider.dart';
 import 'package:pawsome_client/screens/events/components/event_container.dart';
 import 'package:pawsome_client/screens/pet_management/pet/manage_pet.dart';
-import 'package:pawsome_client/screens/pet_tracker/tracker/components/meal_tracker_container.dart';
+import 'package:pawsome_client/screens/pet_management/tracker/components/meal_tracker_container.dart';
 import 'package:pawsome_client/widgets/adopt_container.dart';
 import 'package:provider/provider.dart';
 

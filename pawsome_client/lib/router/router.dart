@@ -14,9 +14,9 @@ import 'package:pawsome_client/screens/pet_management/Layout.dart';
 import 'package:pawsome_client/screens/pet_management/adoption/adopt_details.dart';
 import 'package:pawsome_client/screens/pet_management/pet/create_pet.dart';
 import 'package:pawsome_client/screens/pet_management/pet/pet_details.dart';
-import 'package:pawsome_client/screens/pet_tracker/tracker/create_meal_plan.dart';
-import 'package:pawsome_client/screens/pet_tracker/tracker/dashboard.dart';
-import 'package:pawsome_client/screens/pet_tracker/tracker/tracker.dart';
+import 'package:pawsome_client/screens/pet_management/tracker/create_meal_plan.dart';
+import 'package:pawsome_client/screens/pet_management/tracker/dashboard.dart';
+import 'package:pawsome_client/screens/pet_management/tracker/tracker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final GoRouter router = GoRouter(
