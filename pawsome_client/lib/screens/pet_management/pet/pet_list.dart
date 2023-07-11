@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
+import 'package:pawsome_client/model/bookmark_model.dart';
 import 'package:pawsome_client/model/pet_model.dart';
+import 'package:pawsome_client/provider/app_provider.dart';
 import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:pawsome_client/screens/pet_management/pet/pet_details.dart';
 import 'package:provider/provider.dart';
@@ -49,7 +51,7 @@ class _PetListState extends State<PetList> {
       if (query.isNotEmpty) {
         filteredPets =
             getPetByName(Provider.of<PetProvider>(context, listen: false).pets, query).toList();
-        print(filteredPets);
+
       } else {
         filteredPets = [];
       }
@@ -176,15 +178,61 @@ class _PetListState extends State<PetList> {
                                         ),
                                       ),
                                       IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(
-                                          bookMarksId.contains(pet.petId)
-                                              ? CupertinoIcons.bookmark_fill
-                                              : CupertinoIcons.bookmark,
-                                          size: 26,
-                                          color: bookMarksId.contains(pet.petId)
-                                              ? Theme.of(context).colorScheme.error
-                                              : Colors.grey,
+                                        onPressed: () async {
+                                          final data = {
+                                            'userId': userId,
+                                            'petId': pet.petId,
+                                          };
+
+                                          if (bookMarksId.contains(pet.petId)) {
+                                            late BookmarkModel temp;
+                                            for (var element in bookmarks) {
+                                              if (element.petId == pet.petId) {
+                                                temp = element;
+                                              }
+                                            }
+                                            final res = await petProvider
+                                                .deleteBookmarks(temp.id!);
+                                            if (res['status']) {
+                                              petProvider.getBookmarks(userId);
+                                              context
+                                                  .read<AppProvider>()
+                                                  .changeIndex(4);
+
+                                              context.go('/');
+                                            } else {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                  content: Text(
+                                                      'Something went wrong')));
+                                            }
+                                          } else {
+                                            final res =
+                                            await petProvider.postBookmarks(data);
+                                            if (res['status']) {
+                                              petProvider.getBookmarks(userId);
+                                              context
+                                                  .read<AppProvider>()
+                                                  .changeIndex(4);
+
+                                              context.go('/');
+                                            } else {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                  content: Text(
+                                                      'Something went wrong')));
+                                            }
+                                          }
+                                        },
+                                        icon: Center(
+                                          child: Icon(
+                                            bookMarksId.contains(pet.petId)
+                                                ? CupertinoIcons.bookmark_fill
+                                                : CupertinoIcons.bookmark,
+                                            size: 24,
+                                            color:
+                                            Theme.of(context).colorScheme.error,
+                                          ),
                                         ),
                                       ),
                                     ],

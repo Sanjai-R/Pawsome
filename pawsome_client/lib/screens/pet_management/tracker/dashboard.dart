@@ -61,8 +61,9 @@ class _DashboardState extends State<Dashboard> {
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16.0),
-
                 const ManagePet(),
+                const SizedBox(height: 16.0),
+                const AdoptContainer(),
                 const SizedBox(height: 16.0),
                 Consumer<PetProvider>(builder: (context, petProvider, child) {
                   final selectedPet = context.watch<PetProvider>().selectedPet;
@@ -76,7 +77,7 @@ class _DashboardState extends State<Dashboard> {
                         const SizedBox(height: 16.0),
                         const MealTrackerContainer(),
                         const SizedBox(height: 16.0),
-                        const AdoptContainer(),
+
                       ],
                     );
                   }
