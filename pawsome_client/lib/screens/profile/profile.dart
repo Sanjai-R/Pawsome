@@ -130,7 +130,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         children: [
           _buildAnalyticsCard('Adopted', adoptedData.length.toString()),
           _buildAnalyticsCard('Challanges', '2'),
-          _buildAnalyticsCard('Donated', petData.length.toString()),
+          _buildAnalyticsCard('Posted', petData.length.toString()),
         ],
       ),
     );
@@ -339,6 +339,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                   backgroundColor: Colors.red,
                                 ),
                               );
+                              Navigator.pop(context);
                            }
                           }
                         },

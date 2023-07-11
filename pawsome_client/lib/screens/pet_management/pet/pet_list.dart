@@ -132,7 +132,7 @@ class _PetListState extends State<PetList> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => PetDetails(
-                                            petId: pets[index].petId.toString(),
+                                            pet: pets[index],
                                           ),
                                         ),
                                       );
