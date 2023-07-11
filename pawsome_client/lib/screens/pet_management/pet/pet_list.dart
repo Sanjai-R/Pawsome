@@ -1,12 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconly/iconly.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
-import 'package:pawsome_client/model/bookmark_model.dart';
-import 'package:pawsome_client/provider/app_provider.dart';
+import 'package:pawsome_client/model/pet_model.dart';
 import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:pawsome_client/screens/pet_management/pet/pet_details.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +18,9 @@ class PetList extends StatefulWidget {
 
 class _PetListState extends State<PetList> {
   late num userId;
+  final TextEditingController _searchController = TextEditingController();
+  List<PetModel> filteredPets = []; // New filtered pets list
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -29,7 +28,31 @@ class _PetListState extends State<PetList> {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       userId = authProvider.user['userId'];
-      Provider.of<PetProvider>(context, listen: false).fetchAllPets(userId);
+      Provider.of<PetProvider>(context, listen: false)
+          .fetchAllPets(userId)
+          .then((_) {
+        setState(() {
+          isLoading = false;
+        });
+      });
+    });
+  }
+
+  List<PetModel> getPetByName(List<PetModel> pets, String name) {
+    return pets
+        .where((pet) => pet.name.toString().toLowerCase().contains(name.toLowerCase()))
+        .toList();
+  }
+
+  void filterPets(String query) {
+    setState(() {
+      if (query.isNotEmpty) {
+        filteredPets =
+            getPetByName(Provider.of<PetProvider>(context, listen: false).pets, query).toList();
+        print(filteredPets);
+      } else {
+        filteredPets = [];
+      }
     });
   }
 
@@ -42,6 +65,7 @@ class _PetListState extends State<PetList> {
         final bookMarksId = petProvider.bookmarks.map((e) => e.petId).toList() ?? [];
 
         return Scaffold(
+          resizeToAvoidBottomInset: true,
           appBar: AppBar(
             forceMaterialTransparency: true,
             title: const Text(
@@ -65,7 +89,8 @@ class _PetListState extends State<PetList> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextFormField(
-                  // Customize the TextFormField as needed
+                  controller: _searchController,
+                  onChanged: filterPets, // Call filterPets method when text changes
                   decoration: InputDecoration(
                     prefixIcon: const Icon(CupertinoIcons.search),
                     hintText: 'Enter your search query',
@@ -80,80 +105,103 @@ class _PetListState extends State<PetList> {
                   ),
                 ),
                 const SizedBox(height: defaultPadding),
-                if(pets.isEmpty)
+                if (pets.isEmpty && !isLoading)
                   const Center(child: Text('No Pets Found')),
                 Expanded(
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: pets.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>  PetDetails(petId: pets[index].petId.toString()),
+                  child: Stack(
+                    children: [
+                      Visibility(
+                        visible: !isLoading,
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          itemCount:
+                          filteredPets.length > 0 ? filteredPets.length : pets.length,
+                          itemBuilder: (context, index) {
+                            final pet =
+                            filteredPets.length > 0 ? filteredPets[index] : pets[index];
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => PetDetails(
+                                            petId: pets[index].petId.toString(),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: Image.network(
+                                        pet.image.toString(),
+                                        height: 300,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
-                                );
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Image.network(
-                                  pets[index].image.toString(),
-                                  height: 300,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        pets[index].name.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 8.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              pet.name.toString(),
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context).size.width * 0.7,
+                                              child: Text(
+                                                pet.description.toString(),
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      Text(
-                                        pets[index].description.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(
+                                          bookMarksId.contains(pet.petId)
+                                              ? CupertinoIcons.bookmark_fill
+                                              : CupertinoIcons.bookmark,
+                                          size: 26,
+                                          color: bookMarksId.contains(pet.petId)
+                                              ? Theme.of(context).colorScheme.error
+                                              : Colors.grey,
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    bookMarksId.contains(pets[index].petId)
-                                        ? CupertinoIcons.bookmark_fill
-                                        : CupertinoIcons.bookmark,
-                                    size: 26,
-                                    color: bookMarksId.contains(pets[index].petId)
-                                        ? Theme.of(context).colorScheme.error
-                                        : Colors.grey,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                      Visibility(
+                        visible: isLoading,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
