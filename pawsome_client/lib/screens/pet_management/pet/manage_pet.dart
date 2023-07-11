@@ -93,7 +93,7 @@ class _ManagePetState extends State<ManagePet> {
                           child: CircularProgressIndicator(),
                         );
                       }
-                      final pets = petProvider.pets ?? [];
+                      final pets = petProvider.myPets?? [];
                       final selectedPet = petProvider.selectedPet ?? {};
                       return ListView.builder(
                         scrollDirection: Axis.horizontal,

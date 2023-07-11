@@ -26,14 +26,14 @@ namespace pawsome_server.Controllers.PetManagement
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FoodProduct>>> GetFoodProducts()
         {
-            return await _context.foodProducts.ToListAsync();
+            return await _context.FoodProducts.ToListAsync();
         }
 
         // GET: api/FoodProduct/5
         [HttpGet("{id}")]
         public async Task<ActionResult<FoodProduct>> GetFoodProduct(int id)
         {
-            var foodProduct = await _context.foodProducts.FindAsync(id);
+            var foodProduct = await _context.FoodProducts.FindAsync(id);
 
             if (foodProduct == null)
             {
@@ -53,7 +53,7 @@ namespace pawsome_server.Controllers.PetManagement
 
             if (mealTracker.Count == 0)
             {
-                var foodProducts = await _context.foodProducts.ToListAsync();
+                var foodProducts = await _context.FoodProducts.ToListAsync();
                 return foodProducts;
             }
             else
@@ -62,22 +62,22 @@ namespace pawsome_server.Controllers.PetManagement
                 bool hasSufficientCarbs = mealTracker[0].NutrientTracker.CarbsConsumed < mealTracker[0].NutrientTracker.CarbsPlan;
                 bool hasSufficientProtein = mealTracker[0].NutrientTracker.ProteinConsumed < mealTracker[0].NutrientTracker.ProteinPlan;
                 bool hasSufficientFat = mealTracker[0].NutrientTracker.FatConsumed < mealTracker[0].NutrientTracker.FatPlan;
-              
+
                 if (hasSufficientCarbs && hasSufficientFat && hasSufficientProtein)
                 {
-                    return await _context.foodProducts.ToListAsync();
+                    return await _context.FoodProducts.ToListAsync();
                 }
                 else if (hasSufficientCarbs)
                 {
-                    return await _context.foodProducts.Where(fp => fp.ContainNutrient != "Carbs").ToListAsync();
+                    return await _context.FoodProducts.Where(fp => fp.ContainNutrient != "Carbs").ToListAsync();
                 }
                 else if (hasSufficientProtein)
                 {
-                    return await _context.foodProducts.Where(fp => fp.ContainNutrient != "Proteins").ToListAsync();
+                    return await _context.FoodProducts.Where(fp => fp.ContainNutrient != "Proteins").ToListAsync();
                 }
                 else if (hasSufficientFat)
                 {
-                    return await _context.foodProducts.Where(fp => fp.ContainNutrient != "Fats").ToListAsync();
+                    return await _context.FoodProducts.Where(fp => fp.ContainNutrient != "Fats").ToListAsync();
                 }
                 return null;
             }
@@ -120,7 +120,7 @@ namespace pawsome_server.Controllers.PetManagement
         [HttpPost]
         public async Task<ActionResult<FoodProduct>> PostFoodProduct(FoodProduct foodProduct)
         {
-            _context.foodProducts.Add(foodProduct);
+            _context.FoodProducts.Add(foodProduct);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetFoodProduct", new { id = foodProduct.Id }, foodProduct);
@@ -130,13 +130,13 @@ namespace pawsome_server.Controllers.PetManagement
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFoodProduct(int id)
         {
-            var foodProduct = await _context.foodProducts.FindAsync(id);
+            var foodProduct = await _context.FoodProducts.FindAsync(id);
             if (foodProduct == null)
             {
                 return NotFound();
             }
 
-            _context.foodProducts.Remove(foodProduct);
+            _context.FoodProducts.Remove(foodProduct);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -144,7 +144,7 @@ namespace pawsome_server.Controllers.PetManagement
 
         private bool FoodProductExists(int id)
         {
-            return _context.foodProducts.Any(e => e.Id == id);
+            return _context.FoodProducts.Any(e => e.Id == id);
         }
     }
 }

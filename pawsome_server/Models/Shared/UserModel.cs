@@ -23,6 +23,6 @@ namespace pawsome_server.Models
         [Required]
         public string Location { get; set; }
 
-        public string NotificationId { get; set; }
+        public string Profile { get; set; }
     }
 }

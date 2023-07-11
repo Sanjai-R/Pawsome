@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
 import 'package:pawsome_client/provider/news_provider.dart';
+import 'package:pawsome_client/screens/news/news_detail.dart';
 import 'package:provider/provider.dart';
 
 class NewsScreen extends StatefulWidget {
@@ -73,62 +74,72 @@ class _NewsScreenState extends State<NewsScreen> {
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
                  if(index < news.length ){
-                   return Container(
-                     padding: const EdgeInsets.all(8.0),
-                     margin: const EdgeInsets.symmetric(vertical: 5.0),
-                     decoration: BoxDecoration(
-                       boxShadow: boxShadow,
-                       color: Colors.white,
-                       borderRadius: BorderRadius.circular(8.0),
-                       border: Border.all(color: Colors.grey.shade300),
-                     ),
-                     child: Row(
-                       children: [
-                         ClipRRect(
-                           borderRadius: BorderRadius.circular(8.0),
-                           child: Image.network(
-                             news[index]['urlToImage'] ??
-                                 'https://via.placeholder.com/150',
-                             height: 100,
-                             width: 100,
-                             fit: BoxFit.cover,
+                   return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NewsDetail(news: news[index]),
+                          ),
+                        );
+                      },
+                     child: Container(
+                       padding: const EdgeInsets.all(8.0),
+                       margin: const EdgeInsets.symmetric(vertical: 5.0),
+                       decoration: BoxDecoration(
+                         boxShadow: boxShadow,
+                         color: Colors.white,
+                         borderRadius: BorderRadius.circular(8.0),
+                         border: Border.all(color: Colors.grey.shade300),
+                       ),
+                       child: Row(
+                         children: [
+                           ClipRRect(
+                             borderRadius: BorderRadius.circular(8.0),
+                             child: Image.network(
+                               news[index]['urlToImage'] ??
+                                   'https://via.placeholder.com/150',
+                               height: 100,
+                               width: 100,
+                               fit: BoxFit.cover,
+                             ),
                            ),
-                         ),
-                         const SizedBox(width: 10),
-                         Expanded(
-                           child: Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
-                             children: [
-                               Row(
-                                 mainAxisAlignment:
-                                 MainAxisAlignment.spaceBetween,
-                                 children: [
-                                   Expanded(
-                                     child: Text(
-                                       news[index]['title'].toString(),
-                                       style: const TextStyle(
-                                         fontSize: 18,
-                                         fontWeight: FontWeight.bold,
+                           const SizedBox(width: 10),
+                           Expanded(
+                             child: Column(
+                               crossAxisAlignment: CrossAxisAlignment.start,
+                               children: [
+                                 Row(
+                                   mainAxisAlignment:
+                                   MainAxisAlignment.spaceBetween,
+                                   children: [
+                                     Expanded(
+                                       child: Text(
+                                         news[index]['title'].toString(),
+                                         style: const TextStyle(
+                                           fontSize: 18,
+                                           fontWeight: FontWeight.bold,
+                                         ),
+                                         maxLines: 2,
                                        ),
-                                       maxLines: 2,
                                      ),
-                                   ),
-                                 ],
-                               ),
-                               const SizedBox(height: 5),
-                               Text(
-                                 news[index]['description'].toString(),
-                                 maxLines: 2,
-                                 style: const TextStyle(
-                                   fontSize: 14,
-                                   fontWeight: FontWeight.w400,
+                                   ],
                                  ),
-                               ),
-                               const SizedBox(height: 5),
-                             ],
+                                 const SizedBox(height: 5),
+                                 Text(
+                                   news[index]['description'].toString(),
+                                   maxLines: 2,
+                                   style: const TextStyle(
+                                     fontSize: 14,
+                                     fontWeight: FontWeight.w400,
+                                   ),
+                                 ),
+                                 const SizedBox(height: 5),
+                               ],
+                             ),
                            ),
-                         ),
-                       ],
+                         ],
+                       ),
                      ),
                    );
                  }

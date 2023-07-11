@@ -59,8 +59,8 @@ class _PetHomePageState extends State<PetHomePage> {
                 const HomeBanner(),
                 const SizedBox(height: defaultPadding),
 // Banner(),
-                const PetCategories(),
-                const SizedBox(height: defaultPadding),
+//                 const PetCategories(),
+//                 const SizedBox(height: defaultPadding),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

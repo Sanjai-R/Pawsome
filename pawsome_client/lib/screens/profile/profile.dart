@@ -13,6 +13,8 @@ import 'package:pawsome_client/widgets/adopt_container.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../auth/components/sign_up_form.dart';
+
 class Profile extends StatefulWidget {
   const Profile({super.key});
 
@@ -56,7 +58,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               prefs.remove('authData');
-              if(context.mounted){
+              if (context.mounted) {
                 Provider.of<AuthProvider>(context, listen: false).clear();
                 Provider.of<AppProvider>(context, listen: false).clear();
                 Provider.of<EventProvider>(context, listen: false).clear();
@@ -71,7 +73,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 );
               }
 
-
               // Add your logout functionality here
             },
           ),
@@ -81,7 +82,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         builder: (context, AuthProvider authProvider, PetProvider petProvider,
             child) {
           final authData = authProvider.user;
-          final petData = petProvider.pets;
+          final petData = petProvider.myPets;
           final savedData = petProvider.bookmarks;
           print(savedData);
           final adoptedData = petProvider.adopts
@@ -225,7 +226,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
           width: double.infinity,
           height: 50,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              openBottomSheet(context, authData);
+            },
             child: const Text('Edit Profile'),
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -235,6 +238,71 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
           ),
         )
       ],
+    );
+  }
+
+  void openBottomSheet(BuildContext context, dynamic user) {
+    bool isLoading = false;
+    GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+    final TextEditingController _location = TextEditingController();
+
+    final TextEditingController _mobile = TextEditingController();
+    final TextEditingController _image = TextEditingController();
+
+    _location.text = user['location'];
+    _mobile.text = user['mobile'];
+    // _image.text = user['image'];
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Update Profile',
+                style: Theme.of(context).textTheme.headline6!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(height: 8.0),
+              Container(
+                padding: const EdgeInsets.all(10.0),
+                // optional padding around the container
+                child: Column(
+                  children: [
+                    SignUpForm(formKey: _formKey, inputs: [
+
+                      {
+                        'label': 'Location',
+                        'hintText': 'Chennai,TN',
+                        'type': 'text',
+                        'controller': _location
+                      },
+                      {
+                        'label': 'Mobile',
+                        'hintText': "1234567890",
+                        'type': 'number',
+                        'controller': _mobile
+                      },
+                      {
+                        'label': 'Image URL',
+                        'hintText': 'https://example.com/image.png',
+                        'type': 'text',
+                        'controller': _image,
+                      },
+                    ])
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

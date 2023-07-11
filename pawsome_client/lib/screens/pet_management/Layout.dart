@@ -5,7 +5,7 @@ import 'package:pawsome_client/provider/app_provider.dart';
 import 'package:pawsome_client/screens/news/news_screen.dart';
 import 'package:pawsome_client/screens/pet_management/home/home_screen.dart';
 import 'package:pawsome_client/screens/pet_management/pet/pet_list.dart';
-import 'package:pawsome_client/screens/pet_tracker/tracker/dashboard.dart';
+import 'package:pawsome_client/screens/pet_management/tracker/dashboard.dart';
 import 'package:pawsome_client/screens/profile/profile.dart';
 import 'package:provider/provider.dart';
 
