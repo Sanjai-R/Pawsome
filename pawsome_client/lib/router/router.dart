@@ -86,13 +86,7 @@ final GoRouter router = GoRouter(
         builder: (BuildContext context, GoRouterState state) {
           return const CreatePet();
         }),
-    GoRoute(
-        path: '/pet/details',
-        builder: (BuildContext context, GoRouterState state) {
-          dynamic petId = state.queryParameters['dynamicData'];
 
-          return PetDetails(petId: petId);
-        }),
     GoRoute(
         path: '/adopt',
         builder: (BuildContext context, GoRouterState state) =>

@@ -8,6 +8,7 @@ import 'package:pawsome_client/core/constant/constant.dart';
 import 'package:pawsome_client/model/bookmark_model.dart';
 import 'package:pawsome_client/provider/app_provider.dart';
 import 'package:pawsome_client/provider/pet_provier.dart';
+import 'package:pawsome_client/screens/pet_management/pet/pet_details.dart';
 import 'package:provider/provider.dart';
 
 import '../../../provider/auth_provider.dart';
@@ -76,7 +77,15 @@ class _PopularPetsState extends State<PopularPets> {
                           padding: const EdgeInsets.all(8.0),
                           child: GestureDetector(
                             onTap: () {
-                              context.go('/pet/details?dynamicData=${i.petId}');
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PetDetails(
+                                    pet: i,
+                                  ),
+                                ),
+                              );
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(14.0),

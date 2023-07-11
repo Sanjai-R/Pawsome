@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:pawsome_client/core/constant/constant.dart';
 import 'package:pawsome_client/model/adopt_model.dart';
+import 'package:pawsome_client/model/pet_model.dart';
 import 'package:pawsome_client/provider/auth_provider.dart';
 
 import 'package:pawsome_client/provider/pet_provier.dart';
@@ -10,27 +11,23 @@ import 'package:pawsome_client/provider/pet_provier.dart';
 import 'package:provider/provider.dart';
 
 class PetDetails extends StatefulWidget {
-  final String petId;
 
-  const PetDetails({super.key, required this.petId});
+  final PetModel pet;
+  const PetDetails({super.key, required  this.pet});
 
   @override
   State<PetDetails> createState() => _PetDetailsState();
 }
 
 class _PetDetailsState extends State<PetDetails> {
-  Map<String, dynamic>? pet;
+
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
     final petProvider = Provider.of<PetProvider>(context, listen: false);
-    petProvider.fetchPetById(widget.petId).then((result) {
-      setState(() {
-        pet = result;
-      });
-    });
+
     petProvider.fetchAdoptData();
   }
 
@@ -39,7 +36,7 @@ class _PetDetailsState extends State<PetDetails> {
     final petProvider = Provider.of<PetProvider>(context, listen: false);
     final authData = Provider.of<AuthProvider>(context, listen: false).user;
     final data = {
-      'petId': widget.petId,
+      'petId': widget.pet.petId,
       'buyerId': authData['userId'],
       'status': 'pending',
       'date': DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -57,7 +54,7 @@ class _PetDetailsState extends State<PetDetails> {
             backgroundColor: Colors.green,
           ),
         );
-        context.go('/');
+        Navigator.pop(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -84,7 +81,7 @@ class _PetDetailsState extends State<PetDetails> {
         actions: [
           IconButton(
             onPressed: () {
-              context.go('/pet/edit/${widget.petId}');
+              context.go('/pet/edit/${widget.pet.petId}');
             },
             icon: const Icon(Icons.edit),
           ),
@@ -95,17 +92,17 @@ class _PetDetailsState extends State<PetDetails> {
           List<AdoptModel> adopt = petProvider.adopts;
 
           bool isRequested = adopt.any((element) =>
-              element.petId == int.parse(widget.petId) &&
+              element.petId == widget.pet.petId &&
               element.status == 'pending');
           bool isSold = adopt.any((element) =>
-              element.petId == int.parse(widget.petId) &&
+              element.petId == widget.pet.petId &&
               element.status == 'approved');
 
 
           if (petProvider.isLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (pet == null) {
+          if (widget.pet == null) {
             return const Center(child: Text('Failed to load pet details.'));
           }
 
@@ -121,7 +118,7 @@ class _PetDetailsState extends State<PetDetails> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.network(
-                    pet!['image'],
+                    widget.pet.image.toString(),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -143,14 +140,14 @@ class _PetDetailsState extends State<PetDetails> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${pet!['name'].toString()}, 3 YRO",
+                              "${widget.pet.name.toString()}, 3 YRO",
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
                             ),
                             Text(
-                              pet!['user']!['location'].toString(),
+                              widget.pet.user!.location.toString(),
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
@@ -169,7 +166,7 @@ class _PetDetailsState extends State<PetDetails> {
                                     child: _buildCard("Weight", "2.5 kg",
                                         const Color(0xFFFFF9C4))),
                                 Expanded(
-                                    child: _buildCard("gender", "male",
+                                    child: _buildCard("gender", widget.pet.gender,
                                         const Color(0xFFDAEBFF))),
                               ],
                             ),

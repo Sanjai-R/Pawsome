@@ -95,6 +95,11 @@ class _ManagePetState extends State<ManagePet> {
                       }
                       final pets = petProvider.myPets?? [];
                       final selectedPet = petProvider.selectedPet ?? {};
+                      if(pets.isEmpty){
+                        return const Center(
+                          child: Text('Please add a pet first'),
+                        );
+                      }
                       return ListView.builder(
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,

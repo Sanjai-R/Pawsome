@@ -22,6 +22,7 @@ class AuthProvider extends ChangeNotifier {
     _email = value;
     notifyListeners();
   }
+
   Future<dynamic> signUp({
     required String userName,
     required String email,
@@ -87,17 +88,20 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<dynamic> updateProfile(data) async{
+  Future<dynamic> updateProfile(data) async {
     final res = await AuthService.updateProfile(data['userId'], data);
+
     notifyListeners();
-    if (res != null) {
+    if (res) {
+      _user['mobile'] = data['mobile'];
+      _user['location'] = data['location'];
+      _user['profile'] = data['profile'];
       return {'status': true, 'message': 'Profile updated Successfully'};
     } else {
       return {'status': false, 'message': 'Profile updated Failed'};
     }
-
-
   }
+
   Future<dynamic> SendOtp(String email) async {
     final res = await AuthService.sendOtp(email);
     notifyListeners();
@@ -108,8 +112,8 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<dynamic> verifyOtp(String email,String otp) async {
-    final res = await AuthService.verifyOtp(email,otp);
+  Future<dynamic> verifyOtp(String email, String otp) async {
+    final res = await AuthService.verifyOtp(email, otp);
     notifyListeners();
     if (res != null) {
       return {'status': true, 'message': 'Otp verified Successfully'};
@@ -118,8 +122,8 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<dynamic> resetPassword(String email,String password) async {
-    final res = await AuthService.resetPassword(email,password);
+  Future<dynamic> resetPassword(String email, String password) async {
+    final res = await AuthService.resetPassword(email, password);
     notifyListeners();
     if (res != null) {
       return {'status': true, 'message': 'Password reset Successfully'};
@@ -127,5 +131,4 @@ class AuthProvider extends ChangeNotifier {
       return {'status': false, 'message': 'Password reset Failed'};
     }
   }
-
 }
