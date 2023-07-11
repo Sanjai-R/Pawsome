@@ -44,6 +44,19 @@ class AuthService {
     return null;
   }
 
+  static Future<dynamic> updateProfile(id, data) async {
+    print('${AppUrl.baseUrl}/User/$id');
+    print(data);
+    try {
+      final res = await Dio().put('${AppUrl.baseUrl}/User/$id', data: data);
+      if (res != null && (res.statusCode == 200 || res.statusCode == 201 || res.statusCode == 204)) {
+        return res.data;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   static Future<dynamic> sendOtp(String email) async {
     try {
       final res =
