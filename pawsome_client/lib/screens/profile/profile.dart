@@ -82,7 +82,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         builder: (context, AuthProvider authProvider, PetProvider petProvider,
             child) {
           final authData = authProvider.user;
-          print(authData);
+
           final petData = petProvider.myPets;
           final savedData = petProvider.bookmarks;
           // print(savedData);
@@ -173,7 +173,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(50),
                 child: Image.network(
-                  'https://img.freepik.com/premium-psd/3d-render-cartoon-avatar-isolated_570939-44.jpg?w=740',
+                  authData['profile'] ??
+                      'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
                   fit: BoxFit.cover,
                   width: double.infinity, // or set a specific value
                   height: double.infinity, // or set a specific value
@@ -253,7 +254,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
     _location.text = user['location'];
     _mobile.text = user['mobile'];
-    // _image.text = user['image'];
+    _image.text = user['profile'];
 
     showModalBottomSheet(
       context: context,
@@ -297,6 +298,68 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         'controller': _image,
                       },
                     ])
+                    ,
+                    const SizedBox(height: 10.0),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        style: FilledButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            elevation: 1,
+                            padding: const EdgeInsets.symmetric(vertical: 12)),
+                        onPressed: () async{
+                          if (_formKey.currentState!.validate()) {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            user['location'] = _location.text;
+                            user['mobile'] = _mobile.text;
+                            user['profile'] = _image.text;
+                            final res = await context.read<AuthProvider>().updateProfile(user);
+                           if(res['status']){
+                              setState(() {
+                                isLoading = false;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(res['message']),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                              Navigator.pop(context);
+                           }else{
+                              setState(() {
+                                isLoading = false;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(res['message']),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                           }
+                          }
+                        },
+
+                        child: isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
+                            : const Text(
+                                'Update',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              )
+                      ),
+                    )
                   ],
                 ),
               ),

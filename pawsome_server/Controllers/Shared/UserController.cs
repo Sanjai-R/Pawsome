@@ -31,7 +31,7 @@ namespace pawsome_server.Controllers
 
         // PUT: api/User/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, UserModel userModel)
+        public async Task<IActionResult> UpdateUser(int id, updateUserDto userModel)
         {
             try
             {
@@ -39,8 +39,17 @@ namespace pawsome_server.Controllers
                 {
                     return BadRequest();
                 }
+                UserModel user = await _context.Users.FindAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
 
-                _context.Entry(userModel).State = EntityState.Modified;
+                user.Location = userModel.Location;
+                user.Mobile = userModel.Mobile;
+                user.Profile = userModel.Profile;
+
+                _context.Entry(user).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
 
                 return NoContent();

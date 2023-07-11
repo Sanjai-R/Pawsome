@@ -87,6 +87,17 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<dynamic> updateProfile(data) async{
+    final res = await AuthService.updateProfile(data['userId'], data);
+    notifyListeners();
+    if (res != null) {
+      return {'status': true, 'message': 'Profile updated Successfully'};
+    } else {
+      return {'status': false, 'message': 'Profile updated Failed'};
+    }
+
+
+  }
   Future<dynamic> SendOtp(String email) async {
     final res = await AuthService.sendOtp(email);
     notifyListeners();
@@ -116,4 +127,5 @@ class AuthProvider extends ChangeNotifier {
       return {'status': false, 'message': 'Password reset Failed'};
     }
   }
+
 }

@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using pawsome_server.Data;
 using pawsome_server.Dto.Request.PetTracker;
+using pawsome_server.Models;
 using pawsome_server.Models.PetManagement;
+using pawsome_server.Models.Shared;
 
 namespace pawsome_server.Controllers.PetManagement
 {
@@ -56,6 +58,12 @@ namespace pawsome_server.Controllers.PetManagement
             {
                 return BadRequest();
             }
+            NotificationModel notificationModel = new NotificationModel();
+            notificationModel.UserId = adoptionModel.BuyerId;
+            notificationModel.NotificationBody = $"Your adoption request has been {adoptionModel.Status}";
+            notificationModel.NotificationTitle = "Adoption";
+
+            _context.Notifications.Add(notificationModel);
 
             _context.Entry(adoptionModel).State = EntityState.Modified;
 
@@ -86,6 +94,15 @@ namespace pawsome_server.Controllers.PetManagement
             AdoptionModel adoptionModel = _mapper.Map<AdoptionModel>(req);
             try
             {
+                NotificationModel notificationModel = new NotificationModel();
+            
+                UserModel user = await _context.Users.FindAsync(adoptionModel.BuyerId);
+                Pet pet = await _context.Pets.FindAsync(adoptionModel.PetId);
+                notificationModel.UserId = pet.UserId;
+                notificationModel.NotificationBody = $"Your {pet.Name} has been requested by {user.Username}";
+                notificationModel.NotificationTitle = "Adoption";
+                
+_context.Notifications.Add(notificationModel);
                 _context.Adoption.Add(adoptionModel);
                 await _context.SaveChangesAsync();
             }
