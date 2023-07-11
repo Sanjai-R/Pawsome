@@ -11,6 +11,7 @@ class AuthService {
           data: {"email": email, "password": password});
 
       if (res != null && (res.statusCode == 200 || res.statusCode == 201)) {
+        print(res.data);
         return User.fromJson(res.data);
       }
     } catch (e) {

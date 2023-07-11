@@ -54,6 +54,7 @@ class AuthProvider extends ChangeNotifier {
 
     if (res != null) {
       _user = res.toJson();
+
       setData();
       return {'status': true, 'message': 'Login Successfully'};
     } else {
@@ -64,6 +65,7 @@ class AuthProvider extends ChangeNotifier {
   void setData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('authData', json.encode(user));
+
     notifyListeners();
   }
 
