@@ -17,13 +17,16 @@ namespace pawsome_server.Data
         public DbSet<NutrientTrackerModel> NutrientTracker { get; set; }
 
         public DbSet<AdoptionModel> Adoption { get; set; }
-        
+
         public DbSet<WalkingTrackerModel> WalkingTracker { get; set; }
 
-        public DbSet<BookMarkModel> bookMarkModels { get; set; }
+        public DbSet<BookMarkModel> BookMarkModels { get; set; }
 
-        public DbSet<FoodProduct> foodProducts { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        public DbSet<FoodProduct> FoodProducts { get; set; }
+
+        public DbSet<NotificationModel> Notifications { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             base.OnModelCreating(modelBuilder);
 
             // Configure the relationships

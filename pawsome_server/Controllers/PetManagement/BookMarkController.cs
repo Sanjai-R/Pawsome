@@ -27,14 +27,14 @@ namespace pawsome_server.Controllers.PetManagement
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookMarkModel>>> GetbookMarkModels()
         {
-            return await _context.bookMarkModels.ToListAsync();
+            return await _context.BookMarkModels.ToListAsync();
         }
 
         // GET: api/BookMark/5
         [HttpGet("{id}")]
         public async Task<ActionResult<BookMarkModel>> GetBookMarkModel(int id)
         {
-            var bookMarks = await _context.bookMarkModels.Include(c => c.Pet).Where(c => c.UserId == id).ToListAsync();
+            var bookMarks = await _context.BookMarkModels.Include(c => c.Pet).Where(c => c.UserId == id).ToListAsync();
             if (bookMarks == null)
             {
                 return NotFound();
@@ -83,7 +83,7 @@ namespace pawsome_server.Controllers.PetManagement
 
             try
             {
-                _context.bookMarkModels.Add(bookMarkModel);
+                _context.BookMarkModels.Add(bookMarkModel);
                 await _context.SaveChangesAsync();
 
             }
@@ -100,13 +100,13 @@ namespace pawsome_server.Controllers.PetManagement
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBookMarkModel(int id)
         {
-            var bookMarkModel = await _context.bookMarkModels.FindAsync(id);
+            var bookMarkModel = await _context.BookMarkModels.FindAsync(id);
             if (bookMarkModel == null)
             {
                 return NotFound();
             }
 
-            _context.bookMarkModels.Remove(bookMarkModel);
+            _context.BookMarkModels.Remove(bookMarkModel);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -114,7 +114,7 @@ namespace pawsome_server.Controllers.PetManagement
 
         private bool BookMarkModelExists(int id)
         {
-            return _context.bookMarkModels.Any(e => e.Id == id);
+            return _context.BookMarkModels.Any(e => e.Id == id);
         }
     }
 }
