@@ -14,6 +14,6 @@ This project aims to develop a comprehensive pet management application that inc
 
 # **Architectural Diagram**
 
-![Arch_diagram.png](Assets/arch_diagram.png)
+![Arch_diagram.png](assets/arch_diagram.png)
 
 
